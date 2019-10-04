@@ -170,6 +170,7 @@ board_cards_4 <- board_cards_4 %>%
 
 # 5. CREATE ANALYSIS OUTPUTS ----------------------------------------------
 # create data frames for transforms
+
 board_cards_5 <- board_cards_4
 
 # add avg_wait and avg_resolve times
@@ -196,6 +197,16 @@ board_cards_5_weekly_count <- board_cards_5 %>%
   group_by(date_type, week_of_year) %>%
   count()
 
+board_cards_5_weekly_count_incidents <- board_cards_5 %>%
+  filter(label == "Incident") %>%
+  filter(!is.na(date)) %>%
+  filter(date > today() - number_of_days) %>%
+  filter(date < today()) %>%
+  filter(date_type %in% c("date_raised", "date_ended")) %>%
+  filter(!week_of_year == week(today())) %>%
+  group_by(date_type, week_of_year) %>%
+  count()
+
 # melt date values for visualisation (SOURCE: http://www.datasciencemadesimple.com/melting-casting-r/)
 board_cards_5 <- melt(board_cards_5, id = c("bucket", "name", "description", "list", "label", "date_type", "date", "week_of_year", "month_of_year"), variable.name = c("processing_time_type"), value.name = "processing_time_avg")
 
@@ -210,36 +221,68 @@ board_cards_5_weekly_avg_time <- board_cards_5 %>%
   group_by(processing_time_type, week_of_year) %>%
   summarise(n = mean(processing_time_avg))
 
+board_cards_5_weekly_avg_time_incidents <- board_cards_5 %>%
+  filter(label == "Incident") %>%
+  filter(!is.na(processing_time_avg)) %>%
+  filter(date > today() - number_of_days) %>%
+  filter(date < today()) %>%
+  filter(!week_of_year == week(today())) %>%
+  group_by(processing_time_type, week_of_year) %>%
+  summarise(n = mean(processing_time_avg))
+
 # visualise count plot
 board_cards_5_weekly_count_plot <- board_cards_5_weekly_count %>% 
   ggplot(aes(x = week_of_year, y = n, color = date_type)) + 
   geom_line(size = 1) +
   #geom_text(label = Data$Volume, size = 3, color = "#696969", nudge_y = 15) +
   #stat_smooth(linetype = "longdash", color = "#696969", method = "loess", formula = "y ~ x") +
-  ggtitle(paste("Number of Trello Tickets Raised, Started and Ended", sep = "")) +
+  ggtitle(paste("Number of All Trello Tickets Raised and Ended", sep = "")) +
   labs(y = "ticket count", x = "week of year", color = "Date Type")  +
-  expand_limits(y = 0)
+  expand_limits(y = 0) +
+  scale_y_continuous(limits = c(0, 100))
+
+# visualise count plot for incidents
+board_cards_5_weekly_count_plot_incidents <- board_cards_5_weekly_count_incidents %>% 
+  ggplot(aes(x = week_of_year, y = n, color = date_type)) + 
+  geom_line(size = 1) +
+  #geom_text(label = Data$Volume, size = 3, color = "#696969", nudge_y = 15) +
+  #stat_smooth(linetype = "longdash", color = "#696969", method = "loess", formula = "y ~ x") +
+  ggtitle(paste("Number of Incident Trello Tickets Raised and Ended", sep = "")) +
+  labs(y = "ticket count", x = "week of year", color = "Date Type")  +
+  expand_limits(y = 0)  +
+  scale_y_continuous(limits = c(0, 100))
 
 # visualise average processing time plot
 board_cards_5_weekly_avg_time_plot <- board_cards_5_weekly_avg_time %>% 
   ggplot(aes(y = n, x = week_of_year, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
-  labs(title = paste("Average Processing Time for Tickets Raised, Started and Ended", sep = ""), x = "week of year", y = "number of days (mean)", fill = "Processing Type") #+
-  #theme(legend.position = "bottom", legend.text = element_text(size = 8))
+  labs(title = paste("Average Processing Time for All Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type")  +
+  scale_y_continuous(limits = c(0, 8))
+
+# visualise average processing time plot for incidents
+board_cards_5_weekly_avg_time_plot_incidents <- board_cards_5_weekly_avg_time_incidents %>% 
+  ggplot(aes(y = n, x = week_of_year, fill = processing_time_type)) +
+  geom_bar(stat = 'identity') +
+  labs(title = paste("Average Processing Time for Incident Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type") +
+  scale_y_continuous(limits = c(0, 8))
+#theme(legend.position = "bottom", legend.text = element_text(size = 8))
 
 #Setup layout for Volume (A) and Completion Rate (B) Plots
 #(Sourced from "https://stackoverflow.com/questions/13294952/left-align-two-graph-edges-ggplot")
 gA <- ggplotGrob(board_cards_5_weekly_count_plot)
-gB <- ggplotGrob(board_cards_5_weekly_avg_time_plot)
+gB <- ggplotGrob(board_cards_5_weekly_count_plot_incidents)
+gC <- ggplotGrob(board_cards_5_weekly_avg_time_plot)
+gD <- ggplotGrob(board_cards_5_weekly_avg_time_plot_incidents)
 
-maxWidth = grid::unit.pmax(gA$widths[2:5], gB$widths[2:5])
+maxWidth = grid::unit.pmax(gA$widths[2:5], gB$widths[2:5], gC$widths[2:5], gD$widths[2:5])
 gA$widths[2:5] <- as.list(maxWidth)
 gB$widths[2:5] <- as.list(maxWidth)
+gC$widths[2:5] <- as.list(maxWidth)
+gD$widths[2:5] <- as.list(maxWidth)
 
 #Display Volume and Completion Rate Plots
-plot_Trello_Ticket_Analysis <- grid.arrange(gA, gB, ncol=1,
-                                    top = textGrob(paste("Trello Ticket Analysis Over ", number_of_days, " Days", sep = ""),gp=gpar(fontsize=20,font=1)))
-plot_Trello_Ticket_Analysis
+plot_Trello_Ticket_Analysis_incidents <- grid.arrange(gA, gB, gC, gD, ncol=1,
+                                            top = textGrob(paste("Trello Ticket Analysis Over ", number_of_days, " Days", sep = ""),gp=gpar(fontsize=20,font=1)))
 
 # get variables for RMarkdown reporting
 var_recent_week <- max(board_cards_5_weekly_count$week_of_year)
