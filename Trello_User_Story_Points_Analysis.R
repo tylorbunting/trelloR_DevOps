@@ -1,24 +1,30 @@
 # 0. SETUP ENVIRONMENT ----------------------------------------------------
+#
+# The key output of this script will be a table with the below variables and various plots
+# card variables = id, name, desciption, status, type, week_complete, day_complete, raised_date, start_date, end_date, member, member_count, dev_effort, test_effort, total_effort, incident_category
+#
 # INSTALL APPROPRIATE PACKAGES
 library("trelloR")
 library("tidyr")
 library("httpuv")
 library("purrr")
 
+Settings <- list()
+
 # SETUP AUTHENTICATION VALUES
-Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
-Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
-Trello_SecretKey <- "e3512e11ac64fd3bd927429a5294506d1d7be2b87236cd011c19eee9f6bc833b"
-if(exists("TrelloR_Token") != TRUE) TrelloR_Token <- trello_get_token(Trello_Key, Trello_SecretKey)
+Settings$Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
+Settings$Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
+Settings$Trello_SecretKey <- "e3512e11ac64fd3bd927429a5294506d1d7be2b87236cd011c19eee9f6bc833b"
+if(exists("Settings$TrelloR_Token") != TRUE) Settings$TrelloR_Token <- trello_get_token(Settings$Trello_Key, Settings$Trello_SecretKey)
 
 # create key and token string
-Trello_Auth <- paste("key=",Trello_Key,"&token=",Trello_Token, sep = "")
+Settings$Trello_Auth <- paste("key=",Settings$Trello_Key,"&token=",Settings$Trello_Token, sep = "")
 
 # SETUP INPUT VALUES
-User_Story_Board_url <- "https://trello.com/b/m7Puvg0U/ai-hub-user-story-kanban-board"
+Settings$Board_url <- "https://trello.com/b/m7Puvg0U/ai-hub-user-story-kanban-board"
 
 # SET CUSTOMFIELD IDS
-CustomFields_variables <- list(
+Settings$CustomFields_variables <- list(
   Date_Raised = "5c9d92bb98be778d4583c9ef",
   Start_Date = "5c5a1f2925edda7fd322f890",
   End_Date = "5c5a1f3135e79935255e1945",
@@ -29,9 +35,10 @@ CustomFields_variables <- list(
 
 # SETUP VARIOUS FUNCTIONS
 # labels to capture for analysis (assumption is that tickets only have one label assigned)
-labels_for_analysis <- c("Incident", "Request", "Enhancement")
+Settings$labels_for_analysis <- c("Incident", "Request", "Enhancement")
+
 # create function to extract first label name found out of labels_for_analysis input variable
-get_label_name <- function(x) {
+get_label_name <- function(x, labels_for_analysis) {
   if(length(x[["labels"]]) > 0) {
     for(index in seq_along(x[["labels"]])) {
       if(as.character(x[["labels"]][[index]][["name"]]) %in% labels_for_analysis) {
@@ -42,7 +49,8 @@ get_label_name <- function(x) {
   } else output <- "unknown"
   return(output)
 }
-get_label_name_trelloR <- function(x) {
+
+get_label_name_trelloR <- function(x, labels_for_analysis) {
   if(nrow(x) > 0 ) {
     for(index in seq_along(x[["name"]])) {
       if(x[["name"]][[index]] %in% labels_for_analysis) {
@@ -53,6 +61,7 @@ get_label_name_trelloR <- function(x) {
   } else output <- "unknown"
   return(output)
 }
+
 # create function to extract customField DATE VALUES from cards
 get_customField_date_values <- function(x, customField_id) {
   if(length(x[["customFieldItems"]]) > 0) {
@@ -65,8 +74,9 @@ get_customField_date_values <- function(x, customField_id) {
   } else output <- "unknown"
   return(output)
 }
-# create function to extract customField DROPDOWN VALUES from cards
-get_customField_dropdown_values <- function(x, customField_id) {
+
+# create function to extract customField DROPDOWN IDs from cards
+get_customField_dropdown_ids <- function(x, customField_id) {
   if(length(x[["customFieldItems"]]) > 0) {
     for(index in seq_along(x[["customFieldItems"]])) {
       if(as.character(x[["customFieldItems"]][[index]][["idCustomField"]]) == customField_id) {
@@ -79,88 +89,115 @@ get_customField_dropdown_values <- function(x, customField_id) {
   return(output)
 }
 
+# create function to extract customFiled DROPDOWN VALUES using value ID and the boards customField options
+get_customField_dropdown_value <- function(x, customField_list) {
+  stop <- FALSE
+  for(index in seq_along(customField_list)) {
+    if(stop) break
+    #first IF statement aims to check if the custom field acutally is a DropDown type by checking for the "options" sub list
+    if(length(customField_list[[index]][["options"]]) > 0) {
+      for(sub_index in seq_along(customField_list[[index]][["options"]])) {
+        if(as.character(customField_list[[index]][["options"]][[sub_index]][["id"]]) == x) {
+          output <- as.character(customField_list[[index]][["options"]][[sub_index]][["value"]][["text"]])
+          stop <- TRUE
+          break
+        } else output <- "unknown"
+      }  
+    }
+  }
+  return(output)
+}
+
+# create function to count number of members per card
+
+# create funciton to extract members from cards
 
 # 1. GET TRELLO DATA ------------------------------------------------------
 # get data using the trellR package method
 if(exists("Data_1") != TRUE) {
-User_Story_Board_id <- get_id_board(User_Story_Board_url, token = TrelloR_Token)
-User_Story_Board_lists <- get_board_lists(User_Story_Board_id, token = TrelloR_Token)
-User_Story_Board_cards <- get_board_cards(User_Story_Board_id, TrelloR_Token)
-User_Story_Board_members <- get_board_members(User_Story_Board_id, TrelloR_Token)
-User_Story_Board_card_members <- map_df(User_Story_Board_cards$id, get_card_members, token = TrelloR_Token)
-# get an array of Cards on a board (User Story Kanban Board) and include custom fields SOURCE: https://developers.trello.com/docs/getting-started-custom-fields 
-User_Story_Board_cards_with_customFields <- GET(paste("https://api.trello.com/1/boards/m7Puvg0U/?fields=name&cards=all&card_fields=name&customFields=true&card_customFieldItems=true&", Trello_Auth, sep = ""))
-User_Story_Board_cards_with_customFields <- content(User_Story_Board_cards_with_customFields)
-# save data for key process step
-Data_1 <- list(User_Story_Board_id = User_Story_Board_id,
-               User_Story_Board_lists = User_Story_Board_lists,
-               User_Story_Board_cards = User_Story_Board_cards,
-               User_Story_Board_members = User_Story_Board_members,
-               User_Story_Board_card_members = User_Story_Board_card_members,
-               User_Story_Board_cards_with_customFields = User_Story_Board_cards_with_customFields$cards,
-               User_Story_Board_customFields = User_Story_Board_cards_with_customFields$customFields)
+
+  #create main list for initial step
+  Data_1 <- list()
+  
+  #get various data
+  Data_1$Board_id <- get_id_board(Settings$Board_url, token = Settings$TrelloR_Token)
+  Data_1$Board_lists <- get_board_lists(Data_1$Board_id, token = Settings$TrelloR_Token)
+  Data_1$Board_cards <- get_board_cards(Data_1$Board_id, Settings$TrelloR_Token)
+  Data_1$Board_members <- get_board_members(Data_1$Board_id, Settings$TrelloR_Token)
+  #expensive query below so it is commented out
+  #Data_1$Board_card_members <- map_df(Board_cards$id, get_card_members, token = TrelloR_Token)
+  # get an array of Cards on a board (User Story Kanban Board) and include custom fields SOURCE: https://developers.trello.com/docs/getting-started-custom-fields 
+  Data_1$Board_cards_with_customFields <- GET(paste("https://api.trello.com/1/boards/m7Puvg0U/?fields=name&cards=all&card_fields=name&customFields=true&card_customFieldItems=true&", Settings$Trello_Auth, sep = ""))
+  Data_1$Board_cards_with_customFields <- content(Data_1$Board_cards_with_customFields)
+  # extract sub lists from "Board_cards_with_customFields" parent list
+  Data_1$Board_customFields = Data_1$Board_cards_with_customFields$customFields
+  Data_1$Board_cards_with_customFields = Data_1$Board_cards_with_customFields$cards
 }
 
 
 # 2. SET CUSTOM FIELD IDS FOR EACH CARD & REMOVE UNEEDED DATA -----------------------------------
 Data_2 <- Data_1
 
-# Card data with custom fields
-Data_2$User_Story_Board_cards_with_customFields <- map_df(Data_2$User_Story_Board_cards_with_customFields, function(x) {
+# Card data with "values" for DATE type customFields and "ids" for DROPDOWN type customFields
+Data_2$Board_cards_with_customFields <- map_df(Data_2$Board_cards_with_customFields, function(x) {
   data.frame(
-    cardID = as.character(extract(x, "id")),
-    cardName = as.character(extract(x, "name")),
-    cardDevEffort = get_customField_dropdown_values(x, CustomFields_variables$Dev_Effort),
-    cardTestEffort = get_customField_dropdown_values(x, CustomFields_variables$Test_Effort),
-    cardIncidentCategory = get_customField_dropdown_values(x, CustomFields_variables$Incident_Category),
-    cardDateRaised = get_customField_date_values(x, CustomFields_variables$Date_Raised),
-    cardDateStarted = get_customField_date_values(x, CustomFields_variables$Start_Date),
-    cardDateEnded = get_customField_date_values(x, CustomFields_variables$End_Date)
+    card_id = as.character(extract(x, "id")),
+    name = as.character(extract(x, "name")),
+    dev_effort_id = get_customField_dropdown_ids(x, Settings$CustomFields_variables$Dev_Effort),
+    test_effort_id = get_customField_dropdown_ids(x, Settings$CustomFields_variables$Test_Effort),
+    incident_category_id = get_customField_dropdown_ids(x, Settings$CustomFields_variables$Incident_Category),
+    date_raised = get_customField_date_values(x, Settings$CustomFields_variables$Date_Raised),
+    date_started = get_customField_date_values(x, Settings$CustomFields_variables$Start_Date),
+    date_ended = get_customField_date_values(x, Settings$CustomFields_variables$End_Date)
   )
 })
 
+# Card data with "values" for DROPDOWN type customField as well as DATE type customFields
+Data_2$Board_cards_with_customFields <- data.frame(
+  card_id = as.character(Data_2$Board_cards_with_customFields[["card_id"]]),
+  name = as.character(Data_2$Board_cards_with_customFields[["name"]]),
+  dev_effort = map_chr(Data_2$Board_cards_with_customFields[["dev_effort_id"]], get_customField_dropdown_value, Data_2$Board_customFields),
+  test_effort = map_chr(Data_2$Board_cards_with_customFields[["test_effort_id"]], get_customField_dropdown_value, Data_2$Board_customFields),
+  incident_category = map_chr(Data_2$Board_cards_with_customFields[["incident_category_id"]], get_customField_dropdown_value, Data_2$Board_customFields),
+  date_raised = as.character(Data_2$Board_cards_with_customFields[["date_raised"]]),
+  date_started = as.character(Data_2$Board_cards_with_customFields[["date_started"]]),
+  date_ended = as.character(Data_2$Board_cards_with_customFields[["date_ended"]])
+)
+
 # Card data with normal values / non custom fields
-Data_2$User_Story_Board_cards <- data.frame(
-    cardID = as.character(Data_2$User_Story_Board_cards[["id"]]),
-    cardName = as.character(Data_2$User_Story_Board_cards[["name"]]),
-    cardDescription = as.character(Data_2$User_Story_Board_cards[["desc"]]),
-    listID = as.character(Data_2$User_Story_Board_cards[["idList"]]),
-    cardurl = as.character(Data_2$User_Story_Board_cards[["url"]]),
-    cardLabels = map_chr(Data_2$User_Story_Board_cards[["labels"]], get_label_name_trelloR)
+Data_2$Board_cards <- data.frame(
+    card_id = as.character(Data_2$Board_cards[["id"]]),
+    name = as.character(Data_2$Board_cards[["name"]]),
+    description = as.character(Data_2$Board_cards[["desc"]]),
+    list_id = as.character(Data_2$Board_cards[["idList"]]),
+    url = as.character(Data_2$Board_cards[["url"]]),
+    label = map_chr(Data_2$Board_cards[["labels"]], get_label_name_trelloR, Settings$labels_for_analysis)
   )
 
 # list data for board
-Data_2$User_Story_Board_lists <- data.frame(
-  listID = as.character(Data_2$User_Story_Board_lists$id),
-  listName = as.character(Data_2$User_Story_Board_lists$name),
-  listPosition = as.integer(Data_2$User_Story_Board_lists$pos)
+Data_2$Board_lists <- data.frame(
+  list_id = as.character(Data_2$Board_lists$id),
+  list_name = as.character(Data_2$Board_lists$name),
+  list_position = as.integer(Data_2$Board_lists$pos)
 )
 
 # all cards and members (one card to many members)
-Data_2$User_Story_Board_card_members <- data.frame(
-  cardID = as.character(Data_2$User_Story_Board_card_members$id),
-  memberFullName = as.character(Data_2$User_Story_Board_card_members$fullName),
-  memberInitials = as.character(Data_2$User_Story_Board_card_members$initials),
-  userName = as.character(Data_2$User_Story_Board_card_members$username)
+Data_2$Board_card_members <- data.frame(
+  card_id = as.character(Data_2$Board_card_members$id),
+  fullname = as.character(Data_2$Board_card_members$fullName),
+  initials = as.character(Data_2$Board_card_members$initials),
+  username = as.character(Data_2$Board_card_members$username)
 )
-
-# all DropDown ("list" type) customFields values for mapping values to customField idValues in User_Story_Board_cards_with_customFields data frame
-Data_2$User_Story_Board_DropDown_customFields <- map_df(Data_2$User_Story_Board_customFields, function(x) {
-  data.frame(
-    
-  )
-})
-
-# print names of all key variables to console
-print(names(Data_2))
 
 
 # 3. MERGE MAJOR DATASETS TO CREATE MASTER DATA FOR BOARD ---------------------------
 Data_3 <- Data_2
 
-Data_3$
+# update Board_cards by merging it with Board_lists to get "list_name" and "list_position" using "list_id"
+Data_3$Board_cards <- Data_3$Board_cards %>%
+  left_join(Data_3$Board_lists, by = "list_id") %>%
+  select(-list_id)
 
-
-
-# print names of all key variables to console
-print(names(Data_3))
+# udpate Board_cards by mering it with Board_card_members to get "fullname", "initials", and "username" using "card_id" (full_join)
+Data_3$Board_cards <- Data_3$Board_cards %>%
+  full_join(Data_3$Board_card_members, by = "card_id")
