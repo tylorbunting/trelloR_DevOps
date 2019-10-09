@@ -50,6 +50,7 @@ get_label_name <- function(x, labels_for_analysis) {
   return(output)
 }
 
+# create function to extract first label name found out of labels_for_analysis input variable
 get_label_name_trelloR <- function(x, labels_for_analysis) {
   if(nrow(x) > 0 ) {
     for(index in seq_along(x[["name"]])) {
@@ -69,9 +70,9 @@ get_customField_date_values <- function(x, customField_id) {
       if(as.character(x[["customFieldItems"]][[index]][["idCustomField"]]) == customField_id) {
         output <- as.character(x[["customFieldItems"]][[index]][["value"]][["date"]])
         break
-      } else output <- "unknown"
+      } else output <- NA
     }
-  } else output <- "unknown"
+  } else output <- NA
   return(output)
 }
 
@@ -101,7 +102,7 @@ get_customField_dropdown_value <- function(x, customField_list) {
           output <- as.character(customField_list[[index]][["options"]][[sub_index]][["value"]][["text"]])
           stop <- TRUE
           break
-        } else output <- "unknown"
+        } else output <- NA
       }  
     }
   }
@@ -109,8 +110,50 @@ get_customField_dropdown_value <- function(x, customField_list) {
 }
 
 # create function to count number of members per card
+# there are three scenarios that can occur: (1) no members found; (2) one member found; (3) more then one member found.
+# the below IF statements handle for all three scenarios
+get_card_member_count <- function(x) {
+  output <- length(unlist(x))
+  return(output)
+}
 
 # create funciton to extract members from cards
+# there are three scenarios that can occur: (1) no members found; (2) one member found; (3) more then one member found.
+# the below IF statements handle for all three scenarios
+get_cards_and_member_ids <- function(x) {
+  # create the output table that will be the result of the function
+  output <- data.frame(
+    card_id = as.character(),
+    member_id = as.character()
+  )
+  if(length(unlist(x["idMembers"])) > 1) {
+    # handle for the scenario (3) more then one member found
+    for(index in seq_along(unlist(x["idMembers"]))) {
+      temp_output <- data.frame(
+        card_id = as.character(x["id"]),
+        member_id = as.character(unlist(x["idMembers"])[index])
+      )
+      output <- rbind.data.frame(
+        output,
+        temp_output
+      )
+    }
+  } else if (length(unlist(x["idMembers"])) == 1) {
+    # handle for the scenario (2) one member found
+    output <- data.frame(
+      card_id = as.character(x["id"]),
+      member_id = as.character(unlist(x["idMembers"]))
+    )
+  } else if (length(unlist(x["idMembers"])) == 0) {
+    # handle for the scenario (1) no members found
+    output <- data.frame(
+      card_id = as.character(x["id"]),
+      member_id = as.character(NA)
+    )
+  }
+  return(output)
+}
+
 
 # 1. GET TRELLO DATA ------------------------------------------------------
 # get data using the trellR package method
@@ -164,6 +207,9 @@ Data_2$Board_cards_with_customFields <- data.frame(
   date_ended = as.character(Data_2$Board_cards_with_customFields[["date_ended"]])
 )
 
+# data of all Card Ids and related Member Ids
+Data_2$Board_cards_and_members <- map_df(apply(Data_2$Board_cards, 1, get_cards_and_member_ids), rbind.data.frame)
+
 # Card data with normal values / non custom fields
 Data_2$Board_cards <- data.frame(
     card_id = as.character(Data_2$Board_cards[["id"]]),
@@ -171,7 +217,8 @@ Data_2$Board_cards <- data.frame(
     description = as.character(Data_2$Board_cards[["desc"]]),
     list_id = as.character(Data_2$Board_cards[["idList"]]),
     url = as.character(Data_2$Board_cards[["url"]]),
-    label = map_chr(Data_2$Board_cards[["labels"]], get_label_name_trelloR, Settings$labels_for_analysis)
+    label = map_chr(Data_2$Board_cards[["labels"]], get_label_name_trelloR, Settings$labels_for_analysis),
+    member_count = map_chr(Data_2$Board_cards[["idMembers"]], get_card_member_count)
   )
 
 # list data for board
@@ -182,11 +229,10 @@ Data_2$Board_lists <- data.frame(
 )
 
 # all cards and members (one card to many members)
-Data_2$Board_card_members <- data.frame(
-  card_id = as.character(Data_2$Board_card_members$id),
-  fullname = as.character(Data_2$Board_card_members$fullName),
-  initials = as.character(Data_2$Board_card_members$initials),
-  username = as.character(Data_2$Board_card_members$username)
+Data_2$Board_members <- data.frame(
+  member_id = as.character(Data_2$Board_members$id),
+  fullname = as.character(Data_2$Board_members$fullName),
+  username = as.character(Data_2$Board_members$username)
 )
 
 
@@ -198,6 +244,16 @@ Data_3$Board_cards <- Data_3$Board_cards %>%
   left_join(Data_3$Board_lists, by = "list_id") %>%
   select(-list_id)
 
-# udpate Board_cards by mering it with Board_card_members to get "fullname", "initials", and "username" using "card_id" (full_join)
+# update Board_cards by merging it with Board_cards_and_members to get "member_id" using "card_id" (full_join)
 Data_3$Board_cards <- Data_3$Board_cards %>%
-  full_join(Data_3$Board_card_members, by = "card_id")
+  full_join(Data_3$Board_cards_and_members, by = "card_id")
+
+# update Board_cards by merging it with Board_card_members to get "fullname", "initials", and "username" using "card_id"
+Data_3$Board_cards <- Data_3$Board_cards %>%
+  left_join(Data_3$Board_members, by = "member_id") %>%
+  select(-member_id)
+
+# update Board_cards
+Data_3$Board_cards <- Data_3$Board_cards %>%
+  select(-name) %>%
+  left_join(Data_3$Board_cards_with_customFields, by = "card_id")
