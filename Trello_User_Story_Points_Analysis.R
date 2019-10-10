@@ -257,3 +257,20 @@ Data_3$Board_cards <- Data_3$Board_cards %>%
 Data_3$Board_cards <- Data_3$Board_cards %>%
   select(-name) %>%
   left_join(Data_3$Board_cards_with_customFields, by = "card_id")
+
+
+# 4. MAKE FINAL CHANGES TO TABLE BEFORE VISUALISING -----------------------
+Data_4 <- Data_3
+
+# update the three date related customField values from "factors" to "date" types
+Data_4$Board_cards$date_raised <- ymd(str_extract(Data_4$Board_cards$date_raised, "[0-9-]{10}"))
+Data_4$Board_cards$date_started <- ymd(str_extract(Data_4$Board_cards$date_started, "[0-9-]{10}"))
+Data_4$Board_cards$date_ended <- ymd(str_extract(Data_4$Board_cards$date_ended, "[0-9-]{10}"))
+
+# divide DEV and TEST effort by member_count to reflect actual effort for DEV and TEST per row in the "Board_cards" table 
+Data_4$Board_cards <- Data_4$Board_cards %>%
+  mutate(dev_effort = round(as.numeric(as.character(dev_effort)) / as.numeric(as.character(member_count)), 2)) %>%
+  mutate(test_effort = round(as.numeric(as.character(test_effort)) / as.numeric(as.character(member_count)), 2))
+
+
+  
