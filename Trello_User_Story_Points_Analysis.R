@@ -272,5 +272,14 @@ Data_4$Board_cards <- Data_4$Board_cards %>%
   mutate(dev_effort = round(as.numeric(as.character(dev_effort)) / as.numeric(as.character(member_count)), 2)) %>%
   mutate(test_effort = round(as.numeric(as.character(test_effort)) / as.numeric(as.character(member_count)), 2))
 
+# add avg_wait and avg_resolve times
+Data_4$Board_cards <- Data_4$Board_cards %>%
+  mutate(avg_wait = difftime(date_started, date_raised, units = "days")) %>%
+  mutate(avg_resolution = difftime(date_ended, date_started, units = "days"))
+
+
+# 5. VISUALISE DATA -------------------------------------------------------
+Data_5 <- Data_4
+
 
   
