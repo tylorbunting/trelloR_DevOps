@@ -165,7 +165,7 @@ if(exists("Data_1") != TRUE) {
   #get various data
   Data_1$Board_id <- get_id_board(Settings$Board_url, token = Settings$TrelloR_Token)
   Data_1$Board_lists <- get_board_lists(Data_1$Board_id, token = Settings$TrelloR_Token)
-  Data_1$Board_cards <- get_board_cards(Data_1$Board_id, Settings$TrelloR_Token)
+  Data_1$Board_cards <- get_board_cards(Data_1$Board_id, Settings$TrelloR_Token, filter = "all", paging = TRUE)
   Data_1$Board_members <- get_board_members(Data_1$Board_id, Settings$TrelloR_Token)
   #expensive query below so it is commented out
   #Data_1$Board_card_members <- map_df(Board_cards$id, get_card_members, token = TrelloR_Token)
@@ -173,8 +173,8 @@ if(exists("Data_1") != TRUE) {
   Data_1$Board_cards_with_customFields <- GET(paste("https://api.trello.com/1/boards/m7Puvg0U/?fields=name&cards=all&card_fields=name&customFields=true&card_customFieldItems=true&", Settings$Trello_Auth, sep = ""))
   Data_1$Board_cards_with_customFields <- content(Data_1$Board_cards_with_customFields)
   # extract sub lists from "Board_cards_with_customFields" parent list
-  Data_1$Board_customFields = Data_1$Board_cards_with_customFields$customFields
-  Data_1$Board_cards_with_customFields = Data_1$Board_cards_with_customFields$cards
+  Data_1$Board_customFields <- Data_1$Board_cards_with_customFields$customFields
+  Data_1$Board_cards_with_customFields <- Data_1$Board_cards_with_customFields$cards
 }
 
 
@@ -210,6 +210,9 @@ Data_2$Board_cards_with_customFields <- data.frame(
 # data of all Card Ids and related Member Ids
 Data_2$Board_cards_and_members <- map_df(apply(Data_2$Board_cards, 1, get_cards_and_member_ids), rbind.data.frame)
 
+# for some reasons the Board_cards_and_members data has duplicate cards so the below code remove the duplicate rows
+Data_2$Board_cards_and_members <- distinct(Data_2$Board_cards_and_members)
+
 # Card data with normal values / non custom fields
 Data_2$Board_cards <- data.frame(
     card_id = as.character(Data_2$Board_cards[["id"]]),
@@ -220,6 +223,9 @@ Data_2$Board_cards <- data.frame(
     label = map_chr(Data_2$Board_cards[["labels"]], get_label_name_trelloR, Settings$labels_for_analysis),
     member_count = map_chr(Data_2$Board_cards[["idMembers"]], get_card_member_count)
   )
+
+# for some reasons the Board_cards data has duplicate cards so the below code remove the duplicate rows
+Data_2$Board_cards <- distinct(Data_2$Board_cards)
 
 # list data for board
 Data_2$Board_lists <- data.frame(
@@ -272,6 +278,24 @@ Data_4$Board_cards <- Data_4$Board_cards %>%
   mutate(dev_effort = round(as.numeric(as.character(dev_effort)) / as.numeric(as.character(member_count)), 2)) %>%
   mutate(test_effort = round(as.numeric(as.character(test_effort)) / as.numeric(as.character(member_count)), 2))
 
+# update DEV and TEST effort so that the NA's are represented by 0's
+Data_4$Board_cards$dev_effort <- replace_na(Data_4$Board_cards$dev_effort, 0)
+Data_4$Board_cards$test_effort <- replace_na(Data_4$Board_cards$test_effort, 0)
+
+# create total_effort variables
+Data_4$Board_cards <- Data_4$Board_cards %>%
+  mutate(total_effort = round(dev_effort + test_effort, 2))
+
+# add avg_wait and avg_resolve times
+Data_4$Board_cards <- Data_4$Board_cards %>%
+  mutate(avg_wait = difftime(date_started, date_raised, units = "days")) %>%
+  mutate(avg_resolution = difftime(date_ended, date_started, units = "days"))
+
+# add week_ended and day_ended variables
+Data_4$Board_cards <- Data_4$Board_cards %>%
+  mutate(week_ended = week(date_ended)) %>%
+  mutate(day_ended = wday(date_ended, label = TRUE))
+
 # add avg_wait and avg_resolve times
 Data_4$Board_cards <- Data_4$Board_cards %>%
   mutate(avg_wait = difftime(date_started, date_raised, units = "days")) %>%
@@ -280,6 +304,150 @@ Data_4$Board_cards <- Data_4$Board_cards %>%
 
 # 5. VISUALISE DATA -------------------------------------------------------
 Data_5 <- Data_4
+Plots <- list()
+
+# create table specific for run team
+Data_5$Board_cards_Run <- Data_5$Board_cards %>% 
+  filter(label %in% Settings$labels_for_analysis) %>%
+  filter(fullname %in% c("Tylor Bunting", "Sam Garske", "Sean Xiang", "Victoria Lu", "ambitkumar","Bianca De Jesus")) %>%
+  filter(!is.na(week_ended))
+
+
+# 5.1. TICKET COUNT WEEKLY ------------------------------------------------
+
+# melt date values for visualisation (SOURCE: http://www.datasciencemadesimple.com/melting-casting-r/)
+Data_5$Board_cards_Run_Melt_Dates <- Data_5$Board_cards_Run %>%
+  select(-username, -dev_effort, -test_effort, -incident_category) %>%
+  melt(id = c("card_id",
+              "name", 
+              "url",
+              "description", 
+              "list_name", 
+              "list_position",
+              "fullname",
+              "member_count",
+              "total_effort",
+              "label",
+              "avg_wait",
+              "avg_resolution",
+              "week_ended", 
+              "day_ended"), 
+       variable.name = c("date_type"), 
+       value.name = "date")
+
+# total count of all tickets (Enhancements, Request, Incidents)
+Data_5$Weekly_Count <- Data_5$Board_cards_Run_Melt_Dates %>%
+  filter(week_ended > week(today()) - 4) %>%
+  filter(date > today() - 200) %>%
+  filter(date_type %in% c("date_raised", "date_ended")) %>%
+  filter(!week_ended == week(today())) %>%
+  group_by(date_type, week_ended) %>%
+  count()
+Plots$Weekly_Count <- Data_5$Weekly_Count %>%
+  ggplot(aes(x = week_ended, y = n, color = date_type)) + 
+  geom_line(size = 1) +
+  #geom_text(label = Data$Volume, size = 3, color = "#696969", nudge_y = 15) +
+  #stat_smooth(linetype = "longdash", color = "#696969", method = "loess", formula = "y ~ x") +
+  ggtitle(paste("Number of All Trello Tickets Raised and Ended", sep = "")) +
+  labs(y = "ticket count", x = "week of year", color = "Date Type")  +
+  expand_limits(y = 0) +
+  scale_y_continuous(limits = c(0, 100))
+
+# visualise count plot for incidents
+Data_5$Weekly_Count_Incidents <- Data_5$Board_cards_Run_Melt_Dates %>%
+  filter(week_ended > week(today()) - 4) %>%
+  filter(date > today() - 200) %>%
+  filter(label == "Incident") %>%
+  filter(date_type %in% c("date_raised", "date_ended")) %>%
+  filter(!week_ended == week(today())) %>%
+  group_by(date_type, week_ended) %>%
+  count()
+Plots$Weekly_Count_Incidents <- Data_5$Weekly_Count_Incidents %>%
+  ggplot(aes(x = week_ended, y = n, color = date_type)) + 
+  geom_line(size = 1) +
+  #geom_text(label = Data$Volume, size = 3, color = "#696969", nudge_y = 15) +
+  #stat_smooth(linetype = "longdash", color = "#696969", method = "loess", formula = "y ~ x") +
+  ggtitle(paste("Number of Incident Trello Tickets Raised and Ended", sep = "")) +
+  labs(y = "ticket count", x = "week of year", color = "Date Type")  +
+  expand_limits(y = 0)  +
+  scale_y_continuous(limits = c(0, 100))
+
+
+# 5.2. PROCESSING TICKET TIME ----------------------------------------------------
+
+# melt date values for visualisation (SOURCE: http://www.datasciencemadesimple.com/melting-casting-r/)
+Data_5$Board_cards_Run_Melt_Processing_Times <- Data_5$Board_cards_Run %>%
+  select(-username, -dev_effort, -test_effort, -incident_category) %>%
+  melt(id = c("card_id",
+              "name", 
+              "url",
+              "description", 
+              "list_name", 
+              "list_position",
+              "fullname",
+              "member_count",
+              "total_effort",
+              "label",
+              "date_raised",
+              "date_ended",
+              "date_started",
+              "week_ended", 
+              "day_ended"), 
+       variable.name = c("processing_time_type"), 
+       value.name = "processing_time_avg")
+
+# processing time for all tickets (Enhancements, Requests, Incidents)
+Data_5$Weekly_Processing_Time <- Data_5$Board_cards_Run_Melt_Processing_Times %>%
+  filter(label %in% labels_for_analysis) %>%
+  filter(!is.na(processing_time_avg)) %>%  
+  filter(week_ended > week(today()) - 4) %>%
+  filter(date_ended > today() - 200) %>%
+  group_by(processing_time_type, week_ended) %>%
+  summarise(n = mean(processing_time_avg))
+Plots$Weekly_Processing_Time <- Data_5$Weekly_Processing_Time %>%
+  ggplot(aes(y = n, x = week_ended, fill = processing_time_type)) +
+  geom_bar(stat = 'identity') +
+  labs(title = paste("Average Processing Time for All Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type")  +
+  scale_y_continuous(limits = c(0, 11))
+
+# processing time for all Incident Tickets
+Data_5$Weekly_Processing_Time_Incidents <- Data_5$Board_cards_Run_Melt_Processing_Times %>%
+  filter(label == "Incident") %>%
+  filter(!is.na(processing_time_avg)) %>%  
+  filter(week_ended > week(today()) - 4) %>%
+  filter(date_ended > today() - 200) %>%
+  group_by(processing_time_type, week_ended) %>%
+  summarise(n = mean(processing_time_avg))
+Plots$Weekly_Processing_Time_Incidents <- Data_5$Weekly_Processing_Time_Incidents %>%
+  ggplot(aes(y = n, x = week_ended, fill = processing_time_type)) +
+  geom_bar(stat = 'identity') +
+  labs(title = paste("Average Processing Time for Incident Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type") +
+  scale_y_continuous(limits = c(0, 8))
+
+
+# 5.3. VISUALISE POINTS OVERTIME ------------------------------------------
+
+# visualise weekly points per person
+Data_5$Plot_Run_Weekly <- Data_5$Board_cards_Run %>% 
+  filter(week_ended > week(today()) - 4) %>%
+  filter(date_ended > today() - 200) %>%
+  group_by(fullname, week_ended) %>%
+  summarise(total_effort = sum(total_effort)) %>%
+  ggplot(aes(y = total_effort, x = week_ended, fill = fullname)) +
+  geom_bar(stat = 'identity', position = position_dodge()) +
+  labs(title = paste("Total Points Earned", sep = ""), x = "week of year", y = "points", fill = "Full Names")
+
+# visualise daily points per person
+Data_5$Plot_Run_Daily <- Data_5$Board_cards_Run %>% 
+  filter(date_ended > today() - 7) %>%
+  group_by(fullname, day_ended) %>%
+  summarise(total_effort = sum(total_effort)) %>%
+  ggplot(aes(y = total_effort, x = day_ended, fill = fullname)) +
+  geom_bar(stat = 'identity', position = position_dodge()) +
+  labs(title = paste("Total Points Earned", sep = ""), x = "week of year", y = "points", fill = "Full Names")
+
+
+# 5.4. VISUALISE POINTS PER PERSON -----------------------------------------------
 
 
   
