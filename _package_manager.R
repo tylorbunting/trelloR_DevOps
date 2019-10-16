@@ -8,22 +8,29 @@ check.packages <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-# set packages to install
-packages<-c("ggplot2", 
-            "tidyr", 
-            "readr",
-            "dplyr",
-            "jsonlite",
-            "trelloR",
-            "purrr",
-            "httpuv",
-            "httr",
-            "stringr",
-            "reshape2",
-            "lubridate",
-            "magrittr",
-            "grid",
-            "gridExtra",
-            "pryr",
-            "devtools")
-check.packages(packages)
+# create settings 
+if(exists("Settings") != TRUE) {
+  
+  # create Settings list
+  Settings <- list()
+  
+  # set packages to install
+  Settings$packages<-c("ggplot2", 
+              "tidyr", 
+              "readr",
+              "dplyr",
+              "jsonlite",
+              "trelloR",
+              "purrr",
+              "httpuv",
+              "httr",
+              "stringr",
+              "reshape2",
+              "lubridate",
+              "magrittr",
+              "grid",
+              "gridExtra",
+              "pryr",
+              "devtools")
+  check.packages(Settings$packages)
+}

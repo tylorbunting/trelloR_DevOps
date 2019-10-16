@@ -3,13 +3,20 @@
 # The key output of this script will be a table with the below variables and various plots
 # card variables = id, name, desciption, status, type, week_complete, day_complete, raised_date, start_date, end_date, member, member_count, dev_effort, test_effort, total_effort, incident_category
 #
+
+# attempt to install all require packages
+source("_package_manager.R")
+
+# get all functions needed for TrelloR_custom
+source("_functions.R")
+
 # INSTALL APPROPRIATE PACKAGES
 library("trelloR")
 library("tidyr")
 library("httpuv")
 library("purrr")
 
-Settings <- list()
+if(exists("Settings") != TRUE) Settings <- list()
 
 # SETUP AUTHENTICATION VALUES
 Settings$Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
@@ -36,123 +43,6 @@ Settings$CustomFields_variables <- list(
 # SETUP VARIOUS FUNCTIONS
 # labels to capture for analysis (assumption is that tickets only have one label assigned)
 Settings$labels_for_analysis <- c("Incident", "Request", "Enhancement")
-
-# create function to extract first label name found out of labels_for_analysis input variable
-get_label_name <- function(x, labels_for_analysis) {
-  if(length(x[["labels"]]) > 0) {
-    for(index in seq_along(x[["labels"]])) {
-      if(as.character(x[["labels"]][[index]][["name"]]) %in% labels_for_analysis) {
-        output <- x[["labels"]][[index]][["name"]]
-        break
-      } else output <- "unknown"
-    }
-  } else output <- "unknown"
-  return(output)
-}
-
-# create function to extract first label name found out of labels_for_analysis input variable
-get_label_name_trelloR <- function(x, labels_for_analysis) {
-  if(nrow(x) > 0 ) {
-    for(index in seq_along(x[["name"]])) {
-      if(x[["name"]][[index]] %in% labels_for_analysis) {
-        output <- as.character(x[["name"]][[index]])
-        break
-      } else output <- "unknown"
-    }
-  } else output <- "unknown"
-  return(output)
-}
-
-# create function to extract customField DATE VALUES from cards
-get_customField_date_values <- function(x, customField_id) {
-  if(length(x[["customFieldItems"]]) > 0) {
-    for(index in seq_along(x[["customFieldItems"]])) {
-      if(as.character(x[["customFieldItems"]][[index]][["idCustomField"]]) == customField_id) {
-        output <- as.character(x[["customFieldItems"]][[index]][["value"]][["date"]])
-        break
-      } else output <- NA
-    }
-  } else output <- NA
-  return(output)
-}
-
-# create function to extract customField DROPDOWN IDs from cards
-get_customField_dropdown_ids <- function(x, customField_id) {
-  if(length(x[["customFieldItems"]]) > 0) {
-    for(index in seq_along(x[["customFieldItems"]])) {
-      if(as.character(x[["customFieldItems"]][[index]][["idCustomField"]]) == customField_id) {
-        # the value DROPDOWN custom field values within the nested idCustomField list is an ID that needs to be mapped 
-        output <- as.character(x[["customFieldItems"]][[index]][["idValue"]])
-        break
-      } else output <- "unknown"
-    }
-  } else output <- "unknown"
-  return(output)
-}
-
-# create function to extract customFiled DROPDOWN VALUES using value ID and the boards customField options
-get_customField_dropdown_value <- function(x, customField_list) {
-  stop <- FALSE
-  for(index in seq_along(customField_list)) {
-    if(stop) break
-    #first IF statement aims to check if the custom field acutally is a DropDown type by checking for the "options" sub list
-    if(length(customField_list[[index]][["options"]]) > 0) {
-      for(sub_index in seq_along(customField_list[[index]][["options"]])) {
-        if(as.character(customField_list[[index]][["options"]][[sub_index]][["id"]]) == x) {
-          output <- as.character(customField_list[[index]][["options"]][[sub_index]][["value"]][["text"]])
-          stop <- TRUE
-          break
-        } else output <- NA
-      }  
-    }
-  }
-  return(output)
-}
-
-# create function to count number of members per card
-# there are three scenarios that can occur: (1) no members found; (2) one member found; (3) more then one member found.
-# the below IF statements handle for all three scenarios
-get_card_member_count <- function(x) {
-  output <- length(unlist(x))
-  return(output)
-}
-
-# create funciton to extract members from cards
-# there are three scenarios that can occur: (1) no members found; (2) one member found; (3) more then one member found.
-# the below IF statements handle for all three scenarios
-get_cards_and_member_ids <- function(x) {
-  # create the output table that will be the result of the function
-  output <- data.frame(
-    card_id = as.character(),
-    member_id = as.character()
-  )
-  if(length(unlist(x["idMembers"])) > 1) {
-    # handle for the scenario (3) more then one member found
-    for(index in seq_along(unlist(x["idMembers"]))) {
-      temp_output <- data.frame(
-        card_id = as.character(x["id"]),
-        member_id = as.character(unlist(x["idMembers"])[index])
-      )
-      output <- rbind.data.frame(
-        output,
-        temp_output
-      )
-    }
-  } else if (length(unlist(x["idMembers"])) == 1) {
-    # handle for the scenario (2) one member found
-    output <- data.frame(
-      card_id = as.character(x["id"]),
-      member_id = as.character(unlist(x["idMembers"]))
-    )
-  } else if (length(unlist(x["idMembers"])) == 0) {
-    # handle for the scenario (1) no members found
-    output <- data.frame(
-      card_id = as.character(x["id"]),
-      member_id = as.character(NA)
-    )
-  }
-  return(output)
-}
 
 
 # 1. GET TRELLO DATA ------------------------------------------------------
@@ -306,12 +196,20 @@ Data_4$Board_cards <- Data_4$Board_cards %>%
 Data_5 <- Data_4
 Plots <- list()
 
+# 5.0. VISUALISATION OPTIONS ----------------------------------------------
+Plots$Options <- list()
+
+# the labels that will be filtered for the visualisations
+Plots$Options$labels_for_analysis <- c("Enhancement", "Request", "Incident")
+
+# the people that will be filtered for the visualisations
+Plots$Options$people_for_analysis <- c("Tylor Bunting", "Sam Garske", "Sean Xiang", "Victoria Lu", "ambitkumar","Bianca De Jesus")
+
 # create table specific for run team
 Data_5$Board_cards_Run <- Data_5$Board_cards %>% 
-  filter(label %in% Settings$labels_for_analysis) %>%
-  filter(fullname %in% c("Tylor Bunting", "Sam Garske", "Sean Xiang", "Victoria Lu", "ambitkumar","Bianca De Jesus")) %>%
+  filter(label %in% Plots$Options$labels_for_analysis) %>%
+  #filter(fullname %in% Plots$Options$people_for_analysis) %>%
   filter(!is.na(week_ended))
-
 
 # 5.1. TICKET COUNT WEEKLY ------------------------------------------------
 
@@ -373,7 +271,7 @@ Plots$Weekly_Count_Incidents <- Data_5$Weekly_Count_Incidents %>%
   scale_y_continuous(limits = c(0, 100))
 
 
-# 5.2. PROCESSING TICKET TIME ----------------------------------------------------
+# 5.2. PROCESSING TICKET TIME & PER PERSON ----------------------------------------------------
 
 # melt date values for visualisation (SOURCE: http://www.datasciencemadesimple.com/melting-casting-r/)
 Data_5$Board_cards_Run_Melt_Processing_Times <- Data_5$Board_cards_Run %>%
@@ -398,17 +296,37 @@ Data_5$Board_cards_Run_Melt_Processing_Times <- Data_5$Board_cards_Run %>%
 
 # processing time for all tickets (Enhancements, Requests, Incidents)
 Data_5$Weekly_Processing_Time <- Data_5$Board_cards_Run_Melt_Processing_Times %>%
-  filter(label %in% labels_for_analysis) %>%
+  filter(label %in% Plots$Options$labels_for_analysis) %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - 4) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(week_ended > week(today()) - 20) %>%
+  filter(year(date_ended) == year(today())) %>%
   group_by(processing_time_type, week_ended) %>%
   summarise(n = mean(processing_time_avg))
 Plots$Weekly_Processing_Time <- Data_5$Weekly_Processing_Time %>%
   ggplot(aes(y = n, x = week_ended, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
   labs(title = paste("Average Processing Time for All Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type")  +
-  scale_y_continuous(limits = c(0, 11))
+  scale_y_continuous(limits = c(0, 11)) +
+  scale_x_continuous(breaks = unique(c(min(Data_5$Weekly_Processing_Time$week_ended):
+                                       max(Data_5$Weekly_Processing_Time$week_ended))))
+
+Data_5$Per_Person_Processing_Time <- Data_5$Board_cards_Run_Melt_Processing_Times %>%
+  filter(label %in% Plots$Options$labels_for_analysis) %>%
+  filter(!is.na(processing_time_avg)) %>%  
+  filter(week_ended > week(today()) - 4) %>%
+  filter(date_ended > today() - 200)
+Plots$Per_Person_Processing_Time <- Data_5$Per_Person_Processing_Time %>%
+  group_by(processing_time_type, fullname) %>%
+  summarise(n = mean(processing_time_avg)) %>%
+  ggplot(aes(y = n, x = fullname, fill = processing_time_type)) +
+  geom_bar(stat = 'identity') +
+  labs(title = paste("Average Processing Time for All Tickets Completed", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type")  +
+  scale_y_continuous(breaks = unique(c(min(Data_5$Per_Person_Processing_Time$processing_time_avg):
+                                       max(Data_5$Per_Person_Processing_Time$processing_time_avg)))) +
+  coord_flip()
+Plots$Per_Person_Processing_Time_Outliers <- Data_5$Per_Person_Processing_Time %>%
+  filter(processing_time_avg > 8) %>%
+  select(name, url, fullname, week_ended, processing_time_avg, processing_time_type)
 
 # processing time for all Incident Tickets
 Data_5$Weekly_Processing_Time_Incidents <- Data_5$Board_cards_Run_Melt_Processing_Times %>%
@@ -421,24 +339,44 @@ Data_5$Weekly_Processing_Time_Incidents <- Data_5$Board_cards_Run_Melt_Processin
 Plots$Weekly_Processing_Time_Incidents <- Data_5$Weekly_Processing_Time_Incidents %>%
   ggplot(aes(y = n, x = week_ended, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
+  labs(title = paste("Average Processing Time for Incident Tickets Resolved", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type") +
+  scale_y_continuous(limits = c(0, 8)) +
+  scale_x_continuous(breaks = unique(c(min(Data_5$Weekly_Processing_Time_Incidents$week_ended):
+                                         max(Data_5$Weekly_Processing_Time_Incidents$week_ended))))
+
+# processing time for all Incident Tickets per person
+Data_5$Per_Person_Processing_Time_Incidents <- Data_5$Board_cards_Run_Melt_Processing_Times %>%
+  filter(label == "Incident") %>%
+  filter(!is.na(processing_time_avg)) %>%  
+  filter(week_ended > week(today()) - 4) 
+Plots$Per_Person_Processing_Time_Incidents <- Data_5$Per_Person_Processing_Time_Incidents %>%
+  filter(date_ended > today() - 200) %>%
+  group_by(processing_time_type, fullname) %>%
+  summarise(n = mean(processing_time_avg)) %>%
+  ggplot(aes(y = n, x = fullname, fill = processing_time_type)) +
+  geom_bar(stat = 'identity') +
   labs(title = paste("Average Processing Time for Incident Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type") +
-  scale_y_continuous(limits = c(0, 8))
+  scale_y_continuous(limits = c(0, 20)) + 
+  coord_flip()
+Plots$Per_Person_Processing_Time_Incidents_Outliers <- Data_5$Per_Person_Processing_Time_Incidents %>%
+  filter(processing_time_avg > 1) %>%
+  select(name, url, fullname, week_ended, processing_time_avg, processing_time_type)
 
-
-# 5.3. VISUALISE POINTS OVERTIME ------------------------------------------
+# 5.3. POINTS OVERTIME PER PERSON ------------------------------------------
 
 # visualise weekly points per person
-Data_5$Plot_Run_Weekly <- Data_5$Board_cards_Run %>% 
+Plots$Plot_Run_Weekly <- Data_5$Board_cards_Run %>% 
   filter(week_ended > week(today()) - 4) %>%
   filter(date_ended > today() - 200) %>%
   group_by(fullname, week_ended) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = fullname)) +
   geom_bar(stat = 'identity', position = position_dodge()) +
-  labs(title = paste("Total Points Earned", sep = ""), x = "week of year", y = "points", fill = "Full Names")
-
+  labs(title = paste("Total Points Earned", sep = ""), x = "week of year", y = "points", fill = "Full Names") +
+  scale_x_continuous(breaks = unique(c(min(Data_5$Board_cards_Run$week_ended):
+                                         max(Data_5$Board_cards_Run$week_ended))))
 # visualise daily points per person
-Data_5$Plot_Run_Daily <- Data_5$Board_cards_Run %>% 
+Plots$Plot_Run_Daily <- Data_5$Board_cards_Run %>% 
   filter(date_ended > today() - 7) %>%
   group_by(fullname, day_ended) %>%
   summarise(total_effort = sum(total_effort)) %>%
@@ -446,8 +384,6 @@ Data_5$Plot_Run_Daily <- Data_5$Board_cards_Run %>%
   geom_bar(stat = 'identity', position = position_dodge()) +
   labs(title = paste("Total Points Earned", sep = ""), x = "week of year", y = "points", fill = "Full Names")
 
-
-# 5.4. VISUALISE POINTS PER PERSON -----------------------------------------------
 
 
   
