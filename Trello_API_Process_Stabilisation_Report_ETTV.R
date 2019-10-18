@@ -12,6 +12,12 @@ library(purrr)
 library(grid)
 library(gridExtra)
 
+# create settings list
+if(exists("Settings") != TRUE) Settings <- list()
+
+# Debug mode?
+Settings$Debug_Mode <- FALSE
+
 # add authentication setting variables
 Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
 Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
@@ -96,34 +102,42 @@ STAGED_DATA_3_COMBINED <- rbind.data.frame(STAGED_DATA_2_STABILISING, STAGED_DAT
 
 # 4. EXTRACT SUMMARIES AND VISUALISE DATA ---------------------------------
 
+if(exists("Plots") != TRUE) Plots <- list()
+
 # extract the totals for various label_types and status's
-STAGED_DATA_4_TOTALS <- STAGED_DATA_3_COMBINED %>%
+Plots$STAGED_DATA_4_TOTALS <- STAGED_DATA_3_COMBINED %>%
   group_by(status, label_type) %>%
   count()
 
 # extract individual stopped, stable, and unable processes
-PROCESSES_STOPPED <- STAGED_DATA_4_TOTALS %>%
+Plots$PROCESSES_STOPPED <- Plots$STAGED_DATA_4_TOTALS %>%
   filter(label_type == "Stopped") %>%
   group_by(label_type) %>%
   summarise(n = sum(n))
 
-PROCESSES_STABILISING <- STAGED_DATA_4_TOTALS %>%
+Plots$PROCESSES_STABILISING <- Plots$STAGED_DATA_4_TOTALS %>%
   filter(status == "Stabilisation" && label_type!= "Stopped") %>%
   group_by(status) %>%
   summarise(n = sum(n))
 
-PROCESSES_PRODUCTIONSUPPORT <- STAGED_DATA_4_TOTALS %>%
+Plots$PROCESSES_PRODUCTIONSUPPORT <- Plots$STAGED_DATA_4_TOTALS %>%
   filter(status == "Production Support" && label_type!= "Stopped") %>%
   group_by(status) %>%
   summarise(n = sum(n))
 
 # visualise the data
-STAGED_DATA_4_TOTALS_PLOT <- ggplot(STAGED_DATA_4_TOTALS, aes(x = status, y = n, fill = label_type)) +
+Plots$STAGED_DATA_4_TOTALS_PLOT <- ggplot(Plots$STAGED_DATA_4_TOTALS, aes(x = status, y = n, fill = label_type)) +
   geom_bar(stat = 'identity') +
   scale_fill_manual(values = c("#00BFC4", "#fdd5b4", "#fbeeb8", "#DCDCDC")) +
   scale_x_discrete(limits = c("Stabilisation", "Production Support")) +
   labs(title = "Number of Processes in Stabilisation and Production Support", x = "Support Type", y = "Number of Processes", fill = "Status") +
   theme(plot.title = element_text(hjust = 0.5))
 
-# show plots
-STAGED_DATA_4_TOTALS_PLOT
+
+# CLEAN UP ENVIRONMENT ----------------------------------------------------
+if(Settings$Debug_Mode != TRUE) {
+  rm(PROCESSES_PRODUCTIONSUPPORT, PROCESSES_STABILISING, PROCESSES_STOPPED, ref_board_lists, ref_board_lists_1,
+     STAGED_DATA_1_PRODUCTIONSUPPORT, STAGED_DATA_1_STABILISING, STAGED_DATA_2_PRODUCTIONSUPPORT, STAGED_DATA_2_STABILISING,
+     STAGED_DATA_3_COMBINED, STAGED_DATA_4_TOTALS, STAGED_DATA_4_TOTALS_PLOT, Settings)
+}
+

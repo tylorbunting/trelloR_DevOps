@@ -5,10 +5,10 @@
 #
 
 # attempt to install all require packages
-source("_package_manager.R")
+source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_package_manager.R")
 
 # get all functions needed for TrelloR_custom
-source("_functions.R")
+source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_functions.R")
 
 # INSTALL APPROPRIATE PACKAGES
 library("trelloR")
@@ -16,7 +16,11 @@ library("tidyr")
 library("httpuv")
 library("purrr")
 
+# create settings list
 if(exists("Settings") != TRUE) Settings <- list()
+
+# Debug mode?
+Settings$Debug_Mode <- FALSE
 
 # SETUP AUTHENTICATION VALUES
 Settings$Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
@@ -194,7 +198,9 @@ Data_4$Board_cards <- Data_4$Board_cards %>%
 
 # 5. VISUALISE DATA -------------------------------------------------------
 Data_5 <- Data_4
-Plots <- list()
+
+if(exists("Plots") != TRUE) Plots <- list()
+
 
 # 5.0. VISUALISATION OPTIONS ----------------------------------------------
 Plots$Options <- list()
@@ -204,6 +210,9 @@ Plots$Options$labels_for_analysis <- c("Enhancement", "Request", "Incident")
 
 # the people that will be filtered for the visualisations
 Plots$Options$people_for_analysis <- c("Tylor Bunting", "Sam Garske", "Sean Xiang", "Victoria Lu", "ambitkumar","Bianca De Jesus")
+
+# set number of weeks to analyse
+Plots$Options$weeks_to_analyse <- 4
 
 # create table specific for run team
 Data_5$Board_cards_Run <- Data_5$Board_cards %>% 
@@ -235,7 +244,7 @@ Data_5$Board_cards_Run_Melt_Dates <- Data_5$Board_cards_Run %>%
 
 # total count of all tickets (Enhancements, Request, Incidents)
 Data_5$Weekly_Count <- Data_5$Board_cards_Run_Melt_Dates %>%
-  filter(week_ended > week(today()) - 4) %>%
+  filter(week_ended > week(today()) - 5) %>%
   filter(date > today() - 200) %>%
   filter(date_type %in% c("date_raised", "date_ended")) %>%
   filter(!week_ended == week(today())) %>%
@@ -249,11 +258,11 @@ Plots$Weekly_Count <- Data_5$Weekly_Count %>%
   ggtitle(paste("Number of All Trello Tickets Raised and Ended", sep = "")) +
   labs(y = "ticket count", x = "week of year", color = "Date Type")  +
   expand_limits(y = 0) +
-  scale_y_continuous(limits = c(0, 100))
+  scale_y_continuous(limits = c(0, 120))
 
 # visualise count plot for incidents
 Data_5$Weekly_Count_Incidents <- Data_5$Board_cards_Run_Melt_Dates %>%
-  filter(week_ended > week(today()) - 4) %>%
+  filter(week_ended > week(today()) - 5) %>%
   filter(date > today() - 200) %>%
   filter(label == "Incident") %>%
   filter(date_type %in% c("date_raised", "date_ended")) %>%
@@ -268,7 +277,7 @@ Plots$Weekly_Count_Incidents <- Data_5$Weekly_Count_Incidents %>%
   ggtitle(paste("Number of Incident Trello Tickets Raised and Ended", sep = "")) +
   labs(y = "ticket count", x = "week of year", color = "Date Type")  +
   expand_limits(y = 0)  +
-  scale_y_continuous(limits = c(0, 100))
+  scale_y_continuous(limits = c(0, 120))
 
 
 # 5.2. PROCESSING TICKET TIME & PER PERSON ----------------------------------------------------
@@ -298,14 +307,14 @@ Data_5$Board_cards_Run_Melt_Processing_Times <- Data_5$Board_cards_Run %>%
 Data_5$Weekly_Processing_Time <- Data_5$Board_cards_Run_Melt_Processing_Times %>%
   filter(label %in% Plots$Options$labels_for_analysis) %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - 20) %>%
+  filter(week_ended > week(today()) - 4) %>%
   filter(year(date_ended) == year(today())) %>%
   group_by(processing_time_type, week_ended) %>%
   summarise(n = mean(processing_time_avg))
 Plots$Weekly_Processing_Time <- Data_5$Weekly_Processing_Time %>%
   ggplot(aes(y = n, x = week_ended, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
-  labs(title = paste("Average Processing Time for All Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type")  +
+  labs(title = paste("Average Processing Time for All Tickets Completed", sep = ""), x = "week of year", y = "days", fill = "Processing Type")  +
   scale_y_continuous(limits = c(0, 11)) +
   scale_x_continuous(breaks = unique(c(min(Data_5$Weekly_Processing_Time$week_ended):
                                        max(Data_5$Weekly_Processing_Time$week_ended))))
@@ -316,13 +325,13 @@ Data_5$Per_Person_Processing_Time <- Data_5$Board_cards_Run_Melt_Processing_Time
   filter(week_ended > week(today()) - 4) %>%
   filter(date_ended > today() - 200)
 Plots$Per_Person_Processing_Time <- Data_5$Per_Person_Processing_Time %>%
-  group_by(processing_time_type, fullname) %>%
+  group_by(processing_time_type, fullname, label) %>%
   summarise(n = mean(processing_time_avg)) %>%
   ggplot(aes(y = n, x = fullname, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
-  labs(title = paste("Average Processing Time for All Tickets Completed", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type")  +
-  scale_y_continuous(breaks = unique(c(min(Data_5$Per_Person_Processing_Time$processing_time_avg):
-                                       max(Data_5$Per_Person_Processing_Time$processing_time_avg)))) +
+  labs(title = paste("Average Processing Time for All Tickets Completed", sep = ""), x = "", y = "days", fill = "Processing Type")  +
+  scale_y_continuous(limits = c(0,30)) +
+  facet_grid(cols = vars(label)) +
   coord_flip()
 Plots$Per_Person_Processing_Time_Outliers <- Data_5$Per_Person_Processing_Time %>%
   filter(processing_time_avg > 8) %>%
@@ -339,7 +348,7 @@ Data_5$Weekly_Processing_Time_Incidents <- Data_5$Board_cards_Run_Melt_Processin
 Plots$Weekly_Processing_Time_Incidents <- Data_5$Weekly_Processing_Time_Incidents %>%
   ggplot(aes(y = n, x = week_ended, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
-  labs(title = paste("Average Processing Time for Incident Tickets Resolved", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type") +
+  labs(title = paste("Average Processing Time for Resolving Incident Tickets", sep = ""), x = "week of year", y = "days", fill = "Processing Type") +
   scale_y_continuous(limits = c(0, 8)) +
   scale_x_continuous(breaks = unique(c(min(Data_5$Weekly_Processing_Time_Incidents$week_ended):
                                          max(Data_5$Weekly_Processing_Time_Incidents$week_ended))))
@@ -355,8 +364,10 @@ Plots$Per_Person_Processing_Time_Incidents <- Data_5$Per_Person_Processing_Time_
   summarise(n = mean(processing_time_avg)) %>%
   ggplot(aes(y = n, x = fullname, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
-  labs(title = paste("Average Processing Time for Incident Tickets Raised and Ended", sep = ""), x = "week of year", y = "days (mean)", fill = "Processing Type") +
-  scale_y_continuous(limits = c(0, 20)) + 
+  labs(title = paste("Average Processing Time for Resolving Incident Tickets", sep = ""), x = "", y = "days", fill = "Processing Type") +
+  scale_y_continuous(limits = c(0, max(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg)),
+                     breaks = unique(c(min(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg):
+                                         max(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg)))) + 
   coord_flip()
 Plots$Per_Person_Processing_Time_Incidents_Outliers <- Data_5$Per_Person_Processing_Time_Incidents %>%
   filter(processing_time_avg > 1) %>%
@@ -365,25 +376,97 @@ Plots$Per_Person_Processing_Time_Incidents_Outliers <- Data_5$Per_Person_Process
 # 5.3. POINTS OVERTIME PER PERSON ------------------------------------------
 
 # visualise weekly points per person
-Plots$Plot_Run_Weekly <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - 4) %>%
+Plots$Plot_Weekly_Points <- Data_5$Board_cards_Run %>% 
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
   filter(date_ended > today() - 200) %>%
   group_by(fullname, week_ended) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = fullname)) +
-  geom_bar(stat = 'identity', position = position_dodge()) +
-  labs(title = paste("Total Points Earned", sep = ""), x = "week of year", y = "points", fill = "Full Names") +
+  geom_bar(stat = 'identity') +
+  labs(title = paste("Points Earnt Over Past ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""), x = "week of year", y = "points", fill = "Names") +
   scale_x_continuous(breaks = unique(c(min(Data_5$Board_cards_Run$week_ended):
-                                         max(Data_5$Board_cards_Run$week_ended))))
-# visualise daily points per person
-Plots$Plot_Run_Daily <- Data_5$Board_cards_Run %>% 
-  filter(date_ended > today() - 7) %>%
-  group_by(fullname, day_ended) %>%
+                                         max(Data_5$Board_cards_Run$week_ended)))) +
+  facet_grid(rows = vars(fullname))
+
+# visualise weekly points per person
+Plots$Plot_Weekly_Points <- Data_5$Board_cards_Run %>% 
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
+  filter(date_ended > today() - 200) %>%
+  group_by(fullname, week_ended, label) %>%
   summarise(total_effort = sum(total_effort)) %>%
-  ggplot(aes(y = total_effort, x = day_ended, fill = fullname)) +
-  geom_bar(stat = 'identity', position = position_dodge()) +
-  labs(title = paste("Total Points Earned", sep = ""), x = "week of year", y = "points", fill = "Full Names")
+  ggplot(aes(y = total_effort, x = week_ended, fill = label)) +
+  geom_bar(stat = 'identity') +
+  scale_fill_manual(values = c("#ffc0cb", "#ffc966", "#b19cd9", "#DCDCDC")) +
+  labs(title = paste("Points Earnt Over Past ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""), x = "week of year", y = "points", fill = "Type") +
+  scale_x_continuous(breaks = unique(c(min(Data_5$Board_cards_Run$week_ended):
+                                         max(Data_5$Board_cards_Run$week_ended)))) +
+  facet_grid(rows = vars(fullname))
 
 
+# visualise weekly points per person
+Plots$Per_Person_Weekly_Points <- Data_5$Board_cards_Run %>% 
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
+  filter(date_ended > today() - 200) %>%
+  group_by(fullname, label) %>%
+  summarise(total_effort = sum(total_effort)) %>%
+  ggplot(aes(y = total_effort, x = fullname, fill = label)) +
+  geom_bar(stat = 'identity') +
+  scale_fill_manual(values = c("#ffc0cb", "#ffc966", "#b19cd9", "#DCDCDC")) +
+  labs(title = paste("Points Earnt Over Past ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""), x = "", y = "points", fill = "Type")  +
+  facet_grid(cols = vars(label)) +
+  coord_flip()
+
+
+# visualise weekly points per person
+Plots$Per_Person_Weekly_Ticket_Count <- Data_5$Board_cards_Run %>% 
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
+  filter(date_ended > today() - 200) %>%
+  group_by(fullname, label) %>%
+  count() %>%
+  ggplot(aes(y = n, x = fullname, fill = label)) +
+  geom_bar(stat = 'identity') +
+  scale_fill_manual(values = c("#ffc0cb", "#ffc966", "#b19cd9", "#DCDCDC")) +
+  labs(title = paste("Number of Tickets Completed Over Past ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""), x = "", y = "tickets", fill = "Type")  +
+  facet_grid(cols = vars(label)) +
+  coord_flip()
+
+
+# 5.4. SUMMARY PLOTS FOR WEEKLY TICKETS VIEW -----------------------------
+
+#Setup layout for Volume (A) and Completion Rate (B) Plots
+#(Sourced from "https://stackoverflow.com/questions/13294952/left-align-two-graph-edges-ggplot")
+gA <- ggplotGrob(Plots$Weekly_Count)
+gB <- ggplotGrob(Plots$Weekly_Count_Incidents)
+gC <- ggplotGrob(Plots$Weekly_Processing_Time)
+gD <- ggplotGrob(Plots$Weekly_Processing_Time_Incidents)
+
+maxWidth = grid::unit.pmax(gA$widths[2:5], gB$widths[2:5], gC$widths[2:5], gD$widths[2:5])
+gA$widths[2:5] <- as.list(maxWidth)
+gB$widths[2:5] <- as.list(maxWidth)
+gC$widths[2:5] <- as.list(maxWidth)
+gD$widths[2:5] <- as.list(maxWidth)
+
+
+#Display Volume and Completion Rate Plots
+Plots$Summary_Weekly_Tickets <- grid.arrange(gA, gB, gC, gD, ncol=1,
+                                                      top = textGrob(paste("Trello Ticket Analysis Over 4 Weeks", sep = ""),
+                                                                     gp = gpar(fontsize=20,font=1)))
+
+# 5.5. SUMMARY VALUES -----------------------------------------------------
+
+# get variables for RMarkdown reporting
+var_recent_week <- max(Data_5$Weekly_Count$week_ended)
+var_tickets_raised <- Data_5$Weekly_Count %>%
+  filter(week_ended == var_recent_week) %>%
+  filter(date_type == "date_raised")
+var_tickets_closed <- Data_5$Weekly_Count %>%
+  filter(week_ended == var_recent_week) %>%
+  filter(date_type == "date_ended")
+
+
+# 6. CLEAN UP ENVIRONMENT -------------------------------------------------
+if(Settings$Debug_Mode != TRUE) {
+  rm(Data_1, Data_2, Data_3, Data_4, gA, gB, gC, gD, maxWidth, Settings)
+}
 
   

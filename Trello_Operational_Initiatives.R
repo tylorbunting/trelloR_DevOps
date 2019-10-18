@@ -12,6 +12,12 @@ library(purrr)
 library(grid)
 library(gridExtra)
 
+# create settings list
+if(exists("Settings") != TRUE) Settings <- list()
+
+# Debug mode?
+Settings$Debug_Mode <- FALSE
+
 # add authentication setting variables
 Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
 Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
@@ -242,9 +248,16 @@ Operational_Initatives$Enhancements_table <- Operational_Initatives$board_cards_
   filter(type == "Enhancement") %>%
   filter(status != "Ideas") %>%
   select(status, card)
-  
 
 
 # 4. OUTPUT FINAL TABLE FOR ANALYSIS --------------------------------------
 # save file as CSV
 write.csv(Operational_Initatives$board_cards_3, set_file_path)
+
+
+# CLEAN UP ENVIRONMENT ----------------------------------------------------
+if(Settings$Debug_Mode != TRUE) {
+  rm(board_cards, board_cards_1, board_cards_2, board_cards_3, board_cards_extra, board_cards_extra_1,
+     board_cards_extra_2, ref_board_cards_customFields_2, ref_board_lists, ref_board_lists_1, ref_board_lists_2,
+     ref_processes_in_production_support, ref_processes_in_stabilisation, Settings)
+}
