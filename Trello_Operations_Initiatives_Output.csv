@@ -1,0 +1,2903 @@
+"","card","description","type","status","category","sub_category"
+"1","OPMODEL - SETUP 1ST TIER SUPPORT","- federating run with business
+- ","PROJECT","Ideas","OPMODEL","SETUP 1ST TIER SUPPORT"
+"2","INFRA - CREATE AI HUB DATA MODEL","create relational database for infrastructure related information (e.g. VMs, Credentials, applications, access etc)","PROJECT","Ideas","INFRA","CREATE AI HUB DATA MODEL"
+"3","MONITOR - OPTIMISE MONITORING SCHEDULE","**AS A**
+Operational Engineer
+
+**I WANT**
+Move from timeloop to schedule library for fine-grained scheduling (https://github.com/dbader/schedule)
+
+**SO THAT**
+so that specific times can be set for when monitoring is conducted as opposed to just hourly increments after when the monitoring tool is turned on","PROJECT","Ideas","MONITOR","OPTIMISE MONITORING SCHEDULE"
+"4","PROCESS - P23/P5 SET DOCUMENT TYPE ENHANCEMENT","The following Types should be included:
+- passport
+- transcript (for P23 process)
+- CV
+- Supplementing forms
+- Awards
+- Reference Reports (PHD)","PROJECT","Ideas","PROCESS","P23/P5 SET DOCUMENT TYPE ENHANCEMENT"
+"5","PROCESS - USE SET CASE DATA FUNCTION","AS A
+Operations Engineer
+
+I WANT
+update all processes to save case data to queue instead of just an excel report
+
+SO THAT
+when processes fail to save data to excel, the case data can still be easily extracted for the business","PROJECT","Ideas","PROCESS","USE SET CASE DATA FUNCTION"
+"6","INFRA - USE MULESOFT APIS","Eric Park is the key contact - he is the Team Lead / Product Manager of the team that builds MuleSoft API's at the university.","PROJECT","Ideas","INFRA","USE MULESOFT APIS"
+"7","PROCESS - P20 BULK UPLOAD ENHANCEMENT","AS A
+James Campbell
+
+I WANT
+the bulk uploads function to be investigated where roughly 300 sanctions can be added at a time
+
+SO THAT
+we know we are using the best method possible
+
+NOTES
+- currently processing speed is 1 min per case (300 = 300 mins)
+- new method could be 300 cases in under 10 mins","PROJECT","Ideas","PROCESS","P20 BULK UPLOAD ENHANCEMENT"
+"8","INFRA - CREATE AI HUB DATA ARCHITECTURE","AS A
+AI Hub Data Champion
+
+I WANT
+To have a data architecture diagram
+
+SO THAT
+I can understand how all the related monitoring and performance metrics relate, where the sources are, how I can get them and where duplication might be occurring","PROJECT","Ideas","INFRA","CREATE AI HUB DATA ARCHITECTURE"
+"9","OPMODEL - CREATE SERVICE REQUEST CATALOGUE","- useful for automating standard requests
+- can define SLAs for standard requests
+- request portal can be used to identify additional requests to add to catalogue by non standard requests
+- consider user views (functionality) and customer views (costs / performance)","PROJECT","Ideas","OPMODEL","CREATE SERVICE REQUEST CATALOGUE"
+"10","AUTOMATE - INXX BP UPGRADES","","PROJECT","Ideas","AUTOMATE","INXX BP UPGRADES"
+"11","P10.2 / P29 / P31 / P33 - Processes stopped until further notice","ISSUE:
+The business has requested that we stop running these processes until April due to capacity constraints and that the processes caused downstream issues previously. 
+
+IMPACT:
+Three processes will not run until April
+
+ROOT-CAUSE:
+Business are worried that process will cause issues because P10 and P30 are not working
+
+RESOLUTION:
+Get P10 and P30 stable so the business is happy to work more with additional processes (P29/ P31/ P33). Also think about how processes could work better together","PROBLEM","Ideas","P10","P10.2 / P29 / P31 / Processes stopped until further notice"
+"12","P13 - Hazmat - no time limit is set on how long queue data can be waiting for cases to be marked as complete or exception","ISSUE
+no time limit is set on how long queue data can be waiting for cases to be marked as complete or exception. Case can be stuck in the queue for long periods.
+
+IMPACT
+Process will run slower because it needs to match input data with pending cases each time it runs
+
+ROOT-CAUSE
+scenario not considered during development
+
+WORKAROUND 
+Deploy into production and monitor
+
+RESOLUTION
+TBC","PROBLEM","Ideas","P13","Hazmat - no time limit is set on how long queue data can be waiting for cases to be marked as complete or exception"
+"13","SITS - develop plan for Bots that use SITS FS2 authentication method","","PROBLEM","Ideas","SITS","develop plan for Bots that use SITS FS2 authentication method"
+"14","P21 - Removing Sanctions - process runs with extremely low completion rates","","PROBLEM","Ideas","P21","Removing Sanctions - process runs with extremely low completion rates"
+"15","INFRA - VM aspect ratio can prevent the process work with large window in SITS","","PROBLEM","Ideas","INFRA","VM aspect ratio can prevent the process work with large window in SITS"
+"16","P23 - Document Upload Credit Applications - Object layer of process does not comply with development standards","ISSUE
+Object layer of process does not comply with development standards
+
+IMPACT
+Increases likely hood of issues arising in production and makes it harder to debug and resolve issues process/ object 
+
+ROOT-CAUSE
+Object layer not complying with development standards
+
+RESOLUTION
+Enforce the Object Layer of the process to comply with development standards","PROBLEM","Ideas","P23","Document Upload Credit Applications - Object layer of process does not comply with development standards"
+"17","P23 - Document Upload Credit Application - process can miss documents when there are more than 6 documents in the tab","ISSUE
+Process cannot spy elements when there are more than 6 rows in the document table.
+
+IMPACT
+Miss the required document to download
+
+WORKAROUND
+Scroll down the document tab continuously and looking for new element 
+
+ROOT-CAUSE
+Hidden elements cannot be spied 
+
+RESOLUTION
+to be determined","PROBLEM","Ideas","P23","Document Upload Credit Application - process can miss documents when there are more than 6 documents in the tab"
+"18","ABODE - Adobe Acrobat add-on update occurs randomly causing P6 to mark more than 50% of its cases to ""Other"" category","ISSUE
+Process categorises all the cases as ""Other"" category since 3rd May
+
+IMPACT
+Cannot process any case
+
+WORKAROUND
+Implement custom custom completion rate monitoring for P6
+
+ROOT-CAUSE
+Adobe Acrobat add-on update
+
+RESOLUTION
+1. check current adobe acrobat pro version
+2. revert to the older version
+3. disable automatic update 
+
+FINAL RESOLUTION
+Replace Adobe Acrobat","PROBLEM","Ideas","ABODE","Adobe Acrobat add-on update occurs randomly causing P6 to mark more than 50% of its cases to ""Other"" category"
+"19","OUTLOOK - extended Outlook VBO issue has similar issue to MAPIEX where sometimes it doesnt send mail","ISSUE
+extended Outlook VBO issue has similar issue to MAPIEX where sometimes it doesnt send mail or move mail etc.
+
+IMPACT
+emails don't get sent or moved etc
+
+ROOT-CAUSE
+MAPIEX 
+
+WORKAROUND
+Add wait timer between send mail retries (16 seconds)
+
+RESOLUTION
+TBC","PROBLEM","Ideas","OUTLOOK","extended Outlook VBO issue has similar issue to MAPIEX where sometimes it doesnt send mail"
+"20","ADOBE - All processes that use Adobe - replace Adobe text recognition with new solution to resolve compliance issue","ISSUE
+Adobe has license requirements where automated solutions need to use the Server Version of Adobe text recognition instead of the Adobe Desktop Application. Because we use Blue Prism to interact with the Adobe Desktop version we are in breach of this policy. The process needs to be able to handle for the following scenarios:
+- localised text recognition for sensitive / scanned documents
+- text recognition for True PDFs 
+- external text recognition for non sensitive data
+
+IMPACT
+Breaching Adobe licensing restrictions
+
+ROOT-CAUSE
+Adobe licensing policy
+
+RESOLUTION
+Change all processes that use Adobe to use a different text recognition software (e.g. ABBY, Google Text Recognition, Azure, FoxIt Reader)","PROBLEM","Ideas","ADOBE","All processes that use Adobe - replace Adobe text recognition with new solution to resolve compliance issue"
+"21","SITS - update SITS termination methods for all processes","ISSUE
+termination method used for the SITS application is not closing database connections properly and causing system performance issues. The SITS team have raised with us that a number of zombie database connections have remained open and believe this is because of the way the Bots currently terminate SITS.
+
+IMPACT
+Database connections remain open each time the SITS application is launched and terminated using Kill process method - which causing system issues.
+
+ROOT-CAUSE
+Bots currently use KILL process method for closing the SITS application
+
+RESOLUTION
+What processes are using SITS?
+P44 - Payment Report(Queue Loader)
+P24 - Credit Application Document Upload
+P35 - Email SID Labelling (HDRAC) v2
+P5 - SAS - Sydney Student Document Uploader (Queue Processor)
+P28 - Reminder to Academics(SAS Admission) - Processor 
+P5.2 - SAS - (Processor) Sydney Student Document Uploader
+P28 - Reminder to Academics(SAS Admission) - Sydney Student
+P44 - Payment Report
+P31 - Transcript Application Email Exception Response - Queue Processor
+Process -23-Queue Processor - Document Download
+P26 - Diet Rule Override
+P12 - SAS - Conditional Offer Defferrals
+P35 - Email SID Labelling (HDRAC)
+P26 - Diet Rule Override (Queue Loader)
+P8 - SAS - Email Title Change v2
+P28 - Reminder to Academics (SAS Admission) - SITS
+P32 - Scholarship Application Detail Check - Queue Processor
+P34 - Email SID Labelling(Scholarship)
+P36 - Email SID Labelling (Fees)
+Reminder to Academics(SAS Admission) - Processor
+P15 - Reminder Emails to Academics(Queue Uploader)
+P21 -  Removing Sanctions - Queue Processor
+P30 - Transcript Application Email Update(Queue Processor)
+P24 - SAS - Faculty Services Credit Restructuring (Application Credit Queue Processor)
+P15 - Reminder to Academics (Special Permission)
+P52 - Processor - Document Uploads Overriding Exceptions
+
+- how can we create an Object Action to ""safely close"" SITS? This needs to include closing the database connection / close application normally.
+- implementation plan to implement Object Action to all processes?","PROBLEM","Ideas","SITS","update SITS termination methods for all processes"
+"22","OUTLOOK - replace all processes that use MAPIEX with Outlook VBO","ISSUE
+MAPIEX is currently an unreliable Outlook technology solution that often fails to perform basic actions (e.g. send mail, move mail). The processes currently using MAPIEX include:
+- P6 HR Processor
+- P6 HR Allocation Loader
+- P13 HazMat Ordering - Receipting v2
+- P11 Mobile Phone Cancellations loader
+- P11 Mobile Phone Cancellations processor
+- P10 Transcript Match Invoice
+- P8 Email title Change
+- P6 HR Allocation Payroll loader
+- P6 HR Allocation Payroll processor
+- P14.1 Potential Granduand Input
+- P5 Documnent Upload Loader
+
+IMPACT
+Mail does not get sent or stuck in incorrect folders etc
+
+ROOT-CAUSE
+MAPIEX
+
+RESOLUTION
+Replace all processes that use MAPIEX with Outlook VBO","PROBLEM","Ideas","OUTLOOK","replace all processes that use MAPIEX with Outlook VBO"
+"23","IE - production environment having issue where imported development processes are unable to use HTML mode","ISSUE
+production environment having issue where imported development processes are unable to use HTML mode
+
+IMPACT
+Processes terminate when attempting to use IE modes
+
+ROOT-CAUSE
+Version of Internet Explorer in prod machine 17 was different from the version in dev. The bot could not spy items on IE when process started.
+
+WORK-AROUND
+Restart the machine in order to pick up the latest windows desktop updates.
+
+RESOLUTION","PROBLEM","Ideas","IE","production environment having issue where imported development processes are unable to use HTML mode"
+"24","P14.1 - Long Load time due to high amount of checks","ISSUE:
+14.1 takes a long time to load due to the bot conducting multiple checks for the same file in the Microsoft teams site
+
+IMPACT: 
+14.1 takes a long time to complete
+
+ROOT - CAUSE:
+Faculty Master file row count + 10 is the number of times a bot will check for a file.
+
+WORKAROUND:
+1.Lead time for P14 deadlines
+2. Download and move faculty files manually
+
+RESOLUTION:
+TBC","PROBLEM","Ideas","P14","P14.Long Load time due to high amount of checks"
+"25","P14.2 - Queue Loader - Process not robust","ISSUE:
+P14.2 exception handling causes most of the process to be a point of no return. This was most likely done to protect bot from double processing
+
+IMPACT: 
+If P14.2 encounters an error, it will fail out with no retry attempt
+
+ROOT - CAUSE:
+Recovery paths from original design are be high risk. Changes to recovery paths reprisents high risk.
+
+WORKAROUND:
+Monitor P14.2 while it runs, this process usually does not take more than 10 minutes to run.
+
+RESOLUTION:
+TBC","PROBLEM","Ideas","P14","P14.Queue Loader - Process not robust"
+"26","P14.1 - Download Input Files V2 - Bot cannot automatically access Dev environment","ISSUE:
+Bot currently is only configured to point to the production version of Microsoft Teams. The prod and dev environments are hosted at the same URL, dev and prod are separated via links. The bot is not configured to press the dev link.
+
+IMPACT: 
+Performing dev testing requires human intervention.
+
+ROOT - CAUSE:
+Prior, undocumented development issues.
+
+WORKAROUND:
+Pause bot and navigate to the dev version of microsoft teams before resuming the bot.
+
+RESOLUTION:
+Spy dev link and add logic for the bot to click into the dev link","PROBLEM","Ideas","P14","P14.Download Input Files V2 - Bot cannot automatically access Dev environment"
+"27","P14 - Queue Processor V2 - Can't process 2 of the same faculty at once","ISSUE:
+Bot cannot differentiate between multiple files of the same faculty. For example 3 engi files worth of data will be processed as 1 file. May cause other crashes
+
+IMPACT: 
+Association between records and bot results will be lost. All faculty files will be processed as one
+
+ROOT - CAUSE:
+Queue tagging doesn't provide visibility of association between record and file, only the faculty the record belongs to. Queue data itself doesn't contain data defining the parent file of a record.
+
+WORKAROUND:
+Advise stakeholders to compile all faculty data of the same type into one file. Advise risks of having multiple files of the same faculty present in root folder.
+Please see attached for latest communications around this.
+
+RESOLUTION:
+Modify queue data structure or tagging system to define association between a record and its parent file.","PROBLEM","Ideas","P14","Queue Processor V2 - Can't process 2 of the same faculty at once"
+"28","INFRA - Office installation mappings between UniKeys and VMs not document in Run Management Tool","ISSUE
+Office installation mappings between UniKeys and VMs not document in Run Management Tool
+
+IMPACT
+Conversion when installing new VMs and future issue for when automating installations
+
+ROOT-CAUSE 
+not documents
+
+RESOLUTION
+Document UniKey and VMs mappings for Office installation in the Run Management Tool similar to how UniKey and Process Credentials are mapped (see image)","PROBLEM","Ideas","INFRA","Office installation mappings between UniKeys and VMs not document in Run Management Tool"
+"29","P14 - Sydney Student Web V3 Object not detecting Exit button on Graduand Information Page","ISSUE:
+
+
+IMPACT: 
+Bot Process Output report will be lost with no possibility of recovery
+
+ROOT - CAUSE:
+Process has no ""write as you go"" solution to an excel file or queue storage option
+
+WORKAROUND:
+Two solutions:
+1.
+Run bot in debug mode and breakpoint on the main page recover stage to stop the bot and manually process the exception. 
+
+2.
+Rely on existing exception handling to write out the output data as per the existing code.
+
+RESOLUTION:
+Add an additional queue to store this data or use a ""write as you go"" solution to write data to a form of non-volatile storage.","PROBLEM","Ideas","P14","Sydney Student Web V3 Object not detecting Exit button on Graduand Information Page"
+"30","VNC - global send keys can sometimes have issues when VNC Viewer is open on Windows Desktops","**ISSUE**
+global send keys can sometimes have issues when VNC Viewer is open on Windows Desktops
+
+**IMPACT**
+- P23 process sometimes saves PDF documents on the Windows machine that has VM62 open using VNC Viewer
+
+**ROOT-CAUSE**
+TBC - Global Send Keys and VNC Viewer settings 
+
+**WORK-AROUND**
+close VNC Viewer from Windows machine
+
+**RESOLUTION**
+Disable Global Send Keys function - however we wont do this because the Copy and Paste send keys between VNC Viewer and Windows machines is too useful
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Ideas","VNC","global send keys can sometimes have issues when VNC Viewer is open on Windows Desktops"
+"31","P6 - process is still using custom built API object","**ISSUE**
+P6 is using custom build Web services object since the process is built pre v6.5
+
+**IMPACT**
+harder to maintain the process when issue occurs
+
+**ROOT-CAUSE**
+v6.4 blueprism does not support web services
+
+**WORK-AROUND**
+maintain process under its current condition
+
+**RESOLUTION**
+rebuild P6 with BluePrism built-in web service support
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Ideas","P6","process is still using custom built API object"
+"32","SITS - object causes repeating system exceptions","ISSUE
+The SITS object causes repeating system exceptions for all processes that use it. This problem effects the following processes:
+- P5
+- P8
+- P24
+- P34
+- P35
+- P36
+
+IMPACT
+When these system exceptions occur cases dont get processed that should have otherwise of been processed.
+
+WORKAROUND
+Adjust wait timers and monitor when terminations occur
+
+ROOT-CAUSE
+SITS is an old application that's slow to work with using GUI integration
+
+RESOLUTION
+Use SITS API's to improve where issues occur","PROBLEM","Ideas","SITS","object causes repeating system exceptions"
+"33","P14 - Robust File movement","ISSUE:
+Exception handling may fail to move files out of areas that are used by the queue loader/processor
+
+IMPACT:
+Double loading in the next run
+
+ROOT - CAUSE:
+Non robust exception handling
+
+WORKAROUND:
+Ensure the following folders are empty before and after each run:
+Microsoft Teams: ""In Progress"" folder
+Production Shared Drive: ""Input Files Loaded into Queue""
+Production Shared Drive: ""Input Files Downloaded from Microsoft Team""
+
+
+RESOLUTION:
+Review exception handling to ensure all files are cleared upon a termination. Review block layouts also to ensure all stages have an appropriate recovery stage.","PROBLEM","Ideas","P14","Robust File movement"
+"34","P14 - process failed when attempting to move files around in microsoft teams","**ISSUE**
+process failed when attempting to move files around in Microsoft teams
+
+**IMPACT**
+process terminates unexpectedly
+
+**ROOT-CAUSE**
+TBC - Microsoft teams
+
+**WORK-AROUND**
+NA
+
+**RESOLUTION**
+TBC - perhaps find a replacement for microsft teams
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Ideas","P14","process failed when attempting to move files around in microsoft teams"
+"35","PROCESS - SPLIT P8 BOT UP","**AS A**
+Operational Engineer
+
+**I WANT**
+enhance the existing P8 Bot so that each Outlook Profile is its own Bot and also the new Bots follow AI Hub standards
+
+**SO THAT**
+Each Outlook Profile can be counted as another Bot and also the new processes / Bots follow the AI Hub standards","PROJECT","Backlog","PROCESS","SPLIT P8 BOT UP"
+"36","MONITOR - MIGRATE M03 TO SLACK","**AS A**
+Operational Engineer
+
+**I WANT**
+migrate the M03 monitoring tool to slack
+
+**SO THAT**
+the trigger is out of the database and the solution also aligns with other Monitoring tool design","PROJECT","Backlog","MONITOR","MIGRATE M03 TO SLACK"
+"37","INFRA - SETUP LOGICAL ACCESS MANAGEMENT IN PROD","**AS A**
+Operational Engineer
+
+**I WANT**
+setup logical access management model for Production Environment
+
+**SO THAT**
+Appropriate controls are in place for user access and https://trello.com/c/aJyxNvUe/143-infra-action-recommendations-noted-from-blue-prism-technical-architecture-review","PROJECT","Backlog","INFRA","SETUP LOGICAL ACCESS MANAGEMENT IN PROD"
+"38","PROCESS - UPDATE TEMPLATES","**AS A**
+Operational Engineer
+
+**I WANT**
+update the process templates
+
+**SO THAT**
+the process templates are aligned with general improvements","PROJECT","Backlog","PROCESS","UPDATE TEMPLATES"
+"39","INFRA - UPGRADE TO BLUE PRISM 6.5.1","**AS A**
+Operational Engineer
+
+**I WANT**
+Upgrade from Blue Prism version 6.5.0 to version 6.5.1 (https://portal.blueprism.com/products/enterprise)
+
+**SO THAT**
+We can resolve some of the existing Blue Prism Bugs (e.g. https://trello.com/c/ogxvQgoM/85-infra-blueprism-work-queue-item-cannot-filter-properly)","PROJECT","Backlog","INFRA","UPGRADE TO BLUE PRISM 6.5.1"
+"40","OPMODEL - SLA REPORTING","TASKS:
+- map out high level SLA's for P1 - P4 incidents
+- map out high level SLA for process availability
+- map out standard-request specific SLA's and non-standard request SLA's
+- map out customer specific SLA's (e.g. P10 create invoice run before 1pm each day)
+- create mechanism to track performance of all SLA's
+
+NOTES:
+- avoid the 'watermelon SLA effect'
+- keep SLA's simple and understandable
+- customer specific SLA's should be regularly reviewed and updated","PROJECT","Backlog","OPMODEL","SLA REPORTING"
+"41","INFRA - CLEAN UP CORDS","AS A 
+Jonathan Parsons AI Hub Director
+
+I WANT
+The cords in the AI Hub to be cleaned up
+
+SO THAT
+The employees in the AI Hub can operate in a clean working environment","PROJECT","Backlog","INFRA","CLEAN UP CORDS"
+"42","MONITOR - MXX PROCESS LOG VOLUMES","AS A
+Operational Engineer
+
+I WANT
+To monitor the session logging volumes for each process that runs in Production and create a Trello Ticket for that process
+
+SO THAT
+We can be notified of processes that are logging high volumes of stages to the database which will slow down the entire production environment and may cause some processes to terminate
+
+ACCEPTANCE CRITERIA
+1. each day check if logs are over 30000
+2. IF True, THEN send warning notification
+- future enhancement might be to also create and incident, however not yet necessary ","PROJECT","Backlog","MONITOR","MXX PROCESS LOG VOLUMES"
+"43","OPMODEL - SETUP ON-CALL SUPPORT MODEL","AS A:
+(1) Business User / (2) Developer / Controller
+
+I WANT:
+(1) my process to have on-call support for high priority issues / (2) be compensated for on-call support (e.g. if process goes down log on to resolve)
+
+SO THAT:
+(1) process can be supported outside of business hours / (2) Developers / Controllers get compensated for additional hours and time waiting","PROJECT","Backlog","OPMODEL","SETUP ON-CALL SUPPORT MODEL"
+"44","AUTOMATE - INXX PROCESS RESCHEDULING","Functions needed include:
+- make decision on which processes to start when idle capacity allows it","PROJECT","Backlog","AUTOMATE","INXX PROCESS RESCHEDULING"
+"45","OPMODEL - VISUALISE WEEKLY SCHEDULES","**AS A**
+Operational Engineer
+
+**I WANT**
+to visualize weekly schedule from the real-time data
+
+**SO THAT**
+the run management schedule does not need to be manually updated","PROJECT","Backlog","OPMODEL","VISUALISE WEEKLY SCHEDULES"
+"46","AUTOMATE - INXX SEND WEEKLY BUSINESS REPORTS","**AS A**
+Operational Engineer
+
+**I WANT**
+
+**SO THAT**
+","PROJECT","Backlog","AUTOMATE","INXX SEND WEEKLY BUSINESS REPORTS"
+"47","INFRA - SETUP CMDB WITH ICT","AS A
+Technical Architect / Operational Team Lead
+
+I WANT
+work with ICT to setup all processes under the CMDB
+
+SO THAT
+The AI Hub receives notifications about ICT changes that effect the processes they support","PROJECT","Backlog","INFRA","SETUP CMDB WITH ICT"
+"48","INFRA - PENETRATION TESTING","**AS A**
+Operational Engineer
+
+**I WANT**
+prepare for penetration testing in Blue Prism Environment
+
+**SO THAT**
+We are ready to be investigated for any penetration testing and our environment is optimised for security","PROJECT","Backlog","INFRA","PENETRATION TESTING"
+"49","OPMODEL - SETUP STATUS PAGE","AS A
+Operational Team Lead
+
+I WANT
+Stakeholders to be able to register to various operational functionalities to receive notifications on status and also be able to manually view status without having to ask the Operations Team
+
+SO THAT
+Stakeholders can be proactively informed of incidents and they can also proactively view status of operational functions without having to reach out to the AI Hub Operations team","PROJECT","Backlog","OPMODEL","SETUP STATUS PAGE"
+"50","INFRA - TRANSPORT ENCRYPTION CONNECTION","AS A
+Operational Engineer
+
+I WANT
+The production environment to use the ""WCF: SOAP with Transport Encryption & Windows Authentication"" connection mode instead of the ""WCF: SOAP with Message Encryption & Windows Authentication"" connection mode
+
+SO THAT
+The production environment can perform faster because data between resources uses private and public key encryption on each end instead of having to encrypt each message packet between resources","PROJECT","Backlog","INFRA","TRANSPORT ENCRYPTION CONNECTION"
+"51","MONITOR - MXX IMPORT NOTIFICATIONS","**AS A**
+Operational Engineer
+
+**I WANT**
+monitor database to receive notifications whenever processes, objects or releases are imported into the Production Environment
+
+**SO THAT**
+so that I am informed of changes","PROJECT","Backlog","MONITOR","MXX IMPORT NOTIFICATIONS"
+"52","MONITOR - MXX PROD CODE CHANGES","**AS A**
+Operational Engineer
+
+**I WANT**
+receive a notification whenever someone makes a code change in Production Environment
+
+**SO THAT**
+I am informed of changes","PROJECT","Backlog","MONITOR","MXX PROD CODE CHANGES"
+"53","OPMODEL - SETUP FEEDBACK MECHANISM","SOLUTION:
+Option 1 - google form and sheets to collect information
+Option 2 - microsoft flow and excel to collect information","PROJECT","Backlog","OPMODEL","SETUP FEEDBACK MECHANISM"
+"54","INFRA - REVIEW DB GROWTH RATE","**AS A**
+Operational Engineer
+
+**I WANT**
+Monitor PROD Database growth rate to find out the optimal auto-growth setting
+
+**SO THAT**
+The database settings can be updated to include auto-growth rate without degradation to performance (currently disabled)","PROJECT","Backlog","INFRA","REVIEW DB GROWTH RATE"
+"55","PROCESS - P12 UPDATE LIST ENHANCEMENT","**ISSUE**
+Business will send updated deferral list to the run team from time to time (twice a month on average)
+
+**IMPACT**
+no impact
+
+**ROOT-CAUSE**
+business does not have access to the AI Hub share folder
+
+**WORK-AROUND**
+update the deferral list manually by the email send from the business
+(1) navigate to ""\\rpaspa00002.shared.sydney.edu.au\AIHub\P12 - Conditional Offer Deferrals\Approved Lists\""
+(2) open file ""Approval Deferral Codes.xlsx""
+(3) copy row data from updated list emailed from business and paste it into the ""Approved MAS Course Codes"" sheet in the ""Approval Deferral Codes.xlsx"" file (dont replace the column names
+
+**RESOLUTION**
+1. use google sheet for storing the deferral list
+2. grant the business AI Hub share folder access for P12
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROJECT","Backlog","PROCESS","P12 UPDATE LIST ENHANCEMENT"
+"56","TRAIN - COMPLETE ITIL V4 FOUNDATIONS EXAM","**AS A**
+Operational Engineer
+
+**I WANT**
+complete ITIL v4 foundations training
+
+**SO THAT**
+I understand the foundations of service management","PROJECT","Backlog","TRAIN","COMPLETE ITIL V4 FOUNDATIONS EXAM"
+"57","TRAIN - COMPLETE BP TECHNICAL ARCHITECTURE EXAM","**AS A**
+Operational Engineer
+
+**I WANT**
+complete BP Technical Architect training
+
+**SO THAT**
+the Blue Prism infrastructure can be managed robustly","PROJECT","Backlog","TRAIN","COMPLETE BP TECHNICAL ARCHITECTURE EXAM"
+"58","TRAIN - COMPLETE UIPATH INFRASTRUCTURE TRAINING","**AS A**
+Operational Engineer
+
+**I WANT**
+complete UiPath infrastructure training
+
+**SO THAT**
+the UiPath infrastructure can be supported robustly","PROJECT","Backlog","TRAIN","COMPLETE UIPATH INFRASTRUCTURE TRAINING"
+"59","TRAIN - COMPLETE UIPATH DEVELOPER EXAM","**AS A**
+Operational Engineer
+
+**I WANT**
+complete UiPath Developer exam
+
+**SO THAT**
+processes can be supported in production and enhanced","PROJECT","Backlog","TRAIN","COMPLETE UIPATH DEVELOPER EXAM"
+"60","REPORT - TRELLO DELIVERY DASHBOARD","**AS A**
+Delivery Team Lead / Associate Director
+
+**I WANT**
+understand process timeline per Process difficulty level (easy, med, hard).
+
+**SO THAT**
+I can effective plan for future resources.","PROJECT","Backlog","REPORT","TRELLO DELIVERY DASHBOARD"
+"61","INFRA - IMPROVE AUTHENTICATION SECURITY","**AS A**
+Operational Engineer
+
+**I WANT**
+Improve security of users connecting to Prod Environments by actioning the following:
+
+• Only Platform Admins should have access to the Application Server(s)
+• Only the specified IC User(s) and the Platform Admin should have access to the Interactive Client
+• Best practice is that each resource should have its own login account.
+• As highlighted in the runtime resource section, Ensure Runtime resources are required to authenticate with the application server. The option should be unticked within system security settings to allow anonymous resources. It is also good practice to disallow registration of any new resources unless specifically adding resources at that time.
+
+**SO THAT**
+https://trello.com/c/aJyxNvUe/143-infra-review-rom-recommendations","PROJECT","Backlog","INFRA","IMPROVE AUTHENTICATION SECURITY"
+"62","PROCESS - P42 ENHANCEMENTS","**AS A**
+Operational Engineer
+
+**I WANT**
+
+**SO THAT**
+","PROJECT","Backlog","PROCESS","P42 ENHANCEMENTS"
+"63","IE - internet explorer throws a pop-up which prevents processes from interacting with web applications","**ISSUE**
+internet explorer throws a pop-up which prevents processes from interacting with web applications
+
+**IMPACT**
+
+**ROOT-CAUSE**
+
+**WORK-AROUND**
+
+**RESOLUTION**
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Backlog","IE","internet explorer throws a pop-up which prevents processes from interacting with web applications"
+"64","BLUEPRISM - UI Automation mode will throws error message: there is an error spying element on some VMs","**ISSUE**
+UI Automation mode will throws error message: there is an error spying element on some VMs
+
+**IMPACT**
+
+**ROOT-CAUSE**
+
+**WORK-AROUND**
+
+**RESOLUTION**
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Backlog","BLUEPRISM","UI Automation mode will throws error message: there is an error spying element on some VMs"
+"65","PROCESS - UPDATE P10 SOLUTION DESIGN DOC","**AS A**
+Operational Engineer
+
+**I WANT**
+the solution design document for P10 to be updated
+
+**SO THAT**
+the appropriate business rules are described","PROJECT","Blocked / Waiting","PROCESS","UPDATE P10 SOLUTION DESIGN DOC"
+"66","INFRA - AZURE MIGRATION","**AS A**
+Operational Engineer / ICT Hosting Team
+
+**I WANT**
+migrate from on-prem Database and Application Servers to Azure cloud infrastructure and setup Database with a dedicated SQL Server Instance
+
+**SO THAT**
+- Load balancing can be enabled for Application Servers
+- Database can be moved to separate SQL Server Instance
+- We are able to operate because the ICT Hosting team will no longer be supporting on-prem VM solutions in the near future","PROJECT","Blocked / Waiting","INFRA","AZURE MIGRATION"
+"67","INFRA - SETUP LOAD BALANCING","**AS A**
+Operational Engineer
+
+**I WANT**
+setup automated load balancing for BluePrism Application Servers
+
+**SO THAT**
+https://trello.com/c/aJyxNvUe/143-infra-review-rom-recommendations","PROJECT","Blocked / Waiting","INFRA","SETUP LOAD BALANCING"
+"68","MONITOR - MXX DB STATUS","**AS A**
+Operational Engineer
+
+**I WANT**
+setup SQL Server related monitoring for the following:
+
+- SQL Server service
+- Auto-growth of database
+- Size of database reaching close to threshold 
+
+**SO THAT**
+ https://trello.com/c/aJyxNvUe/143-infra-action-recommendations-noted-from-blue-prism-technical-architecture-review","PROJECT","Blocked / Waiting","MONITOR","MXX DB STATUS"
+"69","AUTOMATE - IN01 VM SETUP","AS A
+Operational Engineer
+
+I WANT
+To have a solution for automatically setting up a new VM
+
+SO THAT
+The process is streamlined and automated","PROJECT","Blocked / Waiting","AUTOMATE","IN01 VM SETUP"
+"70","MONITOR - HARDWARE METRICS","**AS A**
+Operational Engineer
+
+**I WANT**
+setup monitoring for standard hardware metrics such as:
+
+- CPU utilisation
+- Memory utilisation
+- Disk IO and Free Space
+- Network IO
+
+
+**SO THAT**
+This data can be used for root-cause analysis and future anomaly detection mechanisms","PROJECT","Blocked / Waiting","MONITOR","HARDWARE METRICS"
+"71","INFRA - TEST DR PLAN","**AS A**
+Operational Engineer
+
+**I WANT**
+create detailed Disaster Recovery plan and test fail over / fail back
+
+**SO THAT**
+https://trello.com/c/aJyxNvUe/143-infra-action-recommendations-noted-from-blue-prism-technical-architecture-review","PROJECT","Blocked / Waiting","INFRA","TEST DR PLAN"
+"72","INFRA - SETUP 10 NEW VMS","**AS A**
+Operational Engineer
+
+**I WANT**
+Setup 4 Dev VMs and 6 Prod VMs
+
+**SO THAT**
+We are able to develop processes and support Production process capacity","PROJECT","Blocked / Waiting","INFRA","SETUP 10 NEW VMS"
+"73","INFRA - MANAGE ICT CABS","**AS A**
+Operational Engineer
+
+**I WANT**
+to review the weekly CABs that have been raised in Service Now
+
+**SO THAT**
+Any ICT related changes are made known early and can be investigated for impacts / actions","BAU","In Progress","INFRA","MANAGE ICT CABS"
+"74","OPMODEL - MANAGE AI HUB INBOX","**AS A**
+Operational Engineer
+
+**I WANT**
+Manage AI Hub Inbox
+
+**SO THAT**
+requests get handed accordingly","BAU","In Progress","OPMODEL","MANAGE AI HUB INBOX"
+"75","OPMODEL - MANAGE TRELLO TICKETS","**AS A**
+Operational Engineer
+
+**I WANT**
+Manage Trello Tickets
+
+**SO THAT**
+Trello ticket metrics and reporting are accurate","BAU","In Progress","OPMODEL","MANAGE TRELLO TICKETS"
+"76","OPMODEL - MIGRATION MANAGEMENT","**AS A**
+Operational Engineer
+
+**I WANT**
+to manage the migration of new processes (e.g. Releasing Processes, Managing process schedules, obtaining access)
+
+**SO THAT**
+Processes can be pushed into Production without error and with appropriate access","BAU","In Progress","OPMODEL","MIGRATION MANAGEMENT"
+"77","OPMODEL - SERVICE VALIDATION MGMT","**AS A**
+Operational Engineer
+
+**I WANT**
+to conduct the key responsibilities of Service Validation Management:
+
+- QA processes from a Run perspective
+- Regularly check on processes in stabilisation
+
+**SO THAT**
+Processes that are being developed are up to the appropriate standards and also processes in Prod are stabilising","BAU","In Progress","OPMODEL","SERVICE VALIDATION MGMT"
+"78","OPMODEL - 10% TIME INITIATIVE","**AS A**
+Operational Engineer
+
+**I WANT**
+Lead the 10% time initiative
+
+**SO THAT**
+AI Hub team members have the opportunity to spend 10% of their time on passion projects that keep them highly engaged and thinking of innovative solutions","BAU","In Progress","OPMODEL","10% TIME INITIATIVE"
+"79","INFRA - MANGE PROD RESOURCE SETUP","**AS A**
+Operational Engineer
+
+**I WANT**
+To manage and document the setup of all Resources within Production
+
+**SO THAT**
+The process of setting up Resources is well understood for future scenarios","BAU","In Progress","INFRA","MANGE PROD RESOURCE SETUP"
+"80","PROCESS - SPLIT P5 INTO P116 AND P117","**AS A**
+Operational Engineer
+
+**I WANT**
+split P5 into P116 and P117
+
+**SO THAT**
+we can split the process up for each Outlook profile and so it can be used as a sub processes for future student document upload processes","PROJECT","In Progress","PROCESS","SPLIT P5 INTO P116 AND P117"
+"81","REPORT - VISUALISE UTILISATION OF AIHUB DEVELOPERS","**AS A**
+Operational Engineer
+
+**I WANT**
+Visualise the capacity of Run effort for Enhancements, Incidents and Requests
+
+**SO THAT**
+The capacity of Dev's and Operational Engineers can be fully observed along side the Dev Dashboard","PROJECT","In Progress","REPORT","VISUALISE UTILISATION OF AIHUB DEVELOPERS"
+"82","INFRA - UPGRADE RASBERRY PIES","**AS A**
+Operational Engineer
+
+**I WANT**
+To investigate upgrading our Rasberry Pies to the latest version
+
+**SO THAT**
+Our Rasberry Pies are able to handle the CPU and RAM requirements (e.g. showing 25 VMs on screen using VNC Viewer)","PROJECT","In Progress","INFRA","UPGRADE RASBERRY PIES"
+"83","INFRA - CONFIGURE AB-BOTS OUTLOOK","**AS A**
+Operational Engineer
+
+**I WANT**
+Reconfigure the Outlook setups for the Account Balance Bots P76 and P103 so that they use the BluePrismBot Outlook Profile. VM96 and VM97 also need to be reconfigured for this to work.
+
+**SO THAT**
+The Outlook Profiles are consistent across all VMs that run in Production","PROJECT","In Progress","INFRA","CONFIGURE AB-BOTS OUTLOOK"
+"84","INFRA - SETUP H20 APP SERVER","**AS A**
+Operational Engineer
+
+**I WANT**
+setup Prod Application Server for H2O platform
+
+**SO THAT**
+processes that need to work in Prod can be supported accordingly","PROJECT","In Progress","INFRA","SETUP H20 APP SERVER"
+"85","INFRA - P82 HAZMAT INFRA SETUP","**AS A**
+Operational Engineer
+
+**I WANT**
+Make sure environment is setup and ready for maintenance for WinSCP, MS Flow App and MS Flow Data Gateway
+
+**SO THAT**
+The additional VM setup and maintenance requirements for the P82 Configuration Item are documented
+
+**PLAN**
+1. document requirements (https://trello.com/c/VCnN0v34/2291-p82-document-setup-and-maintenance-of-winscp-ms-flow-app-and-ms-flow-data-gateway#)","PROJECT","In Progress","INFRA","P82 HAZMAT INFRA SETUP"
+"86","PROCESS - INVESTIGATE AND IMPROVE P106 EXCEPTION CAPTURING","**AS A**
+Operational Engineer
+
+**I WANT**
+investigate and improve P106 Exception Capturing
+
+**SO THAT**
+the process is up to QA standards and robust for Production","PROJECT","In Progress","PROCESS","INVESTIGATE AND IMPROVE P106 EXCEPTION CAPTURING"
+"87","REPORT - TRELLO DELIVERY DASHBOARD","**AS A**
+Delivery Team Lead / Associate Director
+
+**I WANT**
+to understand the development cadence for all processes.
+
+**SO THAT**
+I can effective plan for future resources.","PROJECT","In Progress","REPORT","TRELLO DELIVERY DASHBOARD"
+"88","OUTLOOK - processes terminating after attempting to launch Outlook and show a pop-up","**ISSUE**
+processes terminating after attempting to launch Outlook and show a pop-up
+
+**IMPACT**
+process gets stuck in warning state attempting to launch Outlook
+
+**ROOT-CAUSE**
+TBC
+
+**WORK-AROUND**
+1. close pop-up
+2. assess if process needs to be rerun
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","OUTLOOK","processes terminating after attempting to launch Outlook and show a pop-up"
+"89","OUTLOOK - Outlook VBO operation can fail randomly after Outlook has already opened","**ISSUE**
+Outlook VBO will fail to perform get received items/move email actions randomly after Outlook has already been opened. This happens when either attempting to move mail OR send mail. Error message might contain ERROR: Internal : Could not execute code stage because exception thrown by code stage: Cannot create ActiveX component.
+
+**IMPACT**
+might cause process termination
+
+**ROOT-CAUSE**
+TBC
+
+**WORK-AROUND**
+1. review termination
+2. make decision if if process rerun is required
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","OUTLOOK","Outlook VBO operation can fail randomly after Outlook has already opened"
+"90","SITS - random SITS pop-up stops process from working with error ""Uniface has stopped working""","ISSUE
+random SITS pop-up stops process from working
+
+IMPACT
+process gets stuck in warning state
+
+ROOT-CAUSE
+TBC
+
+WORKAROUND
+1. click ""close program""
+2. check if cases need to be force retried
+3. check if processor process needs to be re-run
+
+RESOLUTION
+TBC","PROBLEM","In Progress","SITS","random SITS pop-up stops process from working with error ""Uniface has stopped working"""
+"91","APP - processes failing when attempting to access Sydney Student Web often with error message ""Failed to perform step 1 in Navigate Stage 'Manage Students Button' on page 'N - Sydney Student Header'""","**ISSUE**
+P41 Graduate in Absentia (Loader) keeps failing with error message ""Failed to perform step 1 in Navigate Stage 'Manage Students Button' on page 'N - Sydney Student Header'"". P55 Processing Suspencion Request has also been failing with a similar error message when attempting to access Sydney Student Web.
+
+**IMPACT**
+Process is able to run until worked manually
+
+**ROOT-CAUSE**
+TBC - This issue only seems to happen at night time when the Bot is scheduled to run (midnight)
+
+**WORK-AROUND**
+setup processes to not run between 11:55pm and 1am that use Sydney Student Web
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","APP","processes failing when attempting to access Sydney Student Web often with error message ""Failed to perform step 1 in Navigate Stage 'Manage Students Button' on page 'N - Sydney Student Header'"""
+"92","P6 - Fail to download attachments from HR ServiceNow through API","**ISSUE**
+HR ServiceNow API outage
+
+**IMPACT**
+process terminates but usually will work in the next rerun, minimal business impacts
+
+**ROOT-CAUSE**
+ServiceNow API service outage
+
+**WORK-AROUND**
+no work-around needed because process works next run
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","P6","Fail to download attachments from HR ServiceNow through API"
+"93","INFRA - Cannot run schedule on VM78","**ISSUE**
+On 2nd of September (Monday) VM78 was identified as having issues running processes from the Schedule. 
+
+**IMPACT**
+cannot run scheduled process on the VM
+
+**ROOT-CAUSE**
+TBD
+
+**WORK-AROUND**
+Option1: go to the VM and run schedule manually on the VM
+Option3: try restarting the VM
+Option3: Re-point Bot VM from BP Application Server VM002 (BluePrismProd1) to BP Application Server VM112 (BluePrismProd2)..
+Option4: Reshedule all processes to run on different VM
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","INFRA","Cannot run schedule on VM78"
+"94","INFRA - processes stuck in ""pending"" status in the control room","ISSUE
+processes stuck in ""pending"" status in the control room. The following have been effected:
+- P19 Queue Loader (VM30) - process was stuck in pending on 23 April 2019
+- P13 - HazMat Ordering - Enter Jaggaer Requisitions V2 (VM17) - process was stuck in pending for 1 day and then when it was started manually on 01 May 2019 10:28:50:007 it terminated instantly
+- P6 - HR Allocation (VM00) - 11th May, process was stuck in pending during the weekend, restarted on Monday 13th May
+- P6 - HR Allocation (VM00) - 15th May process stuck in pending from 1230pmish (see image) and needed to be started manually which was done at 3pmish (note that the Prod environment was updated at 1200pm)
+- P30 / P10 / P19 schedule (VM30) occurred on 20 at 6pm - note that pending stuck occurred on P30 queue loader and then the other scheduled processes did not start so the schedule was manually restarted
+- P13 Hazmat Ordering (VM17) occurred on 21 at 8am
+- P6 - HR Allocation (VM00) - 27th May 6:30pm
+
+IMPACT
+Processes dont run on VM & no other processes can run on VM because its busy
+
+ROOT-CAUSE
+Potentially could be caused by environment reaching license limits
+
+WORK-AROUND
+- setup monitoring for when process is stuck in Pending for more then 30 minutes
+- start process when issue identified or if process stuck in Pending notification is received
+
+RESOLUTION
+TBC","PROBLEM","In Progress","INFRA","processes stuck in ""pending"" status in the control room"
+"95","APPS - applications that are managed by External Vendors require sometimes have GUI changes that are not communicated","**ISSUE**
+Applications that are managed by External Vendors require sometimes have GUI changes that are not communicated. Some of the known applications (and processes) that are currently managed in Production include:
+
+- Involvio (P72 etc)
+- OneStop (P10 etc)
+
+**IMPACT**
+processes terminate
+
+**ROOT-CAUSE**
+Application elements changing because of unplanned GUI changes
+
+**WORK-AROUND**
+1. Identify elements that require re-spying
+2. Re-spy elements in Application Modeller
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","APPS","applications that are managed by External Vendors require sometimes have GUI changes that are not communicated"
+"96","MS Excel VBO - Cell values containing newline characters will (1) be surrounded by quotes and (2) corrupt the table","**ISSUE**
+Cell values containing tab or newline characters will be surrounded by quotes.
+
+Example:
+*Westwood Plough & Harrow
+May*
+becomes
+*""Westwood Plough & Harrow
+May""*
+
+Cell values containing newline characters will also shift the remaining cell values on the right onto a new row, corrupting the table. A screenshot has been attached.
+
+**IMPACT**
+Loss of data integrity. Corruption may occur silently, and processes may be impacted without any obvious symptoms.
+
+**ROOT-CAUSE**
+Both _MS Excel_ and _MS Excel VBO_ objects use unreliable methods of reading in Excel files as a collection (e.g. splitting by newline and tab characters).
+
+**WORK-AROUND**
+1) Cleanse all cell values of newline characters and quotation marks, but this has its own problems (e.g. cell values are no longer in their original form, which may not be acceptable under some circumstances).
+
+2) Read in Excel files using OLE DB, which has its own problems (e.g. OLE DB automatically assigns a data type to each column, sometimes incorrectly, with no option for overriding).
+
+**RESOLUTION**
+—
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","MS","MS Excel Cell values containing newline characters will (1) be surrounded by quotes and (2) corrupt the table"
+"97","MS Excel VBO - May read in timestamps without the seconds value","**ISSUE**
+A cell with the value ""25/09/2019  11:00:45 PM"" will be displayed as ""25/09/2019 23:00"".
+
+When the _Get Worksheet As Collection_ action is used, the displayed value is fetched instead of the actual value, resulting in the omission of the seconds value.
+
+**IMPACT**
+
+**ROOT-CAUSE**
+
+**WORK-AROUND**
+Use _MS Excel_, but that object has issues of its own.
+
+**RESOLUTION**
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","MS","MS Excel May read in timestamps without the seconds value"
+"98","MS Excel VBO - May read in date values as ""MM/dd/yyyy"" instead of ""dd/MM/yyyy""","**ISSUE**
+The _MS Excel VBO_ object (not to be confused with _MS Excel_) may convert date values to the format ""MM/dd/yyyy"" if the day is smaller than 12. For example, ""02/10/2019"" will be converted to ""10/02/2019"" when viewed by the object.
+
+**IMPACT**
+
+**ROOT-CAUSE**
+
+**WORK-AROUND**
+Use _MS Excel_, which is not affected by this problem.
+
+Note that _MS Excel_ has other problems with reading in worksheets as collections that _MS Excel VBO_ does not have.
+
+**RESOLUTION**
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","MS","MS Excel May read in date values as ""MM/dd/yyyy"" instead of ""dd/MM/yyyy"""
+"99","MS Excel - Fails to read in worksheet as a collection if any of the cell values contains a tab character","**ISSUE**
+The _MS Excel_ object (not to be confused with _MS Excel VBO_) reads in worksheets as a collection by highlighting all cell values, copying (ctrl+c) and then splitting the copied values by the tab character. 
+
+**IMPACT**
+Since the tab character is being used as a delimiter, if any of the cell values contain a tab character, the _Get Worksheet As Collection_ action will fail. An error will be thrown asserting that a column is missing.
+
+**ROOT-CAUSE**
+
+**WORK-AROUND**
+Remove tab characters from all cell values.
+
+**RESOLUTION**
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","MS","MS Fails to read in worksheet as a collection if any of the cell values contains a tab character"
+"100","BluePrism - Bug where leading spaces are removed from the item key","**Reproduction**
+1) Add an item with the key "" Test"" to the queue.
+2) The newly added item will have ""Test"" as the key.
+
+**Impact**
+Items may bypass duplication checks and get processed more than once.
+
+For example, checking if an item with the key "" Test"" exists will always return false, as Blue Prism will store it as ""Test"".
+
+**WORKAROUND**
+Make sure to check for this when developing","PROBLEM","In Progress","BluePrism","Bug where leading spaces are removed from the item key"
+"101","SITS Portal - system is not available around 12am","**ISSUE**
+Cannot launch SITS Portal between 12am and 2am
+
+**IMPACT**
+no process can run during that period
+
+**ROOT-CAUSE**
+SITS Portal maintenance
+
+**WORK-AROUND**
+do not schedule process during that period
+
+**RESOLUTION**
+Confirm with ICT on the exact down period
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","In Progress","SITS","SITS system is not available around 12am"
+"102","OPMODEL - ONBOARD GDS RESOURCES","**AS A**
+AI Hub Team Lead
+
+**I WANT**
+on-board new GDS resources
+
+**SO THAT**
+Optimise resourcing and ability to develop and support processes","PROJECT","Testing","OPMODEL","ONBOARD GDS RESOURCES"
+"103","TRAIN - LEARN ABOUT CHATBOTS","**AS A**
+Operational Engineer
+
+**I WANT**
+Learn about how chatbots are built, developed and supported
+
+**SO THAT**
+We can take over the Chatbots that are currently being developed and support them in Production","PROJECT","Testing","TRAIN","LEARN ABOUT CHATBOTS"
+"104","PROCESS - P5 UPDATE QUEUE LOADER","Context: The current P5 loader makes too many calls to the Exchange sever as part of its normal operation. This results in the bot being throttled and email actions being denied. This is causing a high level of exceptions.
+
+Solution:
+Using bulk email functions provided in the Outlook VBO extended, many actions can be completed in one call to the exchange server. This will require the process flow to be re-engineered
+","PROJECT","Testing","PROCESS","P5 UPDATE QUEUE LOADER"
+"105","REPORT - PROCESS DASHBOARD FOR WAYNE","**AS A**
+CFO Wayne Andrews
+
+**I WANT**
+To create a PBI report that highlights key performance indicators of Wayne's specific processes:
+
+- P67 Safety Bot
+- P74 Holiday Bot 
+- P76 Account Balance Bot
+
+**SO THAT**
+The CFO can successfully and intuitively track the performance of the specified Bots.","PROJECT","Testing","REPORT","PROCESS DASHBOARD FOR WAYNE"
+"106","INFRA - Processes having issues accessing queue data","**ISSUE**
+Processes having issues accessing queue data
+
+**IMPACT**
+processes timeout when attempting to access Queue data
+
+**ROOT-CAUSE**
+BPAWorkQueueItem table gets fragmented
+
+**WORK-AROUND**
+clean Fragmentation of BP database
+
+**RESOLUTION**
+1. short term = https://trello.com/c/UKt0WxFj/134-infra-shard-existing-blueprismpro-database-into-blueprismpro2
+2. long term = https://trello.com/c/J2PWbdr2/111-infra-migrate-from-on-prem-database-and-application-servers-to-azure-cloud-infrastructure-and-setup-database-with-a-dedicated-sq
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","INFRA","Processes having issues accessing queue data"
+"107","INFRA - all processes are sometimes effected by Planned and Ad-hoc patching on VMs","ISSUE
+VMs are sometimes effected by Planned and Ad-hoc patching. This often results in the VMs being logged out OR the Application Server needing to be restarted.
+
+IMPACT
+Processes are unable to run on Production Environment
+
+WORKAROUND
+Check when patching is planned on VMs/ Database Servers that would effect the Production Environment and plan for it (i.e. get someone to be available to login manually)
+
+ROOT-CAUSE
+ICT Patching
+
+RESOLUTION
+1. setup Login Agent
+2. set VMs to restart each saturday
+3. https://trello.com/c/5JPSCYLN/26-opmodel-setup-on-call-support-model","PROBLEM","Testing","INFRA","all processes are sometimes effected by Planned and Ad-hoc patching on VMs"
+"108","IE - some processes requires the website added to the compatibility view setting","**ISSUE**
+process requires additional setup in IE
+
+**IMPACT**
+process will terminate if the IE is not setup
+
+**ROOT-CAUSE**
+website design
+
+**WORK-AROUND**
+manually add ""sydney.edu.au"" to the compatibility view setting in IE
+
+**RESOLUTION**
+add IE configuration in the VM setup process
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","IE","some processes requires the website added to the compatibility view setting"
+"109","INFRA - Production Database keeps becoming unavailable","**ISSUE**
+Production Database keeps becoming unavailable
+- 10:22pm 29th July until 9:15am next day
+- 11:00pm 30th July until 7:45am next day
+
+**IMPACT**
+processes unable to run between time periods
+
+**ROOT-CAUSE**
+The existing BluePrismPro Production database shares resources with various other USYD Prod databases (20+). There was a CPU Spike on the shared server cluster that these databases are located on which caused this problem. 
+https://trello.com/c/oZfS6Nl1/1898-m07-defrag-script-caused-deadlock-in-the-database?menu=filter&filter=member:tylorbunting3
+
+**WORK-AROUND**
+1. Contact ICT Hosting Team and request assistance with unlocking database deadlocks
+2. attempt to kill processes potentially causing the deadlock (http://sqlserverplanet.com/dba/sql-server-kill-process)
+
+**RESOLUTION**
+https://trello.com/c/0HrxFGAa/1830-infra-raise-request-with-ict-to-put-database-into-a-sql-server-that-does-not-share-resources-with-other-databases#
+https://trello.com/c/J2PWbdr2/111-infra-azure-migration
+
+**LESSONS**
+GOOD: ICT were really quick to assist resolving the incident (30 mins)
+IMPROVEMENT: Move database into non shared SQL Server Instance
+LUCKY: Tylor got into work early and identified the issue before it could cause further impacts","PROBLEM","Testing","INFRA","Production Database keeps becoming unavailable"
+"110","OFFICE - Microsoft Office Excel sometimes causes processes to terminate from a pop-up with message "" We've made some updates to the privacy settings to give you more control""","**ISSUE**
+Microsoft Office Excel sometimes causes processes to terminate from a pop-up with message "" We've made some updates to the privacy settings to give you more control""
+
+**IMPACT**
+processes terminate after opening excel
+
+**ROOT-CAUSE**
+TBC - assumed from OS patching
+
+**WORK-AROUND**
+1. close pop-up as it occurs
+2. continue running process
+
+**RESOLUTION**
+https://trello.com/c/s6bTbxdS/1908-ins07-handle-for-excel-privacy-pop-up
+
+**LESSONS**
+GOOD: 
+IMPROVEMENT: 
+LUCKY:","PROBLEM","Testing","OFFICE","Microsoft Office Excel sometimes causes processes to terminate from a pop-up with message "" We've made some updates to the privacy settings to give you more control"""
+"111","INFRA - VM62 has Adobe DDE fatal error pop up causing process to freeze","**ISSUE**
+VM62 has Adobe DDE fatal error pop up causing process to freeze
+
+**IMPACT**
+block all processes on that VM
+
+**ROOT-CAUSE**
+1. default printer got reset (should be Microsoft printer)
+2. adobe registry key got reset to AcroviewA17 () (https://trello.com/c/SvoyFuc8)
+
+**WORK-AROUND**
+1. set default printer to microsoft printer
+2. change registry key to AcroviewR17 
+
+**RESOLUTION**
+https://trello.com/c/HdPgryke/122-in02-vm-maintenance-develop-solution-for-automatically-performing-maintenance-checks-on-production-vm-runtime-resources
+https://trello.com/c/UnC8K8hW/1946-ins09-handle-for-adobe-known-errors
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","INFRA","VM62 has Adobe DDE fatal error pop up causing process to freeze"
+"112","OUTLOOK - Outlook Safe Mode pop-up causing error","**ISSUE**
+ERROR: Email Exception : Error sending an email: System.Runtime.InteropServices.COMException (0x8004011D): Cannot create the email message because a data file to send and receive messages cannot be found. Check your settings in this Microsoft Outlook profile. In Microsoft Windows, click the Start button, and then click Control Panel. Click User Accounts, and then click Mail.  Click Show Profiles, select this profile, and then click Properties.
+   at Microsoft.VisualBasic.CompilerServices.LateBinding.LateGet(Object o, Type objType, String name, Object[] args, String[] paramnames, Boolean[] CopyBack)
+   at Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateGet(Object Instance, Type Type, String MemberName, Object[] Arguments, String[] ArgumentNames, Type[] TypeArguments, Boolean[] CopyBack)
+   at MS_Outlook_Email_VBO_Extended.Send_Item(String To, String CC, String BCC, String Subject, String Message, String Attachments, Boolean Message_Is_HTML, String Profile, Boolean& Success, String& Error_Message)
+
+**IMPACT**
+any processes use blueprismbot outlook profile will terminate
+
+**ROOT-CAUSE**
+outlook safe mode pop up
+
+**WORK-AROUND**
+manually disable outlook safe mode pop up
+1. check 'no' in the pop up 
+
+**RESOLUTION**
+https://trello.com/c/gpDFE5fW/2668-infra-investigate-how-to-permanently-disable-safe-mode-pop-ups-for-outlook# OR https://trello.com/c/HdPgryke/122-in02-vm-maintenance-develop-solution-for-automatically-performing-maintenance-checks-on-production-vm-runtime-resources
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","OUTLOOK","Outlook Safe Mode pop-up causing error"
+"113","INFRA - Sharing a SQL server with other databases","**ISSUE**
+Sharing a SQL server with other databases
+
+**IMPACT**
+- other database get put in deadlock and then our databases performance gets impacted (processes terminate)
+- https://trello.com/c/R2kZC4je/132-infra-processes-having-issues-accessing-queue-data
+
+**ROOT-CAUSE**
+Sharing a SQL server with other databases until Azure Migration is completed. Some processes use lots of CPU which can effect the BluePrismPro database (see image).
+
+**WORK-AROUND**
+1. monitor email email inboxes
+2. re-run processes
+3. call database administrator to action database deadlocks if required (Amir Ashamalla 0423 022 680)
+
+**RESOLUTION**
+1. short term = https://trello.com/c/UKt0WxFj/134-infra-shard-existing-blueprismpro-database-into-blueprismpro2
+2. long term = https://trello.com/c/J2PWbdr2/111-infra-migrate-from-on-prem-database-and-application-servers-to-azure-cloud-infrastructure-and-setup-database-with-a-dedicated-sq
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","INFRA","Sharing a SQL server with other databases"
+"114","Credential - Unikey credentials in PROD are named ""sydney student RXX"" instead of the unikey","**ISSUE**
+currently unikeys are stored as ""sydney student RXX"" in PROD credential
+
+**IMPACT**
+the naming of the unikey credentials are not generic 
+
+**ROOT-CAUSE**
+naming convention change
+
+**WORK-AROUND**
+keep as it is
+
+**RESOLUTION**
+standardise the unikey credential names
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","Credential","Unikey credentials in PROD are named ""sydney student RXX"" instead of the unikey"
+"115","INFRA - processes terminating because credentials are unavailable / being used by other processes","**ISSUE**
+processes terminating because credentials are unavailable / being used by other processes
+
+**IMPACT**
+processes kick each other out and then terminate
+
+**ROOT-CAUSE**
+credentials for Sydney Student Web are shared
+
+**WORK-AROUND**
+Monitor when processes run and make sure Processes with same UniKeys dont run
+
+**RESOLUTION**
+https://trello.com/c/XhPl4nt1/1825-infra-raise-sydney-student-web-access-request-for-new-unikeys-so-that-processes-dont-share-login-details
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","INFRA","processes terminating because credentials are unavailable / being used by other processes"
+"116","INFRA - BluePrism work queue item cannot filter properly","**ISSUE**
+BluePrism work queue item cannot filter properly
+
+**IMPACT**
+filtering cant be applied
+
+**ROOT-CAUSE**
+BluePrism bug
+
+**WORK-AROUND**
+NA
+
+**RESOLUTION**
+https://trello.com/c/h4ruzaAQ/207-infra-upgrade-to-bp-651
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","INFRA","BluePrism work queue item cannot filter properly"
+"117","IE - Internet Explorer freezes and crashes when launching modern websites (Involvio etc..) that uses javascript after OS patching on 10/08/2019","**ISSUE**
+IE freezes and crashes when launching modern websites (Involvio etc..) that uses javascript
+
+**IMPACT**
+process cannot run
+
+**ROOT-CAUSE**
+windows security update KB4507460 modifies IE security configuration and some modern web applications have not been developed to support the update 
+
+**WORK-AROUND**
+1. mark problematic VMs 
+2. reschedule processes to working VM
+3. (VM)
+
+**RESOLUTION**
+1. go to \\rpaspa00002.shared.sydney.edu.au\windows update\
+2. install windows update https://support.microsoft.com/en-au/help/4512495/windows-10-update-kb4512495
+3. restart VM
+
+Long term: apply https://support.microsoft.com/en-au/help/4512495/windows-10-update-kb4512495 to all PROD
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","IE","Internet Explorer freezes and crashes when launching modern websites (Involvio etc..) that uses javascript after OS patching on 10/08/2019"
+"118","P14.3 - Queue Processor V2 - Process Output file only stored in runtime memory","ISSUE:
+One of the 3 reports the bot generates, the ""BOT Process Output"" is only stored in runtime memory. If there is a crash, or the exception handling fails, this data will be lost. This report is valuable to P14 stakeholders.
+
+IMPACT: 
+Bot Process Output report will be lost with no possibility of recovery
+
+ROOT - CAUSE:
+Process has no ""write as you go"" solution to an excel file or queue storage option
+
+WORKAROUND:
+Two solutions:
+1.
+Run bot in debug mode and breakpoint on the main page recover stage to stop the bot and manually process the exception. 
+
+2.
+Rely on existing exception handling to write out the output data as per the existing code.
+
+RESOLUTION:
+Add an additional queue to store this data or use a ""write as you go"" solution to write data to a form of non-volatile storage.","PROBLEM","Testing","P14","P14.Queue Processor V2 - Process Output file only stored in runtime memory"
+"119","P14.3 - Microsoft Teams Elements not Identified","ISSUE:
+P14.3 is unable to identify Microsoft Teams element.
+
+IMPACT: 
+P14.1 unable to download files and P14.3 unable to move files in Microsoft Teams.
+
+ROOT - CAUSE:
+Updates in IE or Microsoft Teams might have caused this.
+
+WORKAROUND:
+Re-spying the elements.
+
+RESOLUTION:
+Heavy re-spy/testing of Microsoft Teams elements.","PROBLEM","Testing","P14","P14.Microsoft Teams Elements not Identified"
+"120","P14.3 - Different Operation in Control Room","ISSUE:
+P14.3 is unable to identify UI elements in Sydney Student web when doing a control room run. It will however work when run in debug mode.
+
+IMPACT: 
+P14.3 is unable to be run in the control room
+
+ROOT - CAUSE:
+Unknown, all elements correctly highlight when checked in the application modeler or when run in debug mode. This issue is exclusive to control room
+*UPDATE 01/07/2019*
+Issue appears to be Sydney Student Web not registering mouseclicks on the exit button.
+
+WORKAROUND:
+Run P14.3 in debug mode
+
+RESOLUTION:
+Heavy re-spy/testing of Sydney Student web object","PROBLEM","Testing","P14","P14.Different Operation in Control Room"
+"121","Concur - report schedule does not account for the day-light saving time","**ISSUE**
+ConcurSolution generates scheduled reports for multiple processes, but its schedule will not adjust for the day light saving time
+
+**IMPACT**
+process that rely on the schedule might fail due to the one hour delay/early
+
+**ROOT-CAUSE**
+Daylight savings time changes
+
+**WORK-AROUND**
+adjust process schedule to avoid the schedule change
+
+**RESOLUTION**
+confirm with concur on the adjustment
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","Concur","report schedule does not account for the day-light saving time"
+"122","P73 - process reported to be performing actions in the CET application incorrectly","**ISSUE**
+Vic to complete
+
+**IMPACT**
+Vic to complete
+
+**ROOT-CAUSE**
+Vic to complete
+
+**WORK-AROUND**
+NA
+
+**RESOLUTION**
+https://trello.com/c/fm7gI6fx/3715-p73-update-process-to-interact-with-bot-via-cet-via-script-instead-of-navigating-application#
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","P73","process reported to be performing actions in the CET application incorrectly"
+"123","P103 - domestic account balance bot is using a different outlook profile setup","**ISSUE**
+account balance bot is sign in directly to the outlook instead of delegate blueprism bot the access
+
+**IMPACT**
+any process uses the profile requires a dedicated VM
+
+**ROOT-CAUSE**
+blueprism bot does not have delegation access to the profile
+
+**WORK-AROUND**
+assign dedicated VM for the process
+
+**RESOLUTION**
+request email delegation for account balance profile
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Testing","P103","domestic account balance bot is using a different outlook profile setup"
+"124","P89 - Input Grades for Internal Students process keeps terminating","**ISSUE**
+(1) Both the P89 ""Parent Loader"" and ""Queue Processor"" keep terminating on page 3. when attempting to perform the ""Get Faculty"" stage. (2) Additionally, the ""Parent Loader"" process terminated when attempting to perform the ""MS Excel"" object action ""Get Worksheet Range As Collection"" and throw an error in the windows application logs (see ""error_message_output.txt"") that said ""Requested Clipboard operation did not succeed"".
+
+**IMPACT**
+(1,2) minimal as process can miss multiple runs
+
+**ROOT-CAUSE**
+(1) ""Get Faculty"" stage on page 3. of Queue Processor
+(2) process fails when attempting to ""Get Worksheet Range As Collection"" because the Excel file is too large (see attached ""SAS1001 SM_All_C.xlsx"")
+
+**WORK-AROUND**
+(1) NA
+(2) Rerun process
+
+**RESOLUTION**
+(1) https://trello.com/c/t3UE7cob/3058-p89-update-process-to-handle-for-when-faulty-text-element-is-not-found#
+(2) https://trello.com/c/1lCYEqaR/3691-p89-update-process-so-that-its-able-to-handle-for-large-excel-input-files#
+
+**LESSONS**
+GOOD: screenshot function really helped with identifying the root-cause
+IMPROVEMENT: add screenshot features to all processes early on
+LUCKY: process does not cause big impacts when it terminates","PROBLEM","Testing","P89","Input Grades for Internal Students process keeps terminating"
+"125","INFRA - SHARD EXISTING DATABASE","**AS A**
+Operational Engineer
+
+**I WANT**
+Shard existing BluePrismPro Database into BluePrismPro2
+
+**SO THAT**
+The historical process Audit Events and Work Queue data doesnt need to be archived and to improve the performance of processes interacting with the Work Queue table (https://trello.com/c/R2kZC4je/132-infra-processes-having-issues-accessing-queue-data)
+
+**PLAN**
+1. Create BluePrismPro2 database with appropriate settings (Database Size, CPU Prioritisation Allocation)
+2. Apply Blue Prism application database scheme to BluePrism2 database and setup encryption scheme using the same key as what is in BluePrismPro database (important for importing credentials)
+3. Import release of Everything in BluePrismPro into BluePrismPro2 database to check for any anomalies
+4. Setup and test credentials in new BluePrismPro2 database to match BluePrismPro (https://trello.com/c/rge52MTe/2112-infra-setup-credentials-in-new-blueprismpro2-database)
+5. Review all processes that use Tags excessively and change them before running processes in new database (https://trello.com/c/ILJD7xr7/148-infra-update-all-processes-that-use-tags-excessively-so-that-they-dont-create-massive-bpatag-tables-in-the-blue-prism-database)
+6. Stop all processes, re-point application servers to new database BluePrismPro2 to let all Bot VMs connect, after all Bot VMs have connected then re-point application servers back to old database BluePrismPro and let processes continue (10 mins). This is needed for setting up resources prior to hard swap.
+7. Setup Roles, Usernames, Resource Groups, and Schedules.
+8. Double check everything has been moved from BluePrismPro into BluePrismPro2 database again to make sure its updated, then stop all processes running in Prod, disconnect the Application Servers, re-point  the two application servers to BluePrismPro2, turn the application servers back on, start running processes again. 
+9. Send email to all Dev's informing them that there passwords have changed
+","PROJECT","Completed (old)","INFRA","SHARD EXISTING DATABASE"
+"126","PROCESS - INVESTIGATE P2/P3 ENHANCEMENTS","ISSUE: Process is unstable and requires and throws a lot of exceptions. Out of the past 20 runs between the 8th of Jan and 13th Feb the Bot has attempted to process 806 cases and 668 of them were exceptions (17% completion rate). The most commonly occurring exceptions over the past 20 runs described below:
+1. System Error: Adobe failed to find cached PDF = 421
+2. Existing supplier = 125
+3. Out of scope country = 57
+4. Incomplete form = 22
+5. Invalid form data = 13
+6. Failed to extract PDF XML data = 12
+7. Please check form = 9
+8. System Exception = 6
+10. Attachment is not a valid file format (PDF) = 1
+11. Automatically set exception = 1
+12. Email did not contain any attachments = 1
+
+IMPACT: Cases are not processed and Academics do not get paid for marking thesis's within an appropriate time frame
+
+ROOT-CAUSE: Each Exception to be investigated to determine.
+
+RESOLUTION: Review most commonly occurring exceptions for resolution","PROJECT","Completed (old)","PROCESS","INVESTIGATE P2/P3 ENHANCEMENTS"
+"127","AUTOMATE - IN04 VM RESTART AND LOGIN","AS A
+Operational Engineer
+
+I WANT
+A process to be developed for automatically restarting VMs using the Login Agent
+
+SO THAT
+The functionality is available for ad-hoc VM restarts & regular VM maintenance","PROJECT","Completed (old)","AUTOMATE","IN04 VM RESTART AND LOGIN"
+"128","INFRA - REVIEW ROM RECOMMENDATIONS","**AS A**
+Operational Engineer
+
+**I WANT**
+Action recommendations noted from Blue Prism Technical Architecture Review
+
+**SO THAT**
+The infrastructure environment is robust and ready to scale
+
+**PLAN**
+
+- segregate DBA access so Director of Automation has Write Access and Operations Lead only has read access (https://trello.com/c/43OL0RuD/168-infra-segregate-dba-access-so-director-of-automation-has-write-access-and-operations-lead-only-has-read-access#)
+- archive bulk historical session logs (https://trello.com/c/6huCt4Id/83-infra-processes-terminating-from-timeout-expired-exceptions-when-attempting-to-communicate-with-the-database)
+- setup mechanism for archiving Work Queue and Audit Logs (https://trello.com/c/UKt0WxFj/134-infra-shard-existing-blueprismpro-database-into-blueprismpro2)
+- document maintenance overarching maintenance Standard Operating Procedure (https://trello.com/c/dSj9FFiO/20-infra-create-blue-prism-resource-maintenance-sop-document)
+- setup monitoring for standard hardware metrics (https://trello.com/c/MBqpkM5y/54-infra-setup-monitoring-for-standard-hardware-metrics)
+- setup blue prism software related monitoring and alerting (https://trello.com/c/ucQC6o3X/154-monitor-mxx-bp-resource-availability & https://trello.com/c/0yywnJQ2/2324-m08-vm-status-monitoring)
+- setup SQL Server related monitoring (https://trello.com/c/LFi5vwRx/155-infra-setup-sql-server-related-monitoring)
+- setup logical access management model for Production Environment (https://trello.com/c/7fvI29g3/156-infra-setup-logical-access-management-model-for-production-environment)
+- move existing database to dedicated SQL Server (https://trello.com/c/J2PWbdr2/111-infra-migrate-from-on-prem-database-and-application-servers-to-azure-cloud-infrastructure-and-setup-database-with-a-dedicated-sq)
+- enable end to end transport security between all components (https://trello.com/c/xl39aDIl/110-infra-setup-transport-encryption-connection-mode-using-private-and-publish-key-encryptions)
+- ensure appropriate settings for auto-growth rate are setup (https://trello.com/c/QvkqwCsS/145-infra-monitor-prod-database-growth-rate-to-find-out-the-optimal-auto-growth-setting)
+- setup additional Application Server for load balancing and redundancy (done)
+- setup login agent for automatically restarting VMs (https://trello.com/c/J0HgLPog/112-in04-vm-restart-and-login-create-automated-process-for-automatically-restarting-vms-using-login-agent)
+- automate the setup of Bot VMs to assist with DR strategy (https://trello.com/c/9wki0uO5/60-in01-vm-setup-develop-solution-for-automatically-setting-up-a-new-production-vm-runtime-resource)
+- create detailed Disaster Recovery plan and schedule test DR fail over ad fail back (https://trello.com/c/axIYAKky/157-infra-create-detailed-disaster-recovery-plan-and-test-fail-over-fail-back#)
+- setup automated load balancing for Blue Prism Application Servers (https://trello.com/c/jhchKaa2/158-infra-setup-automated-load-balancing-for-blueprism-application-servers#)
+- Improve security of users connecting to Prod Environments https://trello.com/c/s5mJrm6d/220-infra-improve-authenication-security#
+","PROJECT","Completed (old)","INFRA","REVIEW ROM RECOMMENDATIONS"
+"129","MONITOR - M01 UPDATE WITH SESSION LOGS","AS A 
+Operational Engineer
+
+I WANT
+The session log to be attached in the email notification
+
+SO THAT
+We can start resolving the incident with session log
+
+<U+2506>Card is synchronized with this [Trello card](https://trello.com/c/C545FYbi)
+","PROJECT","Completed (old)","MONITOR","M01 UPDATE WITH SESSION LOGS"
+"130","MONITOR - M01 SESSION TERMINATIONS","AS A 
+Operational Engineer
+
+I WANT
+To be notified when a process terminates
+
+SO THAT
+We can investigate and resolve the incident because it causes business impact
+
+<U+2506>Card is synchronized with this [Trello card](https://trello.com/c/C545FYbi)
+","PROJECT","Completed (old)","MONITOR","M01 SESSION TERMINATIONS"
+"131","OPMODEL - IDENTIFY ROLES AND RESPONSIBILITIES","","PROJECT","Completed (old)","OPMODEL","IDENTIFY ROLES AND RESPONSIBILITIES"
+"132","PROCESS - OPTIMISE P7 QUEUE LOADER","","PROJECT","Completed (old)","PROCESS","OPTIMISE P7 QUEUE LOADER"
+"133","OPMODEL - CREATE MIGRATION CHECKLIST","","PROJECT","Completed (old)","OPMODEL","CREATE MIGRATION CHECKLIST"
+"134","OPMODEL - CREATE HANDOVER READINESS CHECKLIST","","PROJECT","Completed (old)","OPMODEL","CREATE HANDOVER READINESS CHECKLIST"
+"135","APPS - SITS JULY CHANGES","done by Sean and myself","PROJECT","Completed (old)","APPS","SITS JULY CHANGES"
+"136","MONITOR - M04 PENDING SESSIONS","AS A
+Operations Developer
+
+I WANT
+To receive a warning notifications when processes are stuck in ""pending"" for longer the 10 minutes
+
+SO THAT
+We can action them because this is likely an issue that needs to be resolved
+
+<U+2506>Card is synchronized with this [Trello card](https://trello.com/c/zl5leC1i)
+","PROJECT","Completed (old)","MONITOR","M04 PENDING SESSIONS"
+"137","INFRA - RASPBERRY PIE SETUP","","PROJECT","Completed (old)","INFRA","RASPBERRY PIE SETUP"
+"138","INFRA - ADD 101 LICENCES","","PROJECT","Completed (old)","INFRA","ADD 101 LICENCES"
+"139","INFRA - SESSION DURATION REPORT","Historial session duration report including: 
+
+- average duration
+- top 3 peak period duration
+- lowest 3 duration
+
+This will facilitate the run management scheduling and forecasting
+
+<U+2506>Card is synchronized with this [Trello card](https://trello.com/c/DV1sonb6)
+","PROJECT","Completed (old)","INFRA","SESSION DURATION REPORT"
+"140","INFRA - SETUP 20 PROD VMS","","PROJECT","Completed (old)","INFRA","SETUP 20 PROD VMS"
+"141","OPMODEL - PREP FOR ROM AUDIT","AS A
+Steve Phillips
+
+I WANT
+An Audit to be conducted on the AI Hubs Blue Prism function
+
+SO THAT
+Areas of improvement can be identified","PROJECT","Completed (old)","OPMODEL","PREP FOR ROM AUDIT"
+"142","INFRA - UPGRADE TO BP 6.5","","PROJECT","Completed (old)","INFRA","UPGRADE TO BP 6.5"
+"143","INFRA - PUBLISHING TOOL","**AS A**
+Operational Engineer
+
+**I WANT**
+build tool to automatically publish all applications in the Production Environment
+
+**SO THAT**
+https://trello.com/c/PbRBG1AU/170-infra-sometimes-when-processes-are-migrated-to-the-production-environment-they-are-no-longer-published#
+
+**DEV NOTES**
+This can be achieved by using the Blue Prism ""AutomateC.exe"" command line tool. The general design will be:
+
+1. Identify all processes that need to be published ("".\AutomateC.exe /listprocesses"")
+2. Loop through each process and Publish them using AutomateC.exe command line tool (e.g. "".\AutomateC.exe /publish ""Process Name"" /user ""Username"" ""Password"""")","PROJECT","Completed (old)","INFRA","PUBLISHING TOOL"
+"144","PROCESS - UPDATE USE OF TAGS","**AS A**
+Operational Engineer
+
+**I WANT**
+update all processes that use tags excessively so that they dont create massive BPATag tables in the Blue Prism database
+
+**SO THAT**
+https://trello.com/c/hZQcgGHa/146-infra-processes-currently-using-tags-heavily-sometimes-for-unique-identifiers-which-is-clogging-up-the-bpatags-table-in-the-prod
+
+**PLAN**
+1. update QA Checklist to check excessive use of tags (DONE)
+2. review processes that use Tags excessively / sometimes as a unique Identifier (https://trello.com/c/GZrCNV6O/2101-infra-create-script-to-identify-processes-that-use-excessive-use-of-tags#)
+3. modify processes so that they dont use Tags excessively","PROJECT","Completed (old)","PROCESS","UPDATE USE OF TAGS"
+"145","INFRA - SETUP ADDITIONAL DATABASE","AS A
+Operational Engineer
+
+I WANT
+To setup an addition database that backs up historical Production session and log data
+
+SO THAT
+After archiving the live Production session and log data we can still report on it from the backup database","PROJECT","Completed (old)","INFRA","SETUP ADDITIONAL DATABASE"
+"146","OPMODEL - DOCUMENT SERVICE MANAGEMENT","- incidents
+- problems
+- requests
+- enhancements","PROJECT","Completed (old)","OPMODEL","DOCUMENT SERVICE MANAGEMENT"
+"147","AUTOMATE - CONSOLIDATE OUTLOOK PROFILES","**AS A**
+Operational Engineer
+
+**I WANT**
+develop script that creates an aggregated Outlook Registry for all Outlook Profiles on VMs
+
+**SO THAT**
+https://trello.com/c/ReoLIrgY/129-outlook-processes-unable-to-run-on-other-vms-sometimes-because-outlook-profiles-are-not-consistent-across-all-vms","PROJECT","Completed (old)","AUTOMATE","CONSOLIDATE OUTLOOK PROFILES"
+"148","APPS - SITS AUGUST RELEASE","**AS A**
+Operational Engineer
+
+**I WANT**
+plan for upcoming SITS changes
+
+**SO THAT**
+impacts to production environment are minimised
+
+**PLAN**
+1. Review User Stories that will be changed to assess impacts (https://trello.com/c/uesL31s2/2017-sits-review-user-stories-that-will-be-changed-to-assess-impacts)
+2. Test User Stories that will be effecting Prod Processes (https://trello.com/c/JpRTU9CJ/2282-sits-test-user-stories-that-will-be-effecting-prod-processes)
+3. Make appropriate changes to effected processes ","PROJECT","Completed (old)","APPS","SITS AUGUST RELEASE"
+"149","OPMODEL - SETUP TRELLO RESOURCES BOARD","**AS A**
+Operational Engineer
+
+**I WANT**
+shift documentation of resource allocation from Run Management Tool to Trello Resource Allocation board
+
+**SO THAT**
+allocation of resources can be managed via mobile and online","PROJECT","Completed (old)","OPMODEL","SETUP TRELLO RESOURCES BOARD"
+"150","INFRA - CREATE BP MAINTENANCE DOC","AS A
+Operational Engineer
+
+I WANT
+To document the SOP for performing regular maintenance on the various Resource Machines (Application Server, Database, Run-time Resources, Interactive Clients)
+
+SO THAT
+The production environment can be enabled as a highly available system
+
+ACCEPTANCE CRITERIA
+- Database maintenance should cover archiving
+- Run-time Resources should cover login agent restarts","PROJECT","Completed (old)","INFRA","CREATE BP MAINTENANCE DOC"
+"151","PROCESS - INVESTIGATE P74 ADDITIONAL BENEFITS","**AS A**
+CFO Wayne Andrews
+
+**I WANT**
+capture additional benefits for during of days for the various categories:
+1. Suspicious
+2. Reported
+3. Not Reported
+
+**SO THAT**
+The appropriate benefits for the process are captured","PROJECT","Completed (old)","PROCESS","INVESTIGATE P74 ADDITIONAL BENEFITS"
+"152","OPMODEL - plan for ROM assessment","","PROJECT","Completed (old)","OPMODEL","plan for ROM assessment"
+"153","MONITOR - CREATE MONITORING ARCHITECTURE","","PROJECT","Completed (old)","MONITOR","CREATE MONITORING ARCHITECTURE"
+"154","MONITOR - M05 WARNING STATE","AS A 
+Operational Engineer
+
+I WANT
+To be notified when a processes stuck in ""warning""for longer then 15 minutes
+
+SO THAT
+We can investigate and resolve the incident because it causes business impact
+
+<U+2506>Card is synchronized with this [Trello card](https://trello.com/c/C545FYbi)
+","PROJECT","Completed (old)","MONITOR","M05 WARNING STATE"
+"155","APPS - HANDLE FOR ONESTOP UPGRADE","**AS A**
+Operational Engineer
+
+**I WANT**
+to handle for the OneStop upgrade on the 25th Sept
+
+**SO THAT**
+the processes that interact with it (P10) are not negatively impacted","PROJECT","Completed (old)","APPS","HANDLE FOR ONESTOP UPGRADE"
+"156","MONITOR - M05 PROCESS RUN TIME","AS A
+Run Operator
+
+I WANT
+To be sent a warning email notification when a process has been running for 10 times longer then its average processing time.
+
+SO THAT
+I know to investigate if an incident needs to be reported","PROJECT","Completed (old)","MONITOR","M05 PROCESS RUN TIME"
+"157","INFRA - SETUP MONITORING TOOL ON APP SERVER","**AS A**
+Operational Engineer
+
+**I WANT**
+setup Monitoring Tool on a dedicated Application Server
+
+**SO THAT**
+the Application Server can be used specifically for monitoring","PROJECT","Completed (old)","INFRA","SETUP MONITORING TOOL ON APP SERVER"
+"158","MONITOR - M06 BP APP SERVER AVAILABILITY","**AS A**
+Operational Engineer
+
+**I WANT**
+setup blue prism software related monitoring and alerting for when the BP Server services on the Application Servers is not available
+
+**SO THAT**
+https://trello.com/c/aJyxNvUe/143-infra-action-recommendations-noted-from-blue-prism-technical-architecture-review","PROJECT","Completed (old)","MONITOR","M06 BP APP SERVER AVAILABILITY"
+"159","OPMODEL - CREATE QUARTERLY ROADMAP","**AS A**
+Operational Engineer
+
+**I WANT**
+create road map for Operations Industrialisation
+
+**SO THAT**
+the direction and next steps for the Operations Team is clear for the next 3 months","PROJECT","Completed (old)","OPMODEL","CREATE QUARTERLY ROADMAP"
+"160","INFRA - SEGREGATE DB ACCESS","**AS A**
+Operational Engineer
+
+**I WANT**
+segregate DBA access so Director of Automation has Write Access and Operations Lead only has read access
+
+**SO THAT**
+https://trello.com/c/aJyxNvUe/143-infra-action-recommendations-noted-from-blue-prism-technical-architecture-review
+
+**PLAN**
+
+1. https://trello.com/c/A6nRWEgs/2408-infra-raise-request-with-ict-to-change-blueprismprod2-database-users-to-create-automationdirector-admin-user-create-blueprismbot#
+2. https://trello.com/c/8BAF8mcu/2409-infra-configure-monitoring-tool-to-use-blueprismmonitoring-database-user-for-reading-the-database#
+3. https://trello.com/c/im4515Yu/2410-infra-configure-production-application-services-to-use-blueprismbot-for-accessing-the-database#
+4. https://trello.com/c/ilVv8QCY/2857-infra-update-power-bi-logins-to-use-blueprismread-username#
+5. https://trello.com/c/sw1urLHT/2411-infra-setup-jonathan-parsons-so-that-he-is-able-to-login-to-the-database-to-make-emergency-database-changes-using-automationdire#
+6. https://trello.com/c/1Y1fe6tP/2412-infra-raise-request-with-ict-to-change-blueprismprod2-database-users-by-changing-tbun2893-user-from-admin-to-read-only#","PROJECT","Completed (old)","INFRA","SEGREGATE DB ACCESS"
+"161","PROCESS - UPDATE P106 SDD (IN03)","**AS A**
+Operational Engineer
+
+**I WANT**
+update the solution design document for P106
+
+**SO THAT**
+It uses the correct naming convention for the process name, includes the correct sections, and includes benefits for Steve to Sign off","PROJECT","Completed (old)","PROCESS","UPDATE P106 SDD (IN03)"
+"162","OPMODEL - HANDOVER PROCESSES","**AS A**
+Operational Engineer
+
+**I WANT**
+increase the number of processes under Production Support or under USYD third tier support in stabilisation
+
+**SO THAT**
+processes are running smoothly in Production","PROJECT","Completed (old)","OPMODEL","HANDOVER PROCESSES"
+"163","APPS - SITS API INVESTIGATION","**AS A**
+Operational Engineer
+
+**I WANT**
+Investigate what parts of SITS our processes most interact with
+
+**SO THAT**
+We can work with the SITS Team (Graham Batersbey) to priorities APIs that can be built for our Bots","PROJECT","Completed (old)","APPS","SITS API INVESTIGATION"
+"164","AUTOMATE - IN02 VM MAINTENANCE","AS A
+Operational Engineer
+
+I WANT
+To have a solution for automatically performing maintencance checks on Production VMs
+
+SO THAT
+The process is streamlined and automated","PROJECT","Completed (old)","AUTOMATE","IN02 VM MAINTENANCE"
+"165","OPMODEL - SETUP AIHUB GITHUB","**AS A**
+Operational Engineer
+
+**I WANT**
+Setup AI Hub GITHUB
+
+**SO THAT**
+Source code for Python and R etc can be centrally managed and hosted","PROJECT","Completed (old)","OPMODEL","SETUP AIHUB GITHUB"
+"166","PROCESS - P5 / P52 UPDATE OBJECT LAYER","**AS A**
+Operational Engineer
+
+**I WANT**
+Update P5 and P52 so that they no longer use the old SITS objects and instead use the new Modularised SITS objects (old SITS objects below):
+
+- Sydney Student (Backend) - ACD Table
+- Sydney Student (Backend) - ADD Table
+- Sydney Student (Backend) - Launch and General
+- Sydney Student (Backend) - PRS Table
+
+
+**SO THAT**
+The processes are up to standard and are easier to maintain","PROJECT","Completed (old)","PROCESS","P5 / P52 UPDATE OBJECT LAYER"
+"167","REPORT - PBI DATA CONNECTOR FOR TRELLO","With the long term goal of creating a dashboard for the operations team, a ""data-connector"" or ""web-hook"" is required to directly connect the Trello database to the PowerBI dashboard. This will allow for direct monitoring, analytics and performance tracking","PROJECT","Completed (old)","REPORT","PBI DATA CONNECTOR FOR TRELLO"
+"168","APPS - SERVICENOW UPGRADE","**AS A**
+Operational Engineer
+
+**I WANT**
+Test all processes in Production that use Service Now
+
+**SO THAT**
+the application changes are handled for with regards to the up coming Service now upgrade","PROJECT","Completed (old)","APPS","SERVICENOW UPGRADE"
+"169","SITS - Sits FS1 and FS2 is down causing processes to terminate","**ISSUE**
+Sits FS1 and FS2 is down causing processes to terminate. Not all VMs are effected though (e.g. VM98 is still able to access SITS). The below VMs are effected:
+- VM103
+- VM16
+- VM59
+- VM58
+- VM63
+- VM79
+- VM95
+
+**IMPACT**
+processes terminating
+
+**ROOT-CAUSE**
+TBC
+
+**WORK-AROUND**
+NA - need to wait until ICT resolve issue
+
+**RESOLUTION**
+1. notify business
+2. work with ICT to resolve issue
+3. rerun all processes that require rerun
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","SITS","Sits FS1 and FS2 is down causing processes to terminate"
+"170","MONITOR - SLACK MIGRATION","**AS A**
+Operational Engineer
+
+**I WANT**
+the monitoring shift from outlook to slack
+
+**SO THAT**
+the monitoring tool is independent on other applications","PROJECT","Completed (old)","MONITOR","SLACK MIGRATION"
+"171","PROCESS - USE SCREENSHOT FEATURE","**AS A**
+Operational Engineer
+
+**I WANT**
+all the process will add screenshot action developed by Roger after marking a work queue item as exception in Recovery Stage
+
+**SO THAT**
+the screenshot can be automatically attached to the trello ticket ","PROJECT","Completed (old)","PROCESS","USE SCREENSHOT FEATURE"
+"172","APPS - SITS OCTOBER RELEASE","**AS A**
+Operational Engineer
+
+**I WANT**
+plan for October SITS changes by doing the following:
+1. Test the new environment to assess the impacts (https://trello.com/c/bQRE6JVY/1931-sits-plan-for-october-sits-changes-by-testing-the-new-environment-to-assess-the-impacts)
+2. Test VM compatibility (https://trello.com/c/8kaOze7h/2819-sits-check-sits-970-compatibility-on-prod-vms)
+3. Work with devs to complete outstanding impact testing (https://trello.com/c/k3ylifWH)
+4. Make appropriate code changes where needed (https://trello.com/c/rUvLCiT8/2597-sits-october-release-make-changes-to-sits-objects-in-prod) 
+
+
+
+**SO THAT**
+Minimal impacts occur in the Prod environment","PROJECT","Completed (old)","APPS","SITS OCTOBER RELEASE"
+"173","INFRA - VM62/58 Resource PC error","VM58: P65 4pm
+VM62: P44 12pm
+
+Resolution
+Drop M01 triggers and tables temporarily","PROBLEM","Completed (old)","INFRA","VM62/58 Resource PC error"
+"174","OUTLOOK - application keeps putting processes into warning state (pop-up saying ""Outlook has stopped working"")","ISSUE
+Process frozen with pop-up window message ""Outlook has stopped working"".
+
+IMPACT
+Process unable to continue working
+
+ROOT-CAUSE
+Unknown (Outlook issue)
+
+WORKAROUND:
+Log into VM and close outlook, then process will start again.
+
+RESOLUTION
+Raise ticket with ICT to disable automapping for shared mail boxes
+https://support.microsoft.com/en-us/help/2646504/how-to-remove-automapping-for-a-shared-mailbox-in-office-365","PROBLEM","Completed (old)","OUTLOOK","application keeps putting processes into warning state (pop-up saying ""Outlook has stopped working"")"
+"175","OUTLOOK - Outlook VBO Extended processes unable to send mail from Outlook VBO and it seems to be caused by the Outlook.exe windows security login","**ISSUE**
+processes unable to send mail from Outlook VBO Extended and it seems to be caused by the Outlook.exe windows security login. When attempting to send mail, a blank page opens (screenshot not captured) thats linked to a Outlook windows task. After killing that task, the Outlook VBO Extended will recover from warning state and then attempt to send mail again. This cycle will continue until the process reaches its maximum retry logic. If you then try open up the Outlook application manually, the Outlook.exe Windows Security Pop-up is seen (see screenshot below).
+
+**IMPACT**
+process gets stuck in warning state until manually intervened
+
+**ROOT-CAUSE**
+TBC - likely because the Outlook VBO Extended does not have the functionality to handle for the windows security login so it fails
+
+**WORK-AROUND**
+1. kill Outlook task until process stops running
+2. assess if process needs to be re-run
+3. re-run if required
+
+**RESOLUTION**
+https://trello.com/c/HdPgryke/122-in02-vm-maintenance-develop-solution-for-automatically-performing-maintenance-checks-on-production-vm-runtime-resources
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","OUTLOOK","Outlook VBO Extended processes unable to send mail from Outlook VBO and it seems to be caused by the Outlook.exe windows security login"
+"176","INFRA - ApiClient.dll is missing for Outlook","ISSUE
+Can not start outlook due to ApiClient.dll missing error
+
+IMPACT
+Can not start outlook
+P41, P15, P44 have been effected
+
+ROOT-CAUSE
+ApiClient.dll missing
+
+RESOLUTION
+1. get a copy of the ""ApiClient.dll"" file from a working VM
+2. Navigate to ""C:\Program Files\Common Files\microsoft shared\ClickToRun"" on the broken VM
+3. paste the ""ApiClient.dll"" file into the ""C:\Program Files\Common Files\microsoft shared\ClickToRun""","PROBLEM","Completed (old)","INFRA","ApiClient.dll is missing for Outlook"
+"177","Outlook - the old Outlook object is causing processes to terminate","**ISSUE**
+The old Outlook object is causing processes to terminate 
+
+**IMPACT**
+might fail to launch or terminate the outlook in some rare cases
+
+**ROOT-CAUSE**
+the object is not up to standard
+
+**WORK-AROUND**
+rerun process if needed
+
+**RESOLUTION**
+The object named ""Outlook"" only Launches and Terminates Outlook - this will be resolved for by this ticket https://trello.com/c/BF1r9rmd/1907-ins06-handle-for-windows-security-pop-up
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","Outlook","the old Outlook object is causing processes to terminate"
+"178","Outlook - Unable to launch to Outlook with c2r32.dll error","ISSUE
+Unable to launch to Outlook with c2r32.dll error
+
+IMPACT
+Cannot read email
+
+ROOT-CAUSE
+Missing Outlook DLL
+
+WORKAROUND
+1. navigate to the ""C:\Program Files\Common Files\microsoft shared\ClickToRun"" folder location
+2. download the ""C2R32.dll"" attachment in this trello card
+3. copy the ""C2R32.dll"" file into the ""C:\Program Files\Common Files\microsoft shared\ClickToRun"" folder location of the broken VM
+
+RESOLUTION
+https://trello.com/c/hZlWPvDx/1572-infra-build-sub-process-that-handles-for-outlook-issue and https://trello.com/c/HdPgryke/122-in02-vm-maintenance-develop-solution-for-automatically-performing-maintenance-checks-on-production-vm-runtime-resources","PROBLEM","Completed (old)","Outlook","Unable to launch to Outlook with c2r32.dll error"
+"179","OUTLOOK - processes unable to run on other VMs sometimes because Outlook Profiles are not consistent across all VMs","**ISSUE**
+processes unable to run on other VMs sometimes because Outlook Profiles are not consistent across all VMs
+
+**IMPACT**
+process terminates
+
+**ROOT-CAUSE**
+New Outlook profiles not being applied to all VMs as they are identified
+
+**WORK-AROUND**
+setup profiles as issue is identified
+
+**RESOLUTION**
+https://trello.com/c/HdPgryke/122-in02-vm-maintenance-develop-solution-for-automatically-performing-maintenance-checks-on-production-vm-runtime-resources and https://trello.com/c/wPmGudwd/1940-infra-generate-a-consolidated-list-of-prod-outlook-profiles
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","OUTLOOK","processes unable to run on other VMs sometimes because Outlook Profiles are not consistent across all VMs"
+"180","Outlook - processes terminating when attempting to launch Outlook from Microsoft Sign In pop-up","**ISSUE**
+processes terminating when attempting to launch Outlook from Microsoft Sign In pop-up
+
+**IMPACT**
+processes terminate
+
+**ROOT-CAUSE**
+Consolidated Outlook registry file was not properly configured
+
+**WORK-AROUND**
+Manually change outlook account back to blueprismbot on prod
+
+**RESOLUTION**
+reapply the updated consolidated prod outlook profile across all prod VMs
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","Outlook","processes terminating when attempting to launch Outlook from Microsoft Sign In pop-up"
+"181","Outlook - Outlook will switch to a onprem legacy account on VM59 after OS patching","**ISSUE**
+VM59 outlook will switch to a onprem account after certain OS patching
+
+**IMPACT**
+process on the VM cannot use outlook
+
+**ROOT-CAUSE**
+code logic of Outlook tool
+
+**WORK-AROUND**
+manually sign back in blueprismbot after OS patching
+
+**RESOLUTION**
+build the VM maintenance tool to automatically sign back in with blueprismbot credential (https://trello.com/c/BF1r9rmd/1907-ins06-handle-for-windows-security-pop-up)
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","Outlook","Outlook will switch to a onprem legacy account on VM59 after OS patching"
+"182","Outlook - processes terminating after having problems attempting to launch Outlook","**ISSUE**
+processes terminating after having problems attempting to launch Outlook
+
+**IMPACT**
+process terminates when attempting to interact with Outlook
+
+**ROOT-CAUSE**
+1. VM62 outlook will switch to on-prem outlook account after OS patching
+
+**WORK-AROUND**
+1. sign out and sign back in using blueprism.bot@sydney.edu.au
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","Outlook","processes terminating after having problems attempting to launch Outlook"
+"183","IE - auto-complete pop-up occurring when Bots are working on IE related forms","**ISSUE**
+auto-complete pop-up occurring when Bots are working on IE related forms
+
+**IMPACT**
+process terminates
+
+**ROOT-CAUSE**
+Due to an Internet Explorer auto-complete pop-up notification, the bot was unable to access the buttons on the page. See attached.
+
+**WORK-AROUND**
+Disable auto-complete notifications from IE using registry settings (https://blog.mindcore.dk/2013/04/do-you-want-autocomplete-to-remember.html)
+
+**RESOLUTION**
+https://trello.com/c/pBkYMQ8K/2264-ins12-internet-explorer-registries#
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","IE","auto-complete pop-up occurring when Bots are working on IE related forms"
+"184","INFRA - Outlook outage causing multiple process stuck in warning stage","ISSUE
+Multiple processes are stuck in warning stage
+
+IMPACT
+VMs are blocked 
+
+ROOT-CAUSE
+Outlook outage
+
+RESOLUTION
+Terminate Outlook and rerun the outlook client","PROBLEM","Completed (old)","INFRA","Outlook outage causing multiple process stuck in warning stage"
+"185","INFRA - windows security pop-up effecting multiple processes","ISSUE
+windows security pop-up effecting multiple processes
+
+IMPACT
+process terminated at the end before it could send output reports
+
+ROOT-CAUSE
+windows security login pop-up 
+
+WORKAROUND 
+login to VM --> use MCS\BluePrismBot credentials to manually login to windows security pop-up --> close Excel / Outlook and test if pop-up occurs when you re-open Excel (pop-up should no longer exist)
+
+RESOLUTION
+https://trello.com/c/HdPgryke/122-in02-vm-maintenance-develop-solution-for-automatically-performing-maintenance-checks-on-production-vm-runtime-resources","PROBLEM","Completed (old)","INFRA","windows security pop-up effecting multiple processes"
+"186","INFRA - processes terminating from ""Could not initialise Java Access Bridge support""","ISSUE
+""ERROR: Internal : Failed to perform step 1 in Navigate Stage 'Launch' on page 'Launch' - Could not initialise Java Access Bridge support - Failed to load Java Access Bridge DLL. The file could not be found in any of the following expected locations - 
+Application Directory: C:\Program Files\Blue Prism Limited\Blue Prism Automate\WindowsAccessBridge-32.dll
+System Directory: C:\Windows\SysWOW64\WindowsAccessBridge-32.dll
+Windows Directory: C:\Windows\WindowsAccessBridge-32.dll
+Current Directory: C:\Program Files\Blue Prism Limited\Blue Prism Automate\WindowsAccessBridge-32.dll""
+
+IMPACT
+Processes terminate
+
+ROOT-CAUSE
+TBC
+
+WORK-AROUND
+1. copy the folders in the shared folder location ""AIHUB\Required Files v1.1\4.1 - Java Access Bridge\""
+2. drop them into the follow local VM folder location ""C:\""
+
+RESOLUTION
+https://trello.com/c/HdPgryke/122-infra-develop-solution-for-automatically-performing-maintenance-checks-on-production-vm-runtime-resources
+
+LESSONS (good, bad, lucky)","PROBLEM","Completed (old)","INFRA","processes terminating from ""Could not initialise Java Access Bridge support"""
+"187","INFRA - process saying they are Yes - Connected in the control room however the foreground Runtime Resource application says its unable to connect","**ISSUE**
+process saying they are Yes - Connected in the control room however the foreground Runtime Resource application says its unable to connect
+
+**IMPACT**
+- sometimes processes are unable to run https://trello.com/c/NI24LgCU/2370-in02-vm-maintenance-process-terminated-on-rpaspr00081-at-26-august-2019-121836
+- its confusing as to whether resources are connected or not
+
+**ROOT-CAUSE**
+Custom ""Keep Resource Alive"" windows Task in Windows Task Scheduler (see image)
+
+**WORK-AROUND**
+NA
+
+**RESOLUTION**
+1. https://trello.com/c/VgolGnZo/2384-infra-delete-blue-prism-windows-tasks-that-are-found-in-task-scheduler
+2. https://trello.com/c/t7EdVdej/2385-infra-update-file-used-to-launch-resource-pc-on-all-prod-vms#
+3. Restart VMs
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","INFRA","process saying they are Yes - Connected in the control room however the foreground Runtime Resource application says its unable to connect"
+"188","INFRA - multiple run-time resource running at the same time causing processes to terminate","ISSUE
+Multiple Resource PCs were running in the background of the old VMs, potentially preventing processes to run on VM0000. This problem caused an incident for process 6 on the 22nd of May.
+
+IMPACT
+Process does not start
+
+ROOT-CAUSE
+TBC
+
+WORK-AROUND
+close multiple resources that are open
+
+RESOLUTION
+https://trello.com/c/hHpfOhZA/184-infra-process-saying-they-are-yes-connected-in-the-control-room-however-the-foreground-runtime-resource-application-says-its-una","PROBLEM","Completed (old)","INFRA","multiple run-time resource running at the same time causing processes to terminate"
+"189","INFRA - VMs getting stuck connecting and then disconnecting repetitively is unable to connect to the application server properly","ISSUE
+VMs getting stuck connecting and then disconnecting repetitively is unable to connect to the application server properly. So far this has effected the following VMs:
+
+IMPACT
+VMs are unavailable
+
+ROOT-CAUSE
+TBC 
+
+WORKAROUND
+1. Monitor VM
+2. Extract Event Logs for investigation
+3. Re-run process on different VM
+
+RESOLUTION
+https://trello.com/c/hHpfOhZA/184-infra-process-saying-they-are-yes-connected-in-the-control-room-however-the-foreground-runtime-resource-application-says-its-una","PROBLEM","Completed (old)","INFRA","VMs getting stuck connecting and then disconnecting repetitively is unable to connect to the application server properly"
+"190","PEOPLESOFT - application is being upgraded and will be effecting processes","ISSUE
+PeopleSoft is being upgraded and the UI might be effected
+
+IMPACT
+P13 and P3 might be effected
+
+ROOT-CAUSE
+PeopleSoft upgrade
+
+RESOLUTION
+1. Assess changes for each process
+2. Implement changes","PROBLEM","Completed (old)","PEOPLESOFT","application is being upgraded and will be effecting processes"
+"191","HYPERION - P60 process cannot login with password stored in a ""password-typed"" data item","**ISSUE**
+P60 cannot sign in Hyperion with password stored in ""password-typed"" data item
+
+**IMPACT**
+P60 cannot run in PROD
+
+**ROOT-CAUSE**
+Unknown
+
+**WORK-AROUND**
+Save password in ""text-typed"" data item
+
+**RESOLUTION**
+Use write action instead of GSK to put in the password
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","HYPERION","P60 process cannot login with password stored in a ""password-typed"" data item"
+"192","INFRA - processes currently using tags heavily (sometimes for unique identifiers) which is clogging up the BPATags table in the Prod Database","**ISSUE**
+processes currently using tags heavily (sometimes for unique identifiers) which is clogging up the BPATags table in the Prod Database
+
+**IMPACT**
+processes terminate / perform slowly because they timeout / are slow to connect with the BPATags table
+
+**ROOT-CAUSE**
+processes using Tags excessively, sometimes as a unique Identifier
+
+**WORK-AROUND**
+1. clean fragmentation
+2. rerun processes
+
+**RESOLUTION**
+https://trello.com/c/ILJD7xr7/148-infra-update-all-processes-that-use-tags-excessively-so-that-they-dont-create-massive-bpatag-tables-in-the-blue-prism-database
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","INFRA","processes currently using tags heavily (sometimes for unique identifiers) which is clogging up the BPATags table in the Prod Database"
+"193","BLUEPRISM - tag related actions tends to timeout","**ISSUE**
+Processes that use tag to filter work queue item tends to timeout and terminate
+
+**IMPACT**
+random process termination
+
+**ROOT-CAUSE**
+1. Poor query design by blueprism
+2. Too many tags in the BPATag table
+
+**WORK-AROUND**
+database defrag
+
+**RESOLUTION**
+1. clean up BPATag table
+2. database sharding
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","BLUEPRISM","tag related actions tends to timeout"
+"194","OUTLOOK - Outlook Mail Server Outage","**ISSUE**
+Microsoft Outlook is failing to login.
+
+**IMPACT**
+P5 is stuck on ""warning"" stage/ unable to run (cannot access emails).
+
+**ROOT-CAUSE**
+Application-based/expected ICT issues.
+
+**WORK-AROUND**
+Terminate P5 until issue has been resolved.
+
+**RESOLUTION**
+Lodge fault ticket with ICT and follow-up promptly.
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","OUTLOOK","Outlook Mail Server Outage"
+"195","INFRA - sometimes when processes are migrated to the Production Environment they are no longer published","**ISSUE**
+sometimes when processes are migrated to the Production Environment they are no longer published
+
+**IMPACT**
+processes need to be published manually
+
+**ROOT-CAUSE**
+Blue Prism bug
+
+**WORK-AROUND**
+manually publish processes OR use Blue Prism AutomateC script to publish (.\AutomateC.exe /publish ""processname"" /user ""username"" ""password"")
+
+**RESOLUTION**
+1. Blue Prism fixes this in next release
+2. https://trello.com/c/5d7KlIF8/169-infra-build-tool-to-automatically-publish-all-applications-in-the-production-environment
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","INFRA","sometimes when processes are migrated to the Production Environment they are no longer published"
+"196","OneStop (IE) - P10 Create invoice process needing respying on various elements","**ISSUE**
+P10 Create invoice process needing respying on various elements
+
+**IMPACT**
+process terminated
+
+**ROOT-CAUSE**
+Respying caused by an unknown reason
+
+**WORK-AROUND**
+1. identify elements that require respying
+
+**RESOLUTION**
+respy elements
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","OneStop","OneStop (IE)P10 Create invoice process needing respying on various elements"
+"197","P24 / P50 - Processing Credit Offers - business reported cases being missed by P50 and bot not having a mechanism to identify missed cases","**ISSUE**
+business reported cases being missed by P50 and bot not having a mechanism to identify missed cases
+
+**IMPACT**
+business confidence is lost and they will not want to develop any other processes with us if it continues to occur
+
+**ROOT-CAUSE**
+system exception cases occurring in Process and then not getting reattempted
+
+**WORKAROUND**
+Force retry cases
+
+**RESOLUTION**
+https://trello.com/c/h6z0jqgW/1800-p50-processing-credit-offers-loader-update-process-so-that-it-gets-cases-that-need-to-be-processed-from-the-p24-queue-completed
+https://trello.com/c/wfZ6CZxY/1799-p24-processing-credit-offers-update-process-so-that-the-reporting-component-is-separate-and-uses-the-queue-data-to-get-data-for
+https://trello.com/c/JHh8U7Me/1798-p50-processing-credit-offers-update-process-so-that-the-reporting-component-is-separate-and-uses-the-queue-data-to-get-data-for
+https://trello.com/c/PNRIBOSF/1796-p24-processing-credit-offers-change-process-so-that-it-has-a-unique-identifier
+https://trello.com/c/hTDsQrCv/1795-p50-processing-credit-offers-change-process-so-that-it-has-a-unique-identifier
+https://trello.com/c/ituCgkAZ/1794-p50-processing-credit-offers-change-process-so-that-it-terminates-when-its-unable-to-handle-system-exceptions-and-also-retires-s
+
+**LESSONS (GOOD, IMPROVEMENTS, LUCKY)**","PROBLEM","Completed (old)","P24","P24 / Processing Credit Offers - business reported cases being missed by P50 and bot not having a mechanism to identify missed cases"
+"198","P21 - Removing Sanctions (Loader) - process fails to identity cases to load queue","**ISSUE**
+Process fails to identity cases to load queue
+
+**IMPACT**
+No cases were processed when there should have been and also no notification was sent for further investigation.
+
+**ROOT-CAUSE**
+(Page 5) Process did not run loop logic - 'Files' collection may have been empty. Append stage at end of loop never runs resulting in the 'FIN3003 Combined' Collection to have no rows. This caused the Count Rows stage on the Main Page to return 0.
+
+**WORK-AROUND**
+Manually rerun process.
+
+**RESOLUTION**
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","P21","Removing Sanctions (Loader) - process fails to identity cases to load queue"
+"199","P50 - process runs fine on VM30 but gives out error on VM78","**ISSUE**
+P50 Runs Fine on VM30 but gives out error on VM78. VM settings to be compared and resolved
+
+**IMPACT** 
+Process terminates
+
+**ROOT-CAUSE: BOT was unable to attach to right child index of the object and hence HTML spy mode was not appearing
+
+**WORK-AROUND: Child Index value while attaching updated. Window Title attach option removed.
+
+**LESSONS**
+GOOD: Got to know about -extoff which switches off all the active components in the browser if sent along with the URL.
+
+IMPROVEMENT: Child Index should always be taken care while working on an Browser based application
+","PROBLEM","Completed (old)","P50","process runs fine on VM30 but gives out error on VM78"
+"200","P52 - Unconditional Documents Upload - process unable to handle for emails being moved by humans manually","**ISSUE**
+process unable to handle for emails being moved by humans manually
+
+**IMPACT**
+If emails are moved manually by Humans, then the process will result in a system exception for each case and then eventually terminate
+
+**ROOT-CAUSE**
+process solution designed to bulk load cases to the queue (Queue Loader, Queue Processor) instead of processing cases one at a time (Single Queue Loader and Processor process e.g. Email SID labelling)
+
+**WORK-AROUND**
+1. Delete all pending items
+2. Rerun process
+
+**RESOLUTION**
+https://trello.com/c/xrYCaBgV/2122-p52-unconditional-documents-upload-update-process-so-that-it-can-handle-for-emails-being-moved-by-humans-manually
+Modified exception logic to not try to move email if error is related to not finding an email.
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","P52","Unconditional Documents Upload - process unable to handle for emails being moved by humans manually"
+"201","INFRA - schedules failing to run process tasks","**ISSUE:**
+Schedules failing to run process tasks. The Schedule often starts, however its unable to start some of the tasks and so ""Aborts"" that task, which then starts the next task that is selected in the Schedule.
+
+**IMPACT:**
+Tasks that are supposed to run certain processes dont run and get skipped
+
+**ROOT-CAUSE:**
+Current hypothesis is that processes time out when attempting to query the database to start the Tasks because the fragementation percentage of certain tables in the database is too high (session table, process table, logs table). This high fragmentation could be caused by (1) high INSERT and DELETE operations to the tables and / or (2) the fact that the database is hosted on a shared SQL server. The excel document titled ""Problem Analysis"" includes the Application Event logs from 4 VMs that experienced this Problem between the 20th and the 25th of July. In each of the 4 examples, the same occurance is found where a process will complete however it fails to mark the process as COMPLETE in the Blue Prism database Session table (e.g. ""Failed to set session status on d2e7ce8f-2ead-4f9c-86e5-3d21891ae7a9 to COMPLETED : Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.""). This timeout then prevents the next scheduled task to run until at least a minute has passed (see P6 and P50 examples in excel document). The timeout prevents any other scheduled tasks from running because the VM connection gets aborted, showing an ""Warning"" error in the Application Event Logs (e.g. ""Disconnected 10.83.28.96 - System.IO.IOException: Unable to write data to the transport connection: An established connection was aborted by the software in your host machine. ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine""). 
+
+**WORK-AROUND:**
+1. assess impact
+2. contact business if impact is high
+2. re-run process if possible
+
+**RESOLUTION:**
+Build script that regularly cleans the Fragmentation of the Database.
+
+**LESSONS (good, bad, lucky):**","PROBLEM","Completed (old)","INFRA","schedules failing to run process tasks"
+"202","INFRA - processes running and logging high volume of session log data to BluePrism Database","ISSUE
+The following processes were identified as being key issues from the analysis:
+1. P6 
+2. P10
+3. P21
+4. P28 
+5. P35
+6. P7
+
+IMPACT
+BluePrism database performs slow and processes terminate with error message ""An error occurred setting the data : Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.""
+
+ROOT-CAUSE
+Best practice logging guides not being followed (see attached)
+
+RESOLUTION
+Update logging of processes","PROBLEM","Completed (old)","INFRA","processes running and logging high volume of session log data to BluePrism Database"
+"203","OUTLOOK - unable to launch outlook causing multiple processes to have issues starting (error message ""Outlook Startup Error"")","PROBLEM
+unable to launch outlook causing multiple processes to have issues starting. This issue has so far effected the following processes:
+- P2
+- P3
+- P5
+- P8
+- P12
+- P19
+- P23
+- P26
+- P33
+
+IMPACT
+processes terminating
+
+WORKAROUND
+Archive sent and received emails into Online Archive
+
+ROOT-CAUSE
+current hypothesis is that this is due to build up of data from (1) sent and received emails and (2) the number of shared folders causing issues 
+
+RESOLUTION
+Raise ticket with ICT to disable automapping for shared mail boxes
+https://support.microsoft.com/en-us/help/2646504/how-to-remove-automapping-for-a-shared-mailbox-in-office-365","PROBLEM","Completed (old)","OUTLOOK","unable to launch outlook causing multiple processes to have issues starting (error message ""Outlook Startup Error"")"
+"204","INFRA - processes terminating from ""Timeout Expired"" exceptions when attempting to communicate with the database","**ISSUE**
+process terminated with error message ""Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding."" & ""The request channel timed out while waiting for a reply after 00:00:00. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.""
+
+**IMPACT**
+processes terminate when attempting to load cases to the Queue
+
+**ROOT-CAUSE**
+Database performing slowly because of the ""BPASessionLog_NonUnicode"" and ""BPASessionLog_NonUnicode_pre65"" tables being larger then expected. Blue Prism recommends that the SessionLog tables have automatic archiving setup on them so that they do not build up to overly large amounts. This automatic archiving was not originally setup when the environment was initially deployed.
+
+**WORK-AROUND**
+Monitor the environment and restart processes when needed
+
+**RESOLUTION**
+1. Clean the ""BPASessionLog_NonUnicode_pre65"" table: Remove the table from the Blue Prism database as recommended by Blue Prism (see ""confirmation on dropping pre65 table.pdf"").
+2. Clean the ""BPASessionLog_NonUnicode"" table: Run the ""remove-logs.sql"" script on the Dev Environment to test the outcome. The table was cleaned, however an unexpected error message occurred after the table was cleaned (An explicit value for the identity column in table 'BPASessionLog_NonUnicode' can only be specified when a column list is used and IDENTITY_INSERT is ON.) which caused the script to attempt to rollback. However, when the script attempted to rollback it failed and the outcome was that the 'BPASessionLog_NonUnicode' stayed cleaned.
+
+**LESSONS**
+GOOD: Communication with Users, Customers and Sponsors to keep them updated on the problem as well as the collaboration with ICT to resolve the problem was excellent.
+IMPROVEMENT: Communication and responsiveness from the Blue Prism Vendor to assist with resolving the issue could have been better. Additionally next time an environment database is setup we will make sure to check the automated archiving is setup.
+LUCKY: We have access to run scripts on the database for root-cause analysis and resolution.
+
+<U+2506>Attachments: [image.png](https://trello-attachments.s3.amazonaws.com/5cf0cc2b0adf2513d6b20528/5cf46bf93427834194f483d8/a8a5f7590076ee6f4d34cf3ef94d2ab8/image.png)
+","PROBLEM","Completed (old)","INFRA","processes terminating from ""Timeout Expired"" exceptions when attempting to communicate with the database"
+"205","INFRA - application server service randomly stopping","ISSUE
+application server service randomly stopping
+
+IMPACT
+all running processes are put into Frozen mode until completed and no other processes are able to run from the process schedule
+
+ROOT-CAUSE
+Database stuck in deadlock from a combination of Application Server calling large volume of small requests and Power BI calling small volumes of extremely large requests (see ""deadlock.jpg"" image)
+
+WORK-AROUND
+Monitor application server to identify when it stops
+
+RESOLUTION
+IMPROVE APPLICATION SERVER ROBUSTNESS:
+1. Setup Blue Prism Server service settings so the service first, attempts to restart when it fails whilst also sending a notification to the run team; second, restarts the VM and then the service will restart; And if that doesnt work, then the VM will continuously attempt to restart the service
+2. Setup Second Application Server to share the resource loading 
+3. Stop running Power BI small volume / extremely large requests (see ""deadlock.jpg"" image) when processes are running in the Production Environment","PROBLEM","Completed (old)","INFRA","application server service randomly stopping"
+"206","SITS - pop up when fails to save file to share drive","**ISSUE**
+INS03 will terminate sometimes when SITS generate a pop up for saving file to share folder
+
+**IMPACT**
+minimal, rerun process
+
+**ROOT-CAUSE**
+TBD
+
+**WORK-AROUND**
+close pop ups and rerun the process
+
+**RESOLUTION**
+https://trello.com/c/322pArLX/215-in03-sits-popup
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","SITS","pop up when fails to save file to share drive"
+"207","SITS - unexpected pop-up causing all processes to terminate after attempting to login to SITS","ISSUE
+unexpected pop-up causing all processes to terminate after attempting to login to SITS
+
+IMPACT
+the following processes were effected:
+- P8
+- P12
+- P15
+- P24
+- P27, P32
+- P28
+- P30
+- P34, P35, P36
+- P44
+
+ROOT-CAUSE
+SITS Pop-up (see image)
+
+WORKAROUND
+Monitor processes that use SITS and click OK when the pop-up occurs
+
+RESOLUTION
+- update the two objects that handle launching and logging into sits (1) SITS; and (2) SITS_Launch and Navigate.
+- make the update so that after the bot clicks the OK button on the Message Notice Board, it checks if the ""Run"" button can be seen on the expected window that should have opened. IF its not open, THEN check for the pop-up. IF the pop-up exists, THEN click the OK button on the pop-up and attempt to continue (see image)
+- re-sync the changes in PROD back into DEV","PROBLEM","Completed (old)","SITS","unexpected pop-up causing all processes to terminate after attempting to login to SITS"
+"208","P23 - Credit Applicant Document Upload - process stuck in warning state on Manage Students Screen","ISSUE
+process stuck in warning state (VM62) on Manage Students Screen (3:30pm). this issue has occurred on the following days:
+- 17th May
+- 21st May
+- 29th May
+
+IMPACT
+Process gets stuck in warning state until manaully actioned
+
+ROOT-CAUSE
+There might be some wait required after entering requester identifier and before selecting the checkbox, because application takes a second to refresh the table.
+We can confirm this after multiple runs in Prod.
+
+RESOLUTION
+Add 5 seconds of wait.
+Please monitor the process after deploying Sydney Student(Web) object","PROBLEM","Completed (old)","P23","Credit Applicant Document Upload - process stuck in warning state on Manage Students Screen"
+"209","INFRA - unexpected network outage causing multiple processes to terminated","**ISSUE**
+
+**IMPACT**
+
+**ROOT-CAUSE**
+
+**WORK-AROUND**
+
+**RESOLUTION**
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","INFRA","unexpected network outage causing multiple processes to terminated"
+"210","SITS - pop up saying that various licenses will expire in a number of days when attempting to launch SITS","ISSUE
+multiple pop ups saying that various licenses will expire in a number of days when attempting to launch SITS and after attempting to login
+
+IMPACT
+https://trello.com/c/8p6L6Mlk/1378-p41-graduate-in-absentia-queue-processor-process-terminated-on-rpaspr00062
+https://trello.com/c/ndCq4XuJ/1385-p34-email-sid-labelling-scholarships-process-terminated-on-rpaspr00016
+https://trello.com/c/m8nb6X9b/1386-p8-sas-email-title-change-v2-process-terminated-on-rpaspr00016
+https://trello.com/c/aGV8TIYF/1384-p36-email-sid-labelling-fees-process-terminated-on-rpaspr00063
+https://trello.com/c/PEoElQW9/1381-p26-diet-rule-override-queue-loader-process-terminated-on-rpaspr00059
+https://trello.com/c/6K6fUP7E/1380-p32-scholarship-application-detail-check-queue-processor-process-terminated-on-rpaspr00058
+https://trello.com/c/kgoMY554/1379-p42-admissions-reporting-process-terminated-on-rpaspr00079
+
+ROOT-CAUSE
+TBC
+
+WORK-AROUND
+watch processes running that use SITS and press ""OK"" when the pop-up occurs
+
+RESOLUTION
+update launch and login functions of SITS (object named ""SITS"", ""SITS_Launch and Login"", and ""Sydney Student (Backend) - Launch and General"") so that they can handle for these pop ups in the future.
+Unable to launch pages:
+1. check ""OK"" button exists
+2. click ""OK"" button then wait 1 second
+3. IF ""OK"" button still exists THEN retry 10 times until its gone ELSE continue to wait for launch
+Unable to Login pages:
+1. check ""OK"" button exists
+2. click ""OK"" button then wait 1 second
+3. IF ""OK"" button still exists THEN retry 10 times until its gone ELSE continue to wait for login","PROBLEM","Completed (old)","SITS","pop up saying that various licenses will expire in a number of days when attempting to launch SITS"
+"211","INFRA - processes stop running or get stuck in warning state because of JAVA update Pop-up","ISSUE
+processes stop running or get stuck in warning state because of JAVA Installation Pop-up
+
+IMPACT
+process cant run on VM 
+
+ROOT-CAUSE
+Java update pop-up
+
+WORK-AROUND
+Manually close Java update pop-up
+
+RESOLUTION
+https://trello.com/c/MXZm1gqe/1909-ins08-handle-for-java-installation","PROBLEM","Completed (old)","INFRA","processes stop running or get stuck in warning state because of JAVA update Pop-up"
+"212","INFRA - Network outage effecting multiple processes","**ISSUE**
+Network outage effecting multiple processes. This outage seems to be related to the ""RCD Testing"" that needs to be applied each month (see comments below). Because this is a monthly activity performed by CIS it is likely to occur again in the future.
+
+**IMPACT**
+various processes terminated
+
+**ROOT-CAUSE**
+RCD Testing
+
+**WORK-AROUND**
+rerun processes
+
+**RESOLUTION**
+https://trello.com/c/GF7n6ead/2898-infra-run-vm-maintenance-process-on-all-vms#
+
+**LESSONS**
+GOOD: Identified early what the root-cause was
+IMPROVEMENT: Setup VM Maintenance process to run next time RCD Testing happens
+LUCKY: Sean and Bianca are quick to resolve incidents","PROBLEM","Completed (old)","INFRA","Network outage effecting multiple processes"
+"213","SITS - cannot connect to specific instance of SITS Client","**ISSUE**
+Unable to access specific instance of SITS Client
+
+**IMPACT**
+
+- SITS crashes upon launching - white 'Uniface' window opens instead of SITS Client window
+- Access error upon launching SITS Client insufficient permissions
+- Unable to access shortcuts folder
+
+**ROOT-CAUSE**
+
+- Firewall settings blocking program from launching
+- Insufficient permissions on shared unikey
+
+**WORK-AROUND**
+Use a different instance of SITS if available/appropriate
+
+**RESOLUTION**
+Contact ICT to request:
+
+- Access to both shortcuts folder and .exe file (pointed to by shortcut) locations (if access error)
+- Firewall settings for particular server be changed (if uniface error)
+
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","SITS","cannot connect to specific instance of SITS Client"
+"214","BLUEPRISM - BluePrism application randomly stopped working","**ISSUE**
+resource pc can crash on the PROD VM
+
+**IMPACT**
+running process will stuck in warning
+no process will run afterwards
+
+**ROOT-CAUSE**
+https://trello.com/c/06YpffOv/244-p89-input-grades-for-internal-students-process-keeps-terminating
+
+**WORK-AROUND**
+https://trello.com/c/7nolXCTL/239-m05-session-duration-monitoring#
+
+**RESOLUTION**
+https://trello.com/c/06YpffOv/244-p89-input-grades-for-internal-students-process-keeps-terminating
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","BLUEPRISM","BluePrism application randomly stopped working"
+"215","PROCESS - P9/P37 cannot move email to fail folder with error message ERROR: Internal : Could not execute code stage because exception thrown by code stage: The operation failed.","**ISSUE**
+process cannot move email randomly
+
+**IMPACT**
+process terminate
+
+**ROOT-CAUSE**
+Move Email stage fails if email has already been moved/deleted
+
+**WORK-AROUND**
+Re-run process
+
+**RESOLUTION**
+https://trello.com/c/DTcSv8N7/2510-p37-complex-bookings-queue-processor-rework-mail-moving-logic-in-recovery-path
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","PROCESS","P9/P37 cannot move email to fail folder with error message ERROR: Internal : Could not execute code stage because exception thrown by code stage: The operation failed."
+"216","IN03 - SITS popup","**ISSUE**
+SITS sometimes will generate a pop up saying the file is failed to save in share folder (even though the file is actually saved), and the pop up will block the process from interacting with SITS
+
+**IMPACT**
+TBC - terminated
+
+**ROOT-CAUSE**
+TBC
+
+**WORK-AROUND**
+Manually close popups, restart SITS, and rerun process 
+
+**RESOLUTION**
+TBC
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","IN03","SITS popup"
+"217","OUTLOOK - processes terminating with error message ""specified cast is not valid""","**ISSUE**
+processes terminating with error message ""specified cast is not valid"". When the process attempts to ""Get Mail"" using the Outlook VBO it throws the error message ""Specified cast is not valid"". This also occurs after attempting to open the ""HDRAC Ops"" outlook profile.
+
+**IMPACT**
+This problem seems to only be effecting the Email SID Labelling processes noted below:
+- P35
+- P34
+
+**ROOT-CAUSE**
+there are few types of mails which blueprism vbo code does not handle for eg: - outlook messages where sender email id is missing - these kinds of messages originated from outlook itself for eg:- giving a warning message as your mailbox is full, archive folder is almost full etc . if any such messages are there in your inbox, it will always fail irrespective of how many attempts you try. (https://www.rpaforum.net/threads/exception-thrown-by-code-stage-specified-cast-is-not-valid.10813/)
+
+**WORK-AROUND**
+Unknown
+
+**RESOLUTION**
+Issue seemed to have been resolved after moving profile schedules around
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","OUTLOOK","processes terminating with error message ""specified cast is not valid"""
+"218","BluePrism - Schedule failure logs are not created when a schedule is failed","**ISSUE**
+Recent scheduler activities are not logged. If a process is manually started from the scheduler using the ""Run Now"" option and the VM that the initial task is scheduled to run on, then the Application Server will fail to start the schedule and throw the below three sequence of ""information"" messages in the windows blue prism application logs (P21 schedule as an example). However, 
+
+*1. FIRST INFORMATION MESSAGE*
+""BPServer.ServerService
+Scheduler: 'P021 - Daily at 4am - VM98 / VM103 : [17/10/2019 04:00:00]': Firing""
+
+*2. SECOND INFORMATION MESSAGE*
+""BPServer.ServerService
+Scheduler: 'P021 - Daily at 4am - VM98 / VM103' is still being executed from the instance at 16/10/2019 4:00:00 AM""
+
+*3. THIRD AND LAST INFORMATION MESSAGE*
+""BPServer.ServerService
+Scheduler: Trigger Suppressed: P021 - Daily at 4am - VM98 / VM103 : [17/10/2019 04:00:00]""
+
+
+**IMPACT**
+1. scheduler anomaly monitoring will not work
+2. run team does not have visibility on a failed schedule
+
+**ROOT-CAUSE**
+The user account that the Application Server uses to connect to the BluePrism database does not have access to send mail, which is a function one of the stored procedures needs.
+
+**WORK-AROUND**
+manually checking the schedule for critical processes
+
+**RESOLUTION**
+Update the access needed for the send mail function (see attached image)
+
+**LESSONS**
+GOOD: quick resolution (within 8 hours of being identified)
+IMPROVEMENT: improve testing methods used when changing database access connections for application servers
+LUCKY: @tylorbunting3 and @seanxiang4 have advanced SQL and Infrastructure skills","PROBLEM","Completed (old)","BluePrism","Schedule failure logs are not created when a schedule is failed"
+"219","INFRA - high number of processes terminating from various existing Problem Ticket issues","**ISSUE**
+high number of processes terminating from various existing Problem Ticket issues
+
+**IMPACT**
+minimal impacts as processes were terminating only over the weekend
+
+**ROOT-CAUSE**
+ICT Planned VM Maintenance effecting VMs and then the Prod Monitoring Tool was down from the VM Maintenance which disabled the Run Team from receiving notifications about the issue
+
+**WORK-AROUND**
+Rerun all processes
+
+**RESOLUTION**
+1. https://trello.com/c/xgahRjKH/3311-infra-investigate-splitting-vm-maintenance-bot-schedule-into-groups-so-it-does-not-get-stuck-in-pending#
+2. https://trello.com/c/PJuJiIBr/3312-infra-investigate-how-the-monitoring-tool-can-be-monitored#
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","INFRA","high number of processes terminating from various existing Problem Ticket issues"
+"220","SITS Client - SITS v9.7 upgrade causing multiple processes to terminate","**ISSUE**
+SITS upgrade prevents robot_framework log into SITS Client
+
+**IMPACT**
+Critical, no process can log into SITS Client
+
+**ROOT-CAUSE**
+Sydney Student Team need to update the access in the new version
+
+**WORK-AROUND**
+call ICT sydney student team
+INC0093670
+
+**RESOLUTION**
+INC0093670
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","SITS","SITS SITS v9.7 upgrade causing multiple processes to terminate"
+"221","SITS Portal - Engineering faculty name is changed","**ISSUE**
+cannot navigate to ""Engineering and IT"" faculty
+
+**IMPACT**
+cannot choose the ""engineering"" in the dropdown for SITS Portal
+
+**ROOT-CAUSE**
+Faculty ""Engineering and Information Technology"" is changed to ""Engineering"" 
+
+**WORK-AROUND**
+
+
+**RESOLUTION**
+https://trello.com/c/R6y09aB3/2626-sits-portal-update-the-spying-for-faculty-list-in-the-manage-student-special-permission
+
+**LESSONS**
+GOOD:
+IMPROVEMENT:
+LUCKY:","PROBLEM","Completed (old)","SITS","SITS Engineering faculty name is changed"

@@ -136,8 +136,8 @@ Plots$STAGED_DATA_4_TOTALS_PLOT <- ggplot(Plots$STAGED_DATA_4_TOTALS, aes(x = st
 
 # CLEAN UP ENVIRONMENT ----------------------------------------------------
 if(Settings$Debug_Mode != TRUE) {
-  rm(PROCESSES_PRODUCTIONSUPPORT, PROCESSES_STABILISING, PROCESSES_STOPPED, ref_board_lists, ref_board_lists_1,
+  rm(ref_board_lists, ref_board_lists_1,
      STAGED_DATA_1_PRODUCTIONSUPPORT, STAGED_DATA_1_STABILISING, STAGED_DATA_2_PRODUCTIONSUPPORT, STAGED_DATA_2_STABILISING,
-     STAGED_DATA_3_COMBINED, STAGED_DATA_4_TOTALS, STAGED_DATA_4_TOTALS_PLOT, Settings)
+     STAGED_DATA_3_COMBINED, Settings)
 }
 

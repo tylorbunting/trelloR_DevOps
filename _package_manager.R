@@ -31,6 +31,7 @@ if(exists("Settings") != TRUE) {
               "grid",
               "gridExtra",
               "pryr",
-              "devtools")
+              "devtools",
+              "scales")
   check.packages(Settings$packages)
 }

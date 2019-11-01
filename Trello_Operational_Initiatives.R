@@ -36,7 +36,7 @@ ref_board_lists <- GET(paste("https://api.trello.com/1/boards/jdgMj8dX/lists?", 
 ref_board_lists_1 <- content(ref_board_lists)
 
 # labels to capture for analysis (assumption is that tickets only have one label assigned)
-labels_for_analysis <- c("Problem", "Enhancement", "BAU")
+labels_for_analysis <- c("PROBLEM", "PROJECT", "BAU")
 
 
 # create function to extract first label name found out of labels_for_analysis input variable
@@ -231,21 +231,24 @@ Operational_Initatives$Workload_Viz <- Operational_Initatives$board_cards_3 %>%
   theme(plot.title = element_text(hjust = 0.5),
         axis.text.x = element_text(size = 7.5)) 
 
-Operational_Initatives$Enhancements_Viz <- Operational_Initatives$board_cards_3 %>%
-  filter(type == "Enhancement") %>%
+# how to apply gradient colors to discrete values = https://stackoverflow.com/questions/30352412/how-do-you-create-a-gradient-of-colors-for-a-discrete-variable-in-ggplot2
+Settings$color_scale <- seq_gradient_pal("#00BFC4", "#fdd5b4", "Lab")(seq(0,1,length.out = 8))
+
+Operational_Initatives$PROJECTs_Viz <- Operational_Initatives$board_cards_3 %>%
+  filter(type == "PROJECT") %>%
   group_by(category, status) %>%
   count() %>%
   filter(status != "Ideas") %>%
   ggplot(aes(x = status, y = n, fill = category)) +
   geom_bar(stat = 'identity') +
-  #scale_fill_manual(values = c("#DCDCDC", "#00BFC4", "#fdd5b4", "#fbeeb8")) +
+  scale_fill_manual(values = Settings$color_scale) +
   scale_x_discrete(limits = c("Blocked", "Backlog", "In Progress", "Testing", "Completed (wk)", "Completed (old)")) +
-  labs(title = "Operational Initiatives Workload (Enhancements)", y = "Number of Initiatives", x = "Status", fill = "Initiative Type") +
+  labs(title = "Operational Initiatives Workload (PROJECTs)", y = "Number of Initiatives", x = "Status", fill = "Initiative Type") +
   theme(plot.title = element_text(hjust = 0.5),
         axis.text.x = element_text(size = 7.5))
 
-Operational_Initatives$Enhancements_table <- Operational_Initatives$board_cards_3 %>%
-  filter(type == "Enhancement") %>%
+Operational_Initatives$PROJECTs_table <- Operational_Initatives$board_cards_3 %>%
+  filter(type == "PROJECT") %>%
   filter(status != "Ideas") %>%
   select(status, card)
 
