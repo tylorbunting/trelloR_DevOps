@@ -38,6 +38,19 @@ get_customField_date_values <- function(x, customField_id) {
   return(output)
 }
 
+# create function to extract customField DATE VALUES from cards
+get_customField_number_values <- function(x, customField_id) {
+  if(length(x[["customFieldItems"]]) > 0) {
+    for(index in seq_along(x[["customFieldItems"]])) {
+      if(as.character(x[["customFieldItems"]][[index]][["idCustomField"]]) == customField_id) {
+        output <- as.character(x[["customFieldItems"]][[index]][["value"]][["number"]])
+        break
+      } else output <- NA
+    }
+  } else output <- NA
+  return(output)
+}
+
 # create function to extract customField DROPDOWN IDs from cards
 get_customField_dropdown_ids <- function(x, customField_id) {
   if(length(x[["customFieldItems"]]) > 0) {

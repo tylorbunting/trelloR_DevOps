@@ -1,4 +1,10 @@
 # 0. SETUP ENVIRONMENT AND INPUT VARIABLES --------------------------------
+# attempt to install all require packages
+source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_package_manager.R")
+
+# get all functions needed for TrelloR_custom
+source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_functions.R")
+
 # import libraries
 library(httr)
 library(jsonlite)
@@ -11,6 +17,7 @@ library(magrittr)
 library(purrr)
 library(grid)
 library(gridExtra)
+library(scales)
 
 # create settings list
 if(exists("Settings") != TRUE) Settings <- list()
@@ -215,6 +222,7 @@ Operational_Initatives$board_cards_3 <- board_cards_3 %>%
   mutate(category = str_extract(card, "([aA-zZ0-9])*")) %>%
   mutate(sub_category = str_remove(card, "([aA-zZ0-9])* - ")) %>%
   mutate(status = str_replace(status, "Backlog / Identified", "Backlog"),
+         status = str_replace(status, "Blocked / Waiting", "Blocked"),
          status = str_replace(status, "In Progress / Problem Control", "In Progress"),
          status = str_replace(status, "Testing / Error Control", "Testing"))
 
