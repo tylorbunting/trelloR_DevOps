@@ -377,7 +377,8 @@ Plots$Weekly_Processing_Time_Incidents <- Data_5$Weekly_Processing_Time_Incident
   labs(title = paste("Average Processing Time for Resolving Incident Tickets", sep = ""), x = "week of year", y = "days", fill = "Processing Type") +
   scale_y_continuous(limits = c(0, max(Data_5$Weekly_Processing_Time$n) + 1)) +
   scale_x_continuous(breaks = unique(c(min(Data_5$Weekly_Processing_Time_Incidents$week_ended):
-                                         max(Data_5$Weekly_Processing_Time_Incidents$week_ended))))
+                                         max(Data_5$Weekly_Processing_Time_Incidents$week_ended)))) +
+  geom_hline(yintercept=2, linetype="dashed", color = "red", size = 1) 
 
 # processing time for all Incident Tickets per person
 Data_5$Per_Person_Processing_Time_Incidents <- Data_5$Board_cards_Melt_Processing_Times %>%
@@ -389,12 +390,12 @@ Plots$Per_Person_Processing_Time_Incidents <- Data_5$Per_Person_Processing_Time_
   group_by(processing_time_type, fullname) %>%
   summarise(n = mean(processing_time_avg , na.rm = TRUE)) %>%
   ggplot(aes(y = n, x = fullname, fill = processing_time_type)) +
-  geom_hline(yintercept=20, linetype="dashed", color = "red") +
   geom_bar(stat = 'identity') +
   labs(title = paste("Average Processing Time for Resolving Incident Tickets", sep = ""), x = "", y = "days", fill = "Processing Type") +
   scale_y_continuous(limits = c(0, max(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg)),
                      breaks = unique(c(min(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg):
                                          max(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg)))) + 
+  geom_hline(yintercept=2, linetype="dashed", color = "red", size = 1) +
   coord_flip()
   
 Plots$Per_Person_Processing_Time_Incidents_Outliers <- Data_5$Per_Person_Processing_Time_Incidents %>%
@@ -592,22 +593,6 @@ Plots$Summary_Weekly_Total_Points_Earnt <- grid.arrange(gA, gB, ncol=1,
                                                   heights = c(1,2),
                                              top = textGrob(paste("Total Points Earnt Over ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""),
                                                             gp = gpar(fontsize=20,font=1)))
-
-# create summary plots
-#(Sourced from "https://stackoverflow.com/questions/13294952/left-align-two-graph-edges-ggplot")
-gA <- ggplotGrob(Plots$Weekly_Points_Percentage)
-gB <- ggplotGrob(Plots$Weekly_Points_Facet_People_Percentage)
-
-maxWidth = grid::unit.pmax(gA$widths[2:5], gB$widths[2:5])
-gA$widths[2:5] <- as.list(maxWidth)
-gB$widths[2:5] <- as.list(maxWidth)
-
-
-#Display summary
-Plots$Summary_Weekly_Percentage_Points_Earnt <- grid.arrange(gA, gB, ncol=1,
-                                                  heights = c(1,2),
-                                                  top = textGrob(paste("Percentage of Points Earnt Over ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""),
-                                                                 gp = gpar(fontsize=20,font=1)))
 
 # create summary plots
 #(Sourced from "https://stackoverflow.com/questions/13294952/left-align-two-graph-edges-ggplot")
