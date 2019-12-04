@@ -25,20 +25,19 @@ if(exists("Settings") != TRUE) Settings <- list()
 # Debug mode?
 Settings$Debug_Mode <- FALSE
 
-# add authentication setting variables
-Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
-Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
-Trello_SecretKey <- "e3512e11ac64fd3bd927429a5294506d1d7be2b87236cd011c19eee9f6bc833b"
+# SETUP AUTHENTICATION VALUES
+Settings$Trello_Key <- "f9170c56bae48f7f78916d54411f90b9"
+Settings$Trello_Token <- "dabd2fd76f594ade872a11b89c5d1bbde63c6d5c7c1adf08460704b86fd5c29b"
+Settings$Trello_SecretKey <- "dcfae097b265928f924a7c6772dc05d2dcbb92f32895dd3f5bcce141bbe263b5"
 
 # create key and token string
-Trello_Auth <- paste("key=",Trello_Key,"&token=",Trello_Token, sep = "")
-rm(Trello_Key, Trello_Token)
+Settings$trello_auth <- paste("key=",Settings$Trello_Key,"&token=",Settings$Trello_Token, sep = "")
 
 # set file path for output
 set_file_path <- "Trello_Operations_Initiatives_Output.csv"
 
 # get an array of Lists on a board (Operational Initiatives Board) to check the List IDs we want
-ref_board_lists <- GET(paste("https://api.trello.com/1/boards/jdgMj8dX/lists?", Trello_Auth, sep = ""))
+ref_board_lists <- GET(paste("https://api.trello.com/1/boards/jdgMj8dX/lists?", Settings$trello_auth, sep = ""))
 # get all content for each list
 ref_board_lists_1 <- content(ref_board_lists)
 
@@ -98,12 +97,12 @@ get_customField_dropdown_values <- function(x, customField_id) {
 # 1. GET DATA -------------------------------------------------------------
 
 # get an array of Cards on a board (Operational Initiatives Board) and include custom fields SOURCE: https://developers.trello.com/docs/getting-started-custom-fields 
-board_cards <- GET(paste("https://api.trello.com/1/boards/jdgMj8dX/?fields=name&cards=all&card_fields=name&customFields=true&card_customFieldItems=true&", Trello_Auth, sep = ""))
+board_cards <- GET(paste("https://api.trello.com/1/boards/jdgMj8dX/?fields=name&cards=all&card_fields=name&customFields=true&card_customFieldItems=true&", Settings$trello_auth, sep = ""))
 # get all content for each card in the board
 board_cards_1 <- content(board_cards)
 
 # get an array of Cards on a board (Operational Initiatives Board) and include extra card data (e.g. description, members etc.)
-board_cards_extra <- GET(paste("https://api.trello.com/1/boards/jdgMj8dX/cards/visible?", Trello_Auth, sep = ""))
+board_cards_extra <- GET(paste("https://api.trello.com/1/boards/jdgMj8dX/cards/visible?", Settings$trello_auth, sep = ""))
 # get all content for each card in board
 board_cards_extra_1 <- content(board_cards_extra)
 

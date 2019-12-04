@@ -16,6 +16,7 @@ library("tidyr")
 library("httpuv")
 library("purrr")
 library("scales")
+library("ts")
 
 # create settings list
 if(exists("Settings") != TRUE) Settings <- list()
@@ -431,7 +432,6 @@ Plots$Weekly_Points_People <- Data_5$Board_cards_Run %>%
 # visualise total weekly points and bucket
 Data_5$Weekly_Points_Incident_Categories_table <- Data_5$Board_cards %>% 
   filter(label == "Incident") %>%
-  filter(incident_category != "NA") %>%
   filter(date_ended > today() - 7) %>%
   group_by(incident_category, day_ended, bucket) %>%
   summarise(total_effort = sum(total_effort))

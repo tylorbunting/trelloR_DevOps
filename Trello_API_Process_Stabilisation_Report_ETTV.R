@@ -19,13 +19,12 @@ if(exists("Settings") != TRUE) Settings <- list()
 Settings$Debug_Mode <- FALSE
 
 # add authentication setting variables
-Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
-Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
-Trello_SecretKey <- "e3512e11ac64fd3bd927429a5294506d1d7be2b87236cd011c19eee9f6bc833b"
+# SETUP AUTHENTICATION VALUES
+Settings$Trello_Key <- "f9170c56bae48f7f78916d54411f90b9"
+Settings$Trello_Token <- "dabd2fd76f594ade872a11b89c5d1bbde63c6d5c7c1adf08460704b86fd5c29b"
 
 # create key and token string
-Trello_Auth <- paste("key=",Trello_Key,"&token=",Trello_Token, sep = "")
-rm(Trello_Key, Trello_Token)
+Trello_Auth <- paste("key=",Settings$Trello_Key,"&token=",Settings$Trello_Token, sep = "")
 
 # get an array of Lists on a board (AI Hub Process Automation Board) to check the List IDs we want
 ref_board_lists <- GET(paste("https://api.trello.com/1/boards/5LZ5YvHo/lists?", Trello_Auth, sep = ""))
