@@ -1,9 +1,9 @@
 # 0. SETUP ENVIRONMENT AND INPUT VARIABLES --------------------------------
 # attempt to install all require packages
-source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_package_manager.R")
+#source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_package_manager.R")
 
 # get all functions needed for TrelloR_custom
-source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_functions.R")
+#source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_functions.R")
 
 # import libraries
 library(httr)

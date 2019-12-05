@@ -5,10 +5,10 @@
 #
 
 # attempt to install all require packages
-source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_package_manager.R")
+#source("_package_manager.R")
 
 # get all functions needed for TrelloR_custom
-source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_functions.R")
+#source("_functions.R")
 
 # INSTALL APPROPRIATE PACKAGES
 library("trelloR")
@@ -16,7 +16,6 @@ library("tidyr")
 library("httpuv")
 library("purrr")
 library("scales")
-library("ts")
 
 # create settings list
 if(exists("Settings") != TRUE) Settings <- list()
