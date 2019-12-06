@@ -5,10 +5,10 @@
 #
 
 # attempt to install all require packages
-#source("_package_manager.R")
+source("C:/Users/tbun2893/Documents/GitHub/trelloR_DevOps/_package_manager.R")
 
 # get all functions needed for TrelloR_custom
-#source("_functions.R")
+source("C:/Users/tbun2893/Documents/GitHub/trelloR_DevOps/_functions.R")
 
 # INSTALL APPROPRIATE PACKAGES
 library("trelloR")
@@ -446,7 +446,8 @@ Plots$Weekly_Points_Incident_Categories <- Data_5$Weekly_Points_Incident_Categor
   scale_fill_manual(values = Plots$Options$Weekly_Points_Incident_Categories_color_scale) +
   labs(title = paste("Total Points Earnt For Each Incident Category", sep = ""), x = "", y = "points", fill = "Process") +
   geom_text(size = 2, position = position_stack(vjust = 0.5)) +
-  facet_grid(rows = vars(incident_category))
+  facet_grid(rows = vars(incident_category)) +
+  theme(legend.position="none")
 
 # Display plot
 Plots$Weekly_Points_Incident_Categories
