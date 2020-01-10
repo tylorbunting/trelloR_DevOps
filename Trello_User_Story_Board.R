@@ -16,6 +16,7 @@ library("tidyr")
 library("httpuv")
 library("purrr")
 library("scales")
+library("lubridate")
 
 # create settings list
 if(exists("Settings") != TRUE) Settings <- list()
@@ -332,7 +333,7 @@ Data_5$Board_cards_Melt_Processing_Times <- Data_5$Board_cards %>%
 Data_5$Weekly_Processing_Time <- Data_5$Board_cards_Melt_Processing_Times %>%
   filter(fullname %in% Plots$Options$people_for_analysis) %>%
   filter(label %in% Plots$Options$labels_for_analysis) %>%
-  filter(week_ended > week(today()) - 4) %>%
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
   filter(year(date_ended) == year(today())) %>%
   group_by(processing_time_type, week_ended) %>%
   summarise(n = mean(processing_time_avg, na.rm = TRUE))
@@ -348,7 +349,7 @@ Data_5$Per_Person_Processing_Time <- Data_5$Board_cards_Melt_Processing_Times %>
   filter(fullname %in% Plots$Options$people_for_analysis) %>%
   filter(label %in% Plots$Options$labels_for_analysis) %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - 4) %>%
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
   filter(date_ended > today() - 200)
 Plots$Per_Person_Processing_Time <- Data_5$Per_Person_Processing_Time %>%
   group_by(processing_time_type, fullname, label) %>%
@@ -367,7 +368,7 @@ Plots$Per_Person_Processing_Time_Outliers <- Data_5$Per_Person_Processing_Time %
 Data_5$Weekly_Processing_Time_Incidents <- Data_5$Board_cards_Melt_Processing_Times %>%
   filter(label == "Incident") %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - 4) %>%
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
   filter(date_ended > today() - 200) %>%
   group_by(processing_time_type, week_ended) %>%
   summarise(n = mean(processing_time_avg , na.rm = TRUE))
@@ -384,7 +385,7 @@ Plots$Weekly_Processing_Time_Incidents <- Data_5$Weekly_Processing_Time_Incident
 Data_5$Per_Person_Processing_Time_Incidents <- Data_5$Board_cards_Melt_Processing_Times %>%
   filter(label == "Incident") %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - 4) 
+  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) 
 Plots$Per_Person_Processing_Time_Incidents <- Data_5$Per_Person_Processing_Time_Incidents %>%
   filter(date_ended > today() - 200) %>%
   group_by(processing_time_type, fullname) %>%
@@ -405,6 +406,7 @@ Plots$Per_Person_Processing_Time_Incidents_Outliers <- Data_5$Per_Person_Process
 # 5.3. POINTS OVERTIME PER PERSON ------------------------------------------
 # visualise total weekly points and type
 Plots$Weekly_Points <- Data_5$Board_cards_Run %>% 
+  filter(year(date_ended) == year(today()) - 1)
   filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
   filter(date_ended > today() - 200) %>%
   group_by(week_ended, label) %>%
