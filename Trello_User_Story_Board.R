@@ -632,7 +632,7 @@ gB$widths[2:5] <- as.list(maxWidth)
 #Display summary
 Plots$Summary_Weekly_Total_Points_Earnt <- grid.arrange(gA, gB, ncol=1,
                                                   heights = c(1,2),
-                                             top = textGrob(paste("Trello Ticket Analysis of Points Earn", sep = ""),
+                                             top = textGrob(paste("Trello Ticket Analysis of Points Earnt", sep = ""),
                                                             gp = gpar(fontsize=20,font=1)))
 
 # 5.7. SUMMARY VALUES -----------------------------------------------------
