@@ -190,10 +190,13 @@ Data_4$Board_cards <- Data_4$Board_cards %>%
   mutate(avg_wait = difftime(date_started, date_raised, units = "days")) %>%
   mutate(avg_resolution = difftime(date_ended, date_started, units = "days"))
 
-# add week_ended and day_ended variables
+# add week_ended, day_ended, month_name_ended, month_number_ended, year_ended  variables
 Data_4$Board_cards <- Data_4$Board_cards %>%
   mutate(week_ended = week(date_ended)) %>%
-  mutate(day_ended = wday(date_ended, label = TRUE))
+  mutate(day_ended = wday(date_ended, label = TRUE)) %>%
+  mutate(month_name_ended = month(date_ended, label = TRUE)) %>%
+  mutate(month_number_ended = month(date_ended, label = FALSE)) %>%
+  mutate(year_ended = year(date_ended))
 
 # add avg_wait and avg_resolve times
 Data_4$Board_cards <- Data_4$Board_cards %>%
@@ -234,8 +237,21 @@ Plots$Options$labels_for_analysis <- c("Enhancement", "Internal Request", "Exter
 # the people that will be filtered for the visualisations
 Plots$Options$people_for_analysis <- c("Tylor Bunting", "Sean Xiang", "Victoria Lu", "ambitkumar","Bianca De Jesus")
 
-# set number of weeks to analyse
+# set number of weeks to analysis
 Plots$Options$weeks_to_analyse <- 4
+
+# set min weeks number for analysis
+if(week(today()) < Plots$Options$weeks_to_analyse){
+  Plots$Options$min_week_to_analyse <- 0
+} else {
+  Plots$Options$min_week_to_analyse <- week(today()) - Plots$Options$weeks_to_analyse
+}
+  
+# the year for analysis
+Plots$Options$year_for_anlysis <- 2020
+
+# the facet_count_for_analysis
+Plots$Options$row_count_for_analysis <- 4
 
 # create table specific for run team
 Data_5$Board_cards_Run <- Data_5$Board_cards %>% 
@@ -246,7 +262,7 @@ Data_5$Board_cards_Run <- Data_5$Board_cards %>%
 # how to apply gradient colors to discrete values = https://stackoverflow.com/questions/30352412/how-do-you-create-a-gradient-of-colors-for-a-discrete-variable-in-ggplot2
 Plots$Options$color_scale <- seq_gradient_pal("#00BFC4", "#fdd5b4", "Lab")(seq(0,1,length.out = 8))
 
-# 5.1. TICKET COUNT WEEKLY ------------------------------------------------
+# 5.1. TICKET COUNT WEEKLY LINE GRAPH ------------------------------------------------
 
 # melt date values for visualisation (SOURCE: http://www.datasciencemadesimple.com/melting-casting-r/)
 Data_5$Board_cards_Run_Melt_Dates <- Data_5$Board_cards_Run %>%
@@ -264,16 +280,17 @@ Data_5$Board_cards_Run_Melt_Dates <- Data_5$Board_cards_Run %>%
               "avg_wait",
               "avg_resolution",
               "week_ended", 
-              "day_ended"), 
+              "day_ended",
+              "year_ended", 
+              "month_name_ended", 
+              "month_number_ended"), 
        variable.name = c("date_type"), 
        value.name = "date")
 
 # total count of all tickets (Enhancements, Request, Incidents)
 Data_5$Weekly_Count <- Data_5$Board_cards_Run_Melt_Dates %>%
-  filter(week_ended > week(today()) - 5) %>%
-  filter(date > today() - 200) %>%
+  filter(year(date) == Plots$Options$year_for_anlysis) %>%
   filter(date_type %in% c("date_raised", "date_ended")) %>%
-  filter(!week_ended == week(today())) %>%
   group_by(date_type, week_ended) %>%
   count()
 Plots$Weekly_Count <- Data_5$Weekly_Count %>%
@@ -288,11 +305,9 @@ Plots$Weekly_Count <- Data_5$Weekly_Count %>%
 
 # visualise count plot for incidents
 Data_5$Weekly_Count_Incidents <- Data_5$Board_cards_Run_Melt_Dates %>%
-  filter(week_ended > week(today()) - 5) %>%
-  filter(date > today() - 200) %>%
+  filter(year(date) == Plots$Options$year_for_anlysis) %>%
   filter(label == "Incident") %>%
   filter(date_type %in% c("date_raised", "date_ended")) %>%
-  filter(!week_ended == week(today())) %>%
   group_by(date_type, week_ended) %>%
   count()
 Plots$Weekly_Count_Incidents <- Data_5$Weekly_Count_Incidents %>%
@@ -325,7 +340,10 @@ Data_5$Board_cards_Melt_Processing_Times <- Data_5$Board_cards %>%
               "date_ended",
               "date_started",
               "week_ended", 
-              "day_ended"), 
+              "day_ended", 
+              "year_ended", 
+              "month_name_ended", 
+              "month_number_ended"), 
        variable.name = c("processing_time_type"), 
        value.name = "processing_time_avg")
 
@@ -333,8 +351,8 @@ Data_5$Board_cards_Melt_Processing_Times <- Data_5$Board_cards %>%
 Data_5$Weekly_Processing_Time <- Data_5$Board_cards_Melt_Processing_Times %>%
   filter(fullname %in% Plots$Options$people_for_analysis) %>%
   filter(label %in% Plots$Options$labels_for_analysis) %>%
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(year(date_ended) == year(today())) %>%
+  #filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(processing_time_type, week_ended) %>%
   summarise(n = mean(processing_time_avg, na.rm = TRUE))
 Plots$Weekly_Processing_Time <- Data_5$Weekly_Processing_Time %>%
@@ -349,8 +367,8 @@ Data_5$Per_Person_Processing_Time <- Data_5$Board_cards_Melt_Processing_Times %>
   filter(fullname %in% Plots$Options$people_for_analysis) %>%
   filter(label %in% Plots$Options$labels_for_analysis) %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200)
+  #filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis)
 Plots$Per_Person_Processing_Time <- Data_5$Per_Person_Processing_Time %>%
   group_by(processing_time_type, fullname, label) %>%
   summarise(n = mean(processing_time_avg , na.rm = TRUE)) %>%
@@ -368,60 +386,83 @@ Plots$Per_Person_Processing_Time_Outliers <- Data_5$Per_Person_Processing_Time %
 Data_5$Weekly_Processing_Time_Incidents <- Data_5$Board_cards_Melt_Processing_Times %>%
   filter(label == "Incident") %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(processing_time_type, week_ended) %>%
-  summarise(n = mean(processing_time_avg , na.rm = TRUE))
+  summarise(processing_time_avg = mean(processing_time_avg , na.rm = TRUE))
+# create Plot
 Plots$Weekly_Processing_Time_Incidents <- Data_5$Weekly_Processing_Time_Incidents %>%
-  ggplot(aes(y = n, x = week_ended, fill = processing_time_type)) +
+  ggplot(aes(y = processing_time_avg, x = week_ended, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
-  labs(title = paste("Average Processing Time for Resolving Incident Tickets", sep = ""), x = "week of year", y = "days", fill = "Processing Type") +
-  scale_y_continuous(limits = c(0, max(Data_5$Weekly_Processing_Time$n) + 1)) +
-  scale_x_continuous(breaks = unique(c(min(Data_5$Weekly_Processing_Time_Incidents$week_ended):
-                                         max(Data_5$Weekly_Processing_Time_Incidents$week_ended)))) +
-  geom_hline(yintercept=2, linetype="dashed", color = "red", size = 1) 
+  labs(title = paste("Average Team Processing Time for Resolving Incident Tickets", sep = ""), x = "week of year", y = "days", fill = "Processing Type") +
+  scale_x_continuous(limits = c(0, 53), breaks = c(0:53)) + 
+  geom_hline(yintercept=2, linetype="dashed", color = "red", size = 1) +
+  theme(legend.position="none")
 
 # processing time for all Incident Tickets per person
 Data_5$Per_Person_Processing_Time_Incidents <- Data_5$Board_cards_Melt_Processing_Times %>%
   filter(label == "Incident") %>%
   filter(!is.na(processing_time_avg)) %>%  
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) 
-Plots$Per_Person_Processing_Time_Incidents <- Data_5$Per_Person_Processing_Time_Incidents %>%
-  filter(date_ended > today() - 200) %>%
-  group_by(processing_time_type, fullname) %>%
-  summarise(n = mean(processing_time_avg , na.rm = TRUE)) %>%
-  ggplot(aes(y = n, x = fullname, fill = processing_time_type)) +
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
+  group_by(week_ended, processing_time_type, fullname) %>%
+  summarise(processing_time_avg = mean(processing_time_avg , na.rm = TRUE)) %>%
+  filter(processing_time_avg >= 0)
+
+# create table for obtaining rolling_avg
+Data_5$Per_Person_Processing_Time_Incidents_rolling_avg <- Data_5$Per_Person_Processing_Time_Incidents %>%
+  filter(week_ended >= Plots$Options$min_week_to_analyse) %>%
+  group_by(week_ended, fullname) %>%
+  summarise(total = sum(processing_time_avg)) %>%
+  group_by(fullname) %>%
+  summarise(rolling_avg = mean(total)) %>%
+  mutate(top_rolling_avg_group = ifelse(rolling_avg >= min(tail(sort(rolling_avg),Plots$Options$row_count_for_analysis)), TRUE, FALSE))
+# join table with rolling_avg and original Per_Person_Processing_Time_Incidents
+Data_5$Per_Person_Processing_Time_Incidents <- inner_join(Data_5$Per_Person_Processing_Time_Incidents, Data_5$Per_Person_Processing_Time_Incidents_rolling_avg)
+
+# coord_flip version
+Plots$Per_Person_Processing_Time_Incidents_flip <- Data_5$Per_Person_Processing_Time_Incidents %>%
+  group_by(fullname, processing_time_type) %>%
+  summarise(processing_time_avg = mean(processing_time_avg)) %>%
+  ggplot(aes(y = processing_time_avg, x = fullname, fill = processing_time_type)) +
   geom_bar(stat = 'identity') +
   labs(title = paste("Average Processing Time for Resolving Incident Tickets", sep = ""), x = "", y = "days", fill = "Processing Type") +
-  scale_y_continuous(limits = c(0, max(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg)),
-                     breaks = unique(c(min(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg):
-                                         max(Data_5$Per_Person_Processing_Time_Incidents$processing_time_avg)))) + 
   geom_hline(yintercept=2, linetype="dashed", color = "red", size = 1) +
   coord_flip()
-  
-Plots$Per_Person_Processing_Time_Incidents_Outliers <- Data_5$Per_Person_Processing_Time_Incidents %>%
+
+# facet version
+Plots$Per_Person_Processing_Time_Incidents_facet <- Data_5$Per_Person_Processing_Time_Incidents %>%
+  filter(top_rolling_avg_group == TRUE) %>%
+  ggplot(aes(y = processing_time_avg, x = week_ended, fill = processing_time_type)) +
+  geom_bar(stat = 'identity') +
+  labs(title = paste("Top ",Plots$Options$row_count_for_analysis," Slowest Individuals Over The Past ", Plots$Options$weeks_to_analyse," Weeks", sep = ""), x = "week of year", y = "days", fill = "Processing Type") +
+  scale_x_continuous(limits = c(0, 53), breaks = c(0:53)) + 
+  geom_hline(yintercept=2, linetype="dashed", color = "red", size = 0.5) +
+  facet_grid(rows = vars(fullname)) +
+  theme(legend.position="bottom")
+
+# capture outlyers
+Plots$Per_Person_Processing_Time_Incidents_Outliers <- Data_5$Board_cards_Melt_Processing_Times %>%
+  filter(label == "Incident") %>%
+  filter(!is.na(processing_time_avg)) %>%  
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   filter(processing_time_avg > 1) %>%
   select(name, url, fullname, week_ended, processing_time_avg, processing_time_type)
 
 # 5.3. POINTS OVERTIME PER PERSON ------------------------------------------
 # visualise total weekly points and type
 Plots$Weekly_Points <- Data_5$Board_cards_Run %>% 
-  filter(year(date_ended) == year(today()) - 1)
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(week_ended, label) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = label)) +
   geom_bar(stat = 'identity') +
   scale_fill_manual(values = c("#90ee90", "#b19cd9", "#ffc966", "#ffc0cb", "#DCDCDC")) +
-  labs(title = paste("Total Points Earnt Over Past ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""), x = "week of year", y = "points", fill = "Type") +
-  scale_x_continuous(breaks = unique(c(min(Data_5$Board_cards_Run$week_ended):
-                                         max(Data_5$Board_cards_Run$week_ended)))) 
-
+  labs(title = paste("Total Team Points Earnt", sep = ""), x = "week of year", y = "points", fill = "Type") +
+  scale_x_continuous(limits = c(0, 53), breaks = c(0:53)) +
+  theme(legend.position = "none")
+  
 # visualise total weekly points and people
 Plots$Weekly_Points_People <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(week_ended, fullname) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = fullname)) +
@@ -433,13 +474,17 @@ Plots$Weekly_Points_People <- Data_5$Board_cards_Run %>%
 # visualise total weekly points and bucket
 Data_5$Weekly_Points_Incident_Categories_table <- Data_5$Board_cards %>% 
   filter(label == "Incident") %>%
+  filter(total_effort != 0) %>%
   filter(date_ended > today() - 7) %>%
   group_by(incident_category, day_ended, bucket) %>%
   summarise(total_effort = sum(total_effort))
 
+# get data for "Process" category
+Data_5$Weekly_Points_Incident_Categories_table_process <- Data_5$Weekly_Points_Incident_Categories_table %>% 
+  filter(incident_category == "Process")
 
 # how to apply gradient colors to discrete values = https://stackoverflow.com/questions/30352412/how-do-you-create-a-gradient-of-colors-for-a-discrete-variable-in-ggplot2
-Plots$Options$Weekly_Points_Incident_Categories_color_scale <- seq_gradient_pal("#ffae1a", "#ffe4b3", "Lab")(seq(0,1,length.out = length(unique(Data_5$Weekly_Points_Incident_Categories$bucket))))
+Plots$Options$Weekly_Points_Incident_Categories_color_scale <- seq_gradient_pal("#ffae1a", "#ffe4b3", "Lab")(seq(0,1,length.out = length(unique(Data_5$Weekly_Points_Incident_Categories_table$bucket))))
 
 # visualise total weekly points and bucket
 Plots$Weekly_Points_Incident_Categories <- Data_5$Weekly_Points_Incident_Categories_table %>% 
@@ -451,13 +496,12 @@ Plots$Weekly_Points_Incident_Categories <- Data_5$Weekly_Points_Incident_Categor
   facet_grid(rows = vars(incident_category)) +
   theme(legend.position="none")
 
-# Display plot
-Plots$Weekly_Points_Incident_Categories
+# visualise total weekly points for "Process" category specifically
+
 
 # visualise total weekly points and people
 Plots$Weekly_Points_People_Percentage <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(week_ended, fullname) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = fullname)) +
@@ -469,8 +513,7 @@ Plots$Weekly_Points_People_Percentage <- Data_5$Board_cards_Run %>%
 
 # visualise weekly points percentage
 Plots$Weekly_Points_Percentage <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(week_ended, label) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = label)) +
@@ -483,22 +526,20 @@ Plots$Weekly_Points_Percentage <- Data_5$Board_cards_Run %>%
 
 # visualise total weekly points per person
 Plots$Weekly_Points_Facet_People <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(fullname, week_ended, label) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = label)) +
   geom_bar(stat = 'identity') +
   scale_fill_manual(values = c("#90ee90", "#b19cd9", "#ffc966", "#ffc0cb", "#DCDCDC")) +
-  labs(title = paste("Total Points Earnt Per Person Over Past ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""), x = "week of year", y = "points", fill = "Type") +
-  scale_x_continuous(breaks = unique(c(min(Data_5$Board_cards_Run$week_ended):
-                                         max(Data_5$Board_cards_Run$week_ended)))) +
-  facet_grid(rows = vars(fullname))
+  labs(title = paste("Total Points Earnt Per Person", sep = ""), x = "week of year", y = "points", fill = "Type") +
+  scale_x_continuous(limits = c(0, 53), breaks = c(0:53)) + 
+  facet_grid(rows = vars(fullname)) +
+  theme(legend.position = "bottom")
 
 # visualise percentage of weekly points per person
 Plots$Weekly_Points_Facet_People_Percentage <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(fullname, week_ended, label) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = week_ended, fill = label)) +
@@ -513,8 +554,7 @@ Plots$Weekly_Points_Facet_People_Percentage <- Data_5$Board_cards_Run %>%
 
 # visualise weekly points per person
 Plots$Per_Person_Weekly_Points <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(fullname, label) %>%
   summarise(total_effort = sum(total_effort)) %>%
   ggplot(aes(y = total_effort, x = fullname, fill = label)) +
@@ -527,8 +567,7 @@ Plots$Per_Person_Weekly_Points <- Data_5$Board_cards_Run %>%
 
 # visualise weekly points per person
 Plots$Per_Person_Weekly_Ticket_Count <- Data_5$Board_cards_Run %>% 
-  filter(week_ended > week(today()) - Plots$Options$weeks_to_analyse) %>%
-  filter(date_ended > today() - 200) %>%
+  filter(year(date_ended) == Plots$Options$year_for_anlysis) %>%
   group_by(fullname, label) %>%
   count() %>%
   ggplot(aes(y = n, x = fullname, fill = label)) +
@@ -566,7 +605,7 @@ Plots$Summary_Weekly_Processing_Time <- grid.arrange(gA, gB, gC, gD, ncol=1,
 #Setup layout for Volume (A) and Completion Rate (B) Plots
 #(Sourced from "https://stackoverflow.com/questions/13294952/left-align-two-graph-edges-ggplot")
 gA <- ggplotGrob(Plots$Weekly_Processing_Time_Incidents)
-gB <- ggplotGrob(Plots$Per_Person_Processing_Time_Incidents)
+gB <- ggplotGrob(Plots$Per_Person_Processing_Time_Incidents_facet)
 
 maxWidth = grid::unit.pmax(gA$widths[2:5], gB$widths[2:5])
 gA$widths[2:5] <- as.list(maxWidth)
@@ -576,7 +615,7 @@ gB$widths[2:5] <- as.list(maxWidth)
 #Display summary
 Plots$Summary_Weekly_Processing_Time_Incidents <- grid.arrange(gA, gB, ncol=1,
                                                                heights = c(1,2),
-                                                               top = textGrob(paste("Trello Ticket Analysis Over 4 Weeks", sep = ""),
+                                                               top = textGrob(paste("Trello Ticket Analysis For Resolving Incident Tickets", sep = ""),
                                                                               gp = gpar(fontsize=20,font=1)))
 
 # 5.6. SUMMARY PLOTS FOR WEEKLY POINTS EARNT ------------------------------
@@ -593,29 +632,13 @@ gB$widths[2:5] <- as.list(maxWidth)
 #Display summary
 Plots$Summary_Weekly_Total_Points_Earnt <- grid.arrange(gA, gB, ncol=1,
                                                   heights = c(1,2),
-                                             top = textGrob(paste("Total Points Earnt Over ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""),
+                                             top = textGrob(paste("Trello Ticket Analysis of Points Earn", sep = ""),
                                                             gp = gpar(fontsize=20,font=1)))
-
-# create summary plots
-#(Sourced from "https://stackoverflow.com/questions/13294952/left-align-two-graph-edges-ggplot")
-gA <- ggplotGrob(Plots$Weekly_Points)
-gB <- ggplotGrob(Plots$Per_Person_Weekly_Points)
-
-maxWidth = grid::unit.pmax(gA$widths[2:5], gB$widths[2:5])
-gA$widths[2:5] <- as.list(maxWidth)
-gB$widths[2:5] <- as.list(maxWidth)
-
-
-#Display summary
-Plots$Summary_Weekly_Total_Points_Earnt <- grid.arrange(gA, gB, ncol=1,
-                                                        heights = c(1,2),
-                                                        top = textGrob(paste("Total Points Earnt Over ", Plots$Options$weeks_to_analyse, " Weeks", sep = ""),
-                                                                       gp = gpar(fontsize=20,font=1)))
 
 # 5.7. SUMMARY VALUES -----------------------------------------------------
 
 # get variables for RMarkdown reporting
-var_recent_week <- max(Data_5$Weekly_Count$week_ended)
+var_recent_week <- as.numeric(week(today()))
 var_tickets_raised <- Data_5$Weekly_Count %>%
   filter(week_ended == var_recent_week) %>%
   filter(date_type == "date_raised")
