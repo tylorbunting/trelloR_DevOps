@@ -32,6 +32,7 @@ if(exists("Settings") != TRUE) {
               "gridExtra",
               "pryr",
               "devtools",
+              "plotly",
               "scales")
   check.packages(Settings$packages)
 }

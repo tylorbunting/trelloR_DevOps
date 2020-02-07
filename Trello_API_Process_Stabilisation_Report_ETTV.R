@@ -16,7 +16,7 @@ library(gridExtra)
 if(exists("Settings") != TRUE) Settings <- list()
 
 # Debug mode?
-Settings$Debug_Mode <- FALSE
+Settings$Debug_Mode <- TRUE
 
 # add authentication setting variables
 # SETUP AUTHENTICATION VALUES
@@ -50,6 +50,9 @@ STAGED_DATA_1_PRODUCTIONSUPPORT <- GET(paste("https://api.trello.com/1/lists/5bb
 STAGED_DATA_1_PRODUCTIONSUPPORT <- content(STAGED_DATA_1_PRODUCTIONSUPPORT)
 
 
+# get all cards in the "Process removed from list" list
+STAGED_DATA_1_REMOVED <- GET(paste("https://api.trello.com/1/lists/5bbbd50355fed10cccd13a4d/cards?", Trello_Auth, sep = ""))
+STAGED_DATA_1_REMOVED <- content(STAGED_DATA_1_REMOVED)
 
 # 2. TRANSFORM DATA INTO DATAFRAMES INSTEAD OF LISTS  ------------------------------------------
 
@@ -90,12 +93,24 @@ STAGED_DATA_2_PRODUCTIONSUPPORT <- map_df(STAGED_DATA_1_PRODUCTIONSUPPORT, funct
 STAGED_DATA_2_PRODUCTIONSUPPORT <- STAGED_DATA_2_PRODUCTIONSUPPORT %>%
   mutate(status = "Production Support")
 
+# apply function to get details of cards on the board (SOURCE: https://stackoverflow.com/questions/45310166/extracting-data-from-nested-list-in-r)
+STAGED_DATA_2_REMOVED <- map_df(STAGED_DATA_1_REMOVED, function(x){
+  data.frame(
+    name = as.character(extract(x, "name")),
+    label_type = get_label_name(x)
+  )
+})
+
+# add additional column to dataframe representing status of card
+STAGED_DATA_2_REMOVED <- STAGED_DATA_2_REMOVED %>%
+  mutate(status = "Removed")
+
 
 
 # 3. MERGE TABLES INTO FINAL STAGED TABLE ---------------------------------
 
 # combine the stabilisation and production support dataframes
-STAGED_DATA_3_COMBINED <- rbind.data.frame(STAGED_DATA_2_STABILISING, STAGED_DATA_2_PRODUCTIONSUPPORT)
+STAGED_DATA_3_COMBINED <- rbind.data.frame(STAGED_DATA_2_STABILISING, STAGED_DATA_2_PRODUCTIONSUPPORT, STAGED_DATA_2_REMOVED)
 
 
 
@@ -121,6 +136,11 @@ Plots$PROCESSES_STABILISING <- Plots$STAGED_DATA_4_TOTALS %>%
 
 Plots$PROCESSES_PRODUCTIONSUPPORT <- Plots$STAGED_DATA_4_TOTALS %>%
   filter(status == "Production Support" && label_type!= "Stopped") %>%
+  group_by(status) %>%
+  summarise(n = sum(n))
+
+Plots$PROCESSES_REMOVED <- Plots$STAGED_DATA_4_TOTALS %>%
+  filter(status == "Removed") %>%
   group_by(status) %>%
   summarise(n = sum(n))
 
