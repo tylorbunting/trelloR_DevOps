@@ -21,9 +21,16 @@ Settings$Debug_Mode <- TRUE
 
 # add authentication setting variables
 # CHECK AUTHENTICATION VALUES EXISTS
-if(exists("Settings$Trello_Key") != TRUE) stop("Trello Key value needs to be defined 'Settings$Trello_Key'")
-if(exists("Settings$Trello_Token") != TRUE) stop("Trello Token value needs to be defined 'Settings$Trello_Token'")
-if(exists("Settings$Trello_SecretKey") != TRUE) stop("Trello Secret Key value needs to be defined 'Settings$Trello_SecretKey'")
+if(exists("Trello_Key") != TRUE) stop("Trello Key value needs to be defined 'Trello_Key'")
+if(exists("Trello_Token") != TRUE) stop("Trello Token value needs to be defined 'Trello_Token'")
+if(exists("Trello_SecretKey") != TRUE) stop("Trello Secret Key value needs to be defined 'Trello_SecretKey'")
+if(exists("TrelloR_Token") != TRUE) stop("Trello Secret Key value needs to be defined 'TrelloR_Token'")
+
+#add setting variables
+Settings$Trello_Key <- Trello_Key
+Settings$Trello_Token <- Trello_Token
+Settings$Trello_SecretKey <- Trello_SecretKey
+Settings$TrelloR_Token <- TrelloR_Token
 
 # create key and token string
 Trello_Auth <- paste("key=",Settings$Trello_Key,"&token=",Settings$Trello_Token, sep = "")
