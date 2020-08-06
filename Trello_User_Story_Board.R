@@ -36,6 +36,9 @@ Settings$TrelloR_Token <- TrelloR_Token
 # create key and token string
 Settings$Trello_Auth <- paste("key=",Settings$Trello_Key,"&token=",Settings$Trello_Token, sep = "")
 
+# get all the functions needed for this script
+source_url("https://raw.githubusercontent.com/tylorbunting/trelloR_DevOps/master/_functions.R")
+
 # SETUP INPUT VALUES
 Settings$Board_url <- "https://trello.com/b/m7Puvg0U/ai-hub-user-story-kanban-board"
 
