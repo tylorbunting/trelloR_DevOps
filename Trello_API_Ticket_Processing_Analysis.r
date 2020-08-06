@@ -14,9 +14,9 @@ library(gridExtra)
 library(pryr) #used to analyse S3 generics and methods
 
 # CHECK AUTHENTICATION VALUES EXISTS
-if(exists("Settings$Trello_Key") != True) stop("Trello Key value needs to be defined 'Settings$Trello_Key'")
-if(exists("Settings$Trello_Token") != True) stop("Trello Token value needs to be defined 'Settings$Trello_Token'")
-if(exists("Settings$Trello_SecretKey") != True) stop("Trello Secret Key value needs to be defined 'Settings$Trello_SecretKey'")
+if(exists("Settings$Trello_Key") != TRUE) stop("Trello Key value needs to be defined 'Settings$Trello_Key'")
+if(exists("Settings$Trello_Token") != TRUE) stop("Trello Token value needs to be defined 'Settings$Trello_Token'")
+if(exists("Settings$Trello_SecretKey") != TRUE) stop("Trello Secret Key value needs to be defined 'Settings$Trello_SecretKey'")
 
 #add setting variables
 Trello_Key <- Settings$Trello_Key
