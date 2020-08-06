@@ -1,10 +1,4 @@
 # 0. SETUP ENVIRONMENT AND INPUT VARIABLES --------------------------------
-# attempt to install all require packages
-#source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_package_manager.R")
-
-# get all functions needed for TrelloR_custom
-#source("C:/Users/tbun2893/Documents/GitHub/trelloR_custom/_functions.R")
-
 # import libraries
 library(httr)
 library(jsonlite)
@@ -24,11 +18,10 @@ if(exists("Settings") != TRUE) Settings <- list()
 
 # Debug mode?
 Settings$Debug_Mode <- FALSE
-
-# SETUP AUTHENTICATION VALUES
-Settings$Trello_Key <- "f9170c56bae48f7f78916d54411f90b9"
-Settings$Trello_Token <- "dabd2fd76f594ade872a11b89c5d1bbde63c6d5c7c1adf08460704b86fd5c29b"
-Settings$Trello_SecretKey <- "dcfae097b265928f924a7c6772dc05d2dcbb92f32895dd3f5bcce141bbe263b5"
+# CHECK AUTHENTICATION VALUES EXISTS
+if(exists("Settings$Trello_Key") != True) stop("Trello Key value needs to be defined 'Settings$Trello_Key'")
+if(exists("Settings$Trello_Token") != True) stop("Trello Token value needs to be defined 'Settings$Trello_Token'")
+if(exists("Settings$Trello_SecretKey") != True) stop("Trello Secret Key value needs to be defined 'Settings$Trello_SecretKey'")
 
 # create key and token string
 Settings$trello_auth <- paste("key=",Settings$Trello_Key,"&token=",Settings$Trello_Token, sep = "")

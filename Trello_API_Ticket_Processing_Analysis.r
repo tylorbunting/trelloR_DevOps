@@ -13,11 +13,15 @@ library(grid)
 library(gridExtra)
 library(pryr) #used to analyse S3 generics and methods
 
+# CHECK AUTHENTICATION VALUES EXISTS
+if(exists("Settings$Trello_Key") != True) stop("Trello Key value needs to be defined 'Settings$Trello_Key'")
+if(exists("Settings$Trello_Token") != True) stop("Trello Token value needs to be defined 'Settings$Trello_Token'")
+if(exists("Settings$Trello_SecretKey") != True) stop("Trello Secret Key value needs to be defined 'Settings$Trello_SecretKey'")
 
-# add authentication setting variables
-Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
-Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
-Trello_SecretKey <- "e3512e11ac64fd3bd927429a5294506d1d7be2b87236cd011c19eee9f6bc833b"
+#add setting variables
+Trello_Key <- Settings$Trello_Key
+Trello_Token <- Settings$Trello_Token
+Trello_SecretKey <- Settings$Trello_SecretKey
 
 # add label ID setting variables
 date_raised_id <- "5c9d92bb98be778d4583c9ef"

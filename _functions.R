@@ -1,4 +1,3 @@
-
 # create function to extract first label name found out of Settings$labels_for_analysis input variable
 get_label_name <- function(x, labels_for_analysis) {
   if(length(x[["labels"]]) > 0) {

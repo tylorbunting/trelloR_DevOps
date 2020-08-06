@@ -1,6 +1,7 @@
 # 0. SETUP ENVIRONMENT AND INPUT VARIABLES --------------------------------
 # import libraries
 library(httr)
+library(devtools)
 library(jsonlite)
 library(stringr)
 library(ggplot2)
@@ -19,9 +20,10 @@ if(exists("Settings") != TRUE) Settings <- list()
 Settings$Debug_Mode <- TRUE
 
 # add authentication setting variables
-# SETUP AUTHENTICATION VALUES
-Settings$Trello_Key <- "f9170c56bae48f7f78916d54411f90b9"
-Settings$Trello_Token <- "dabd2fd76f594ade872a11b89c5d1bbde63c6d5c7c1adf08460704b86fd5c29b"
+# CHECK AUTHENTICATION VALUES EXISTS
+if(exists("Settings$Trello_Key") != True) stop("Trello Key value needs to be defined 'Settings$Trello_Key'")
+if(exists("Settings$Trello_Token") != True) stop("Trello Token value needs to be defined 'Settings$Trello_Token'")
+if(exists("Settings$Trello_SecretKey") != True) stop("Trello Secret Key value needs to be defined 'Settings$Trello_SecretKey'")
 
 # create key and token string
 Trello_Auth <- paste("key=",Settings$Trello_Key,"&token=",Settings$Trello_Token, sep = "")

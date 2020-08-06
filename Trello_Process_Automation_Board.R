@@ -24,10 +24,10 @@ if(exists("Settings") != TRUE) Settings <- list()
 # SETUP INPUT VALUES
 Settings$Board_url <- "https://trello.com/b/5LZ5YvHo/ai-hub-process-automation"
 
-# add authentication setting variables
-Settings$Trello_Key <- "4f0a4fcacc9b53edd8b79942caa027a3"
-Settings$Trello_Token <- "85422bf57716c09c61b1043a2ba52198320d5993842b52a5e849fed26344f1a9"
-Settings$Trello_SecretKey <- "e3512e11ac64fd3bd927429a5294506d1d7be2b87236cd011c19eee9f6bc833b"
+# CHECK AUTHENTICATION VALUES EXISTS
+if(exists("Settings$Trello_Key") != True) stop("Trello Key value needs to be defined 'Settings$Trello_Key'")
+if(exists("Settings$Trello_Token") != True) stop("Trello Token value needs to be defined 'Settings$Trello_Token'")
+if(exists("Settings$Trello_SecretKey") != True) stop("Trello Secret Key value needs to be defined 'Settings$Trello_SecretKey'")
 if(exists("Settings$TrelloR_Token") != TRUE) Settings$TrelloR_Token <- trello_get_token(Settings$Trello_Key, Settings$Trello_SecretKey)
 
 # create key and token string
