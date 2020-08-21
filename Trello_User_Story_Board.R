@@ -8,11 +8,13 @@
 library("trelloR")
 library("tidyr")
 library("httpuv")
+library("httr")
 library("purrr")
 library("scales")
 library("lubridate")
 library("plotly")
 library("devtools")
+library("reshape2")
 
 # create settings list
 if(exists("Settings") != TRUE) Settings <- list()
