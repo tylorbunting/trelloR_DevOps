@@ -234,7 +234,7 @@ Operational_Initatives$Workload_Viz <- Operational_Initatives$board_cards_3 %>%
   filter(status != "Ideas") %>%
   ggplot(aes(x = status, y = n, fill = type)) +
   geom_bar(stat = 'identity') +
-  scale_fill_manual(values = c( "#DCDCDC", "#00BFC4", "#fdd5b4", "#fbeeb8")) +
+  scale_fill_manual(values = c( "#DCDCDC", "#fdd5b4", "#00BFC4", "#fbeeb8")) +
   scale_x_discrete(limits = c("Blocked", "Backlog", "In Progress", "Testing", "Completed (wk)", "Completed (old)")) +
   labs(title = "Operational Initiatives Workload", y = "Number of Initiatives", x = "Status", fill = "Workload Type") +
   theme(plot.title = element_text(hjust = 0.5),
