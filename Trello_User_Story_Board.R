@@ -28,7 +28,6 @@ if(exists("Trello_Key") != TRUE) stop("Trello Key value needs to be defined 'Tre
 if(exists("Trello_Token") != TRUE) stop("Trello Token value needs to be defined 'Trello_Token'")
 if(exists("Trello_SecretKey") != TRUE) stop("Trello Secret Key value needs to be defined 'Trello_SecretKey'")
 if(exists("TrelloR_Token") != TRUE) stop("Trello Secret Key value needs to be defined 'TrelloR_Token'")
-if(exists("card_limit") != TRUE) stop("Number of cards to extract needs to be defined 'card_limit' (e.g. card_limit <- 5000)")
 
 
 #add setting variables
