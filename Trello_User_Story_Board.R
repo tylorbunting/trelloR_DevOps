@@ -28,6 +28,8 @@ if(exists("Trello_Key") != TRUE) stop("Trello Key value needs to be defined 'Tre
 if(exists("Trello_Token") != TRUE) stop("Trello Token value needs to be defined 'Trello_Token'")
 if(exists("Trello_SecretKey") != TRUE) stop("Trello Secret Key value needs to be defined 'Trello_SecretKey'")
 if(exists("TrelloR_Token") != TRUE) stop("Trello Secret Key value needs to be defined 'TrelloR_Token'")
+if(exists("card_limit") != TRUE) stop("Number of cards to extract needs to be defined 'card_limit' (e.g. card_limit <- 5000)")
+
 
 #add setting variables
 Settings$Trello_Key <- Trello_Key
@@ -70,7 +72,7 @@ if(exists("Data_1") != TRUE) {
   #get various data
   Data_1$Board_id <- get_id_board(Settings$Board_url, token = Settings$TrelloR_Token)
   Data_1$Board_lists <- get_board_lists(Data_1$Board_id, token = Settings$TrelloR_Token)
-  Data_1$Board_cards <- get_board_cards(Data_1$Board_id, Settings$TrelloR_Token, filter = "all", paging = TRUE)
+  Data_1$Board_cards <- get_board_cards(Data_1$Board_id, Settings$TrelloR_Token, filter = "all", paging = TRUE, limit = card_limit)
   Data_1$Board_members <- get_board_members(Data_1$Board_id, Settings$TrelloR_Token)
   #expensive query below so it is commented out
   #Data_1$Board_card_members <- map_df(Board_cards$id, get_card_members, token = TrelloR_Token)
