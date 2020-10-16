@@ -6,7 +6,6 @@
 
 # INSTALL APPROPRIATE PACKAGES
 library("trelloR")
-library("tidyr")
 library("httpuv")
 library("httr")
 library("purrr")
@@ -15,6 +14,7 @@ library("lubridate")
 library("plotly")
 library("devtools")
 library("reshape2")
+library("stringr")
 
 # create settings list
 if(exists("Settings") != TRUE) Settings <- list()
@@ -91,8 +91,8 @@ Data_2 <- Data_1
 # Card data with "values" for DATE type customFields and "ids" for DROPDOWN type customFields
 Data_2$Board_cards_with_customFields <- map_df(Data_2$Board_cards_with_customFields, function(x) {
   data.frame(
-    card_id = as.character(extract(x, "id")),
-    name = as.character(extract(x, "name")),
+    card_id = as.character(str_extract(x, "id")),
+    name = as.character(str_extract(x, "name")),
     dev_effort_id = get_customField_dropdown_ids(x, Settings$CustomFields_variables$Dev_Effort),
     test_effort_id = get_customField_dropdown_ids(x, Settings$CustomFields_variables$Test_Effort),
     incident_category_id = get_customField_dropdown_ids(x, Settings$CustomFields_variables$Incident_Category),
