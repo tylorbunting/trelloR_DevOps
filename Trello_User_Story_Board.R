@@ -29,7 +29,6 @@ if(exists("Trello_Token") != TRUE) stop("Trello Token value needs to be defined 
 if(exists("Trello_SecretKey") != TRUE) stop("Trello Secret Key value needs to be defined 'Trello_SecretKey'")
 if(exists("TrelloR_Token") != TRUE) stop("Trello Secret Key value needs to be defined 'TrelloR_Token'")
 
-
 #add setting variables
 Settings$Trello_Key <- Trello_Key
 Settings$Trello_Token <- Trello_Token
