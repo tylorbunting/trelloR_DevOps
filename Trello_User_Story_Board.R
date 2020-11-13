@@ -7,16 +7,17 @@
 # INSTALL APPROPRIATE PACKAGES
 library("trelloR")
 library("httpuv")
-library("httr")
 library("purrr")
 library("scales")
 library("lubridate")
+library("tidyr")
 library("plotly")
 library("devtools")
 library("dplyr")
 library("reshape2")
 library("stringr")
 library("magrittr")
+library("httr")
 
 # create settings list
 if(exists("Settings") != TRUE) Settings <- list()
@@ -77,7 +78,7 @@ if(exists("Data_1") != TRUE) {
   #expensive query below so it is commented out
   #Data_1$Board_card_members <- map_df(Board_cards$id, get_card_members, token = TrelloR_Token)
   # get an array of Cards on a board (User Story Kanban Board) and include custom fields SOURCE: https://developers.trello.com/docs/getting-started-custom-fields 
-  Data_1$Board_cards_with_customFields <- GET(paste("https://api.trello.com/1/boards/m7Puvg0U/?fields=name&cards=all&card_fields=name&customFields=true&card_customFieldItems=true&", Settings$Trello_Auth, sep = ""))
+  Data_1$Board_cards_with_customFields <- GET(paste("https://api.trello.com/1/boards/m7Puvg0U?fields=name&cards=all&card_fields=name&customFields=true&card_customFieldItems=true&", Settings$Trello_Auth, sep = ""))
   Data_1$Board_cards_with_customFields <- content(Data_1$Board_cards_with_customFields)
   # extract sub lists from "Board_cards_with_customFields" parent list
   Data_1$Board_customFields <- Data_1$Board_cards_with_customFields$customFields
