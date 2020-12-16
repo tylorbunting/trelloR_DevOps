@@ -43,6 +43,7 @@ ref_board_lists_1 <- content(ref_board_lists)
 # IDs for AI Hub Boards
 ref_processes_in_stabilisation <- "5bbeb374b05b6d6c1c16480d"
 ref_processes_in_production_support <- "5bb3ef682d017081ae3fa687"
+ref_processes_retired <- "5bbbd50355fed10cccd13a4d"
 
 # labels to capture for analysis (assumption is that tickets only have one label assigned)
 labels_for_analysis <- c("Stopped", "Unstable", "Stable", "Waiting")
@@ -57,7 +58,6 @@ STAGED_DATA_1_STABILISING <- content(STAGED_DATA_1_STABILISING)
 # get all cards in the "Processes in Production Support" list
 STAGED_DATA_1_PRODUCTIONSUPPORT <- GET(paste("https://api.trello.com/1/lists/5bb3ef682d017081ae3fa687/cards?", Trello_Auth, sep = ""))
 STAGED_DATA_1_PRODUCTIONSUPPORT <- content(STAGED_DATA_1_PRODUCTIONSUPPORT)
-
 
 # get all cards in the "Process removed from list" list
 STAGED_DATA_1_REMOVED <- GET(paste("https://api.trello.com/1/lists/5bbbd50355fed10cccd13a4d/cards?", Trello_Auth, sep = ""))
@@ -112,7 +112,7 @@ STAGED_DATA_2_REMOVED <- map_df(STAGED_DATA_1_REMOVED, function(x){
 
 # add additional column to dataframe representing status of card
 STAGED_DATA_2_REMOVED <- STAGED_DATA_2_REMOVED %>%
-  mutate(status = "Removed")
+  mutate(status = "Retired")
 
 
 
@@ -149,7 +149,7 @@ Plots$PROCESSES_PRODUCTIONSUPPORT <- Plots$STAGED_DATA_4_TOTALS %>%
   summarise(n = sum(n))
 
 Plots$PROCESSES_REMOVED <- Plots$STAGED_DATA_4_TOTALS %>%
-  filter(status == "Removed") %>%
+  filter(status == "Retired") %>%
   group_by(status) %>%
   summarise(n = sum(n))
 
@@ -157,8 +157,8 @@ Plots$PROCESSES_REMOVED <- Plots$STAGED_DATA_4_TOTALS %>%
 Plots$STAGED_DATA_4_TOTALS_PLOT <- ggplot(Plots$STAGED_DATA_4_TOTALS, aes(x = status, y = n, fill = label_type)) +
   geom_bar(stat = 'identity') +
   scale_fill_manual(values = c("#00BFC4", "#fdd5b4", "#fbeeb8", "#DCDCDC")) +
-  scale_x_discrete(limits = c("Stabilisation", "Production Support")) +
-  labs(title = "Number of Processes in Stabilisation and Production Support", x = "Support Type", y = "Number of Processes", fill = "Status") +
+  scale_x_discrete(limits = c("Stabilisation", "Production Support", "Retired")) +
+  labs(title = "Number of Processes in Stabilisation, Production Support and Retired", x = "Support Type", y = "Number of Processes", fill = "Status") +
   theme(plot.title = element_text(hjust = 0.5))
 
 
