@@ -139,12 +139,12 @@ Plots$PROCESSES_STOPPED <- Plots$STAGED_DATA_4_TOTALS %>%
   summarise(n = sum(n))
 
 Plots$PROCESSES_STABILISING <- Plots$STAGED_DATA_4_TOTALS %>%
-  filter(status == "Stabilisation" && label_type!= "Stopped") %>%
+  filter(status == "Stabilisation") %>%
   group_by(status) %>%
   summarise(n = sum(n))
 
 Plots$PROCESSES_PRODUCTIONSUPPORT <- Plots$STAGED_DATA_4_TOTALS %>%
-  filter(status == "Production Support" && label_type!= "Stopped") %>%
+  filter(status == "Production Support") %>%
   group_by(status) %>%
   summarise(n = sum(n))
 
