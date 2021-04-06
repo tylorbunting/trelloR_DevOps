@@ -252,7 +252,7 @@ Plots$Options$color_scale <- seq_gradient_pal("#00BFC4", "#fdd5b4", "Lab")(seq(0
 Plots$processes_per_run_member <- ggplot(Data_5$Board_cards_Run) +
   aes(x = fullname, fill = label) +
   geom_bar() +
-  labs(title = "Number of Processes Per Run Member", x = "Process Count", y = "Name") +
+  labs(title = "Number of Processes Per Run Member", x = "Process Count", y = "Name", fill = "Status") +
   scale_fill_brewer(palette = "Blues") +
   geom_hline(yintercept = 50, linetype="dashed", color = "red") +
   coord_flip() +
